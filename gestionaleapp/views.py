@@ -2,5 +2,5 @@ from django.shortcuts import render
 
 # Create your views here.
 
-def test(request):
+def anagrafica(request):
 	return render(request, 'gestionaleapp/anagrafica.html')
