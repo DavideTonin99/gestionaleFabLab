@@ -16,14 +16,20 @@
 }
 
 /* Pagina anagrafica */
-.insert-table {
-    margin-left: 30px;
-    width: 75%;
+table {
+    margin-top: 2%;
+    margin-left: 5%;
+    margin-bottom: 5%;
+    width: 90%;
 }
 
-.insert-table tr {
+table tr {
     height: 40px;
     vertical-align: middle;
+}
+
+.users-table th {
+	text-align: center;
 }
 
 input {
