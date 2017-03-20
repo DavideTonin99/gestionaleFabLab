@@ -4,13 +4,13 @@
 {% block pagename %} <img class="logo" src="{% static 'gestionaleapp/logo_fablab.png' %}"> {% endblock %}
 
 {% block content %}
-    <table>
+    <table class="table-bordered table-striped users-table">
         <tr>
-            <td>Cognome</td>
-            <td>Nome</td>
-            <td>Tessera</td>
-            <td>Mail</td>
-            <td>Cellulare</td>
+            <th>Cognome</th>
+            <th>Nome</th>
+            <th>Tessera</th>
+            <th>Mail</th>
+            <th>Cellulare</th>
         </tr>
     {% for user in users %}
         <tr>
