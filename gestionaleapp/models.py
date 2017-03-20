@@ -7,8 +7,8 @@ class Person(models.Model):
 	name = models.CharField(max_length=50)
 	surname = models.CharField(max_length=50)
 	born = models.DateTimeField("born date")
-	cap = models.DecimalField(max_digits=5, decimal_places=5)
-	telephone = models.DecimalField(max_digits=15)
+	cap = models.CharField(max_length=5)
+	telephone = models.CharField(max_length=15)
 	email = models.CharField(max_length=254)
 	card = models.CharField(max_length=128)
 
@@ -17,23 +17,23 @@ class Person(models.Model):
 
 
 class Event(models.Model):
-	participant = models.ManyToManyField(Person, null=True)
+	participants = models.ManyToManyField(Person, blank=True)
 	name = models.CharField(max_length=200)
 	date = models.DateTimeField("event date")
-	cost = models.IntegerField()
-	description = models.CharField(max_length=1000)
+	cost = models.IntegerField(null=True, blank=True)
+	description = models.CharField(max_length=1000, null=True, blank=True)
 
 
 class Subscription(models.Model):
-	person = models.ForeignKey(Person)
+	person = models.ForeignKey(Person, on_delete=models.CASCADE)
 	year = models.PositiveSmallIntegerField()
 	type = models.CharField(max_length=10)
-	occasion = models.ForeignKey(Event, null=True)
+	occasion = models.ForeignKey(Event, null=True, blank=True, on_delete=models.SET_NULL)
 
 
 class Processing(models.Model):
 	type = models.CharField(max_length=100)
 	data = models.DateTimeField("processing date")
 	cost = models.PositiveSmallIntegerField()
-	description = models.CharField(max_length=1000)
-	person = models.ManyToManyField(Person, null=True)
+	description = models.CharField(max_length=1000, null=True, blank=True)
+	person = models.ManyToManyField(Person, blank=True)
