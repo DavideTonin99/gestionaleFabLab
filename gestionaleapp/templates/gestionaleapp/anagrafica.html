@@ -4,18 +4,36 @@
 {% block pagename %} <img class="logo" src="{% static 'gestionaleapp/logo_fablab.png' %}"> {% endblock %}
 
 {% block content %}
+    <table>
+        <tr>
+            <td>Cognome</td>
+            <td>Nome</td>
+            <td>Tessera</td>
+            <td>Mail</td>
+            <td>Cellulare</td>
+        </tr>
+    {% for user in users %}
+        <tr>
+            <td>user.surname</td>
+            <td>user.name</td>
+            <td>user.card</td>
+            <td>user.mail</td>
+            <td>user.telephone</td>
+        </tr>
+    {% endfor %}
+    </table>
     <form method="get" action="">
         <table class="insert-table">
             <tr>
                 <td>Cognome: </td>
-                <td><input type="text" name="surname" size="20"></td>
+                <td><input type="text" name="surname" maxlength="32"></td>
                 <td></td>
                 <td>Tessera:</td>
-                <td><input type="text" name="card" size="10"></td>
+                <td><input type="text" name="card" maxlength="32"></td>
             </tr>
             <tr>
                 <td>Nome:</td>
-                <td><input type="text" name="name" size="20"></td>
+                <td><input type="text" name="name"></td>
             </tr>
             <tr>
                 <td>Nato:</td>
@@ -23,15 +41,15 @@
             </tr>
             <tr>
                 <td>C.A.P:</td>
-                <td><input></td>
+                <td><input type="text" name="cap"></td>
             </tr>
             <tr>
                 <td>Cellulare:</td>
-                <td><input></td>
+                <td><input type="text" name="telephone" maxlength="15"></td>
             </tr>
             <tr>
                 <td>Mail:</td>
-                <td><input>
+                <td><input  type="text" name="mail" maxlength="254">
             </tr>
         </table>
     </form>
