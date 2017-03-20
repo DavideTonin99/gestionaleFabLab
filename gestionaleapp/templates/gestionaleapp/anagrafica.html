@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} <title>FabLab | Anagrafica </title>{% endblock %}
+{% block pagename %} <img class="logo" src="{% static 'gestionaleapp/logo_fablab.png' %}"> {% endblock %}
+
+{% block content %}
+    <form method="get" action="">
+        <table class="insert-table">
+            <tr>
+                <td>Cognome: </td>
+                <td><input type="text" name="surname" size="20"></td>
+                <td></td>
+                <td>Tessera:</td>
+                <td><input type="text" name="card" size="10"></td>
+            </tr>
+            <tr>
+                <td>Nome:</td>
+                <td><input type="text" name="name" size="20"></td>
+            </tr>
+            <tr>
+                <td>Nato:</td>
+                <td><input type="date"></td>
+            </tr>
+            <tr>
+                <td>C.A.P:</td>
+                <td><input></td>
+            </tr>
+            <tr>
+                <td>Cellulare:</td>
+                <td><input></td>
+            </tr>
+            <tr>
+                <td>Mail:</td>
+                <td><input>
+            </tr>
+        </table>
+    </form>
+{% endblock%}

@@ -1,0 +1,26 @@
+.insert-table {
+    margin-left: 20px;
+    width: 75%;
+}
+
+.insert-table tr {
+    height: 3em;
+    vertical-align: middle;
+}
+
+.navbar-brand>img {
+    height: 50px;
+}
+
+.nav>li {
+    height: 75px;
+}
+
+.nav>li>a {
+    padding: 50px;
+}
+
+.navbar-nav>li>a {
+    line-height: 45px !important;
+    vertical-align: middle;
+}
