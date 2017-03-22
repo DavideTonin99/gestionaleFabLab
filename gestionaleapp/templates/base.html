@@ -34,9 +34,9 @@
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav">
-                        <li id="anagrafica"><a href="../anagrafica">Anagrafica</a></li>
-                        <li id="eventi"><a href="../eventi">Eventi</a></li>
-                        <li id="lavorazioni"><a href="../lavorazioni">Lavorazioni</a></li>
+                        <li id="anagrafica"><a href="{% url 'gestionale:anagrafica' %}">Anagrafica</a></li>
+                        <li id="eventi"><a href="{% url 'gestionale:eventi' %}">Eventi</a></li>
+                        <li id="lavorazioni"><a href="{% url 'gestionale:lavorazioni' %}">Lavorazioni</a></li>
                     </ul>
                 </div>
             </div>
@@ -45,7 +45,7 @@
         <footer>
             <img class="logo" src="{% static 'gestionaleapp/logo_fablab.png' %}">
             Gestionale FabLab
-            Ciaone da Tonzio
+            Credits: Tonin Davide, Novelli Matteo, Conti Enrico, Forigo Ettore
         </footer>
     </body>
 </html>
