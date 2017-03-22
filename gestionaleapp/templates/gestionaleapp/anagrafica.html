@@ -4,24 +4,27 @@
 {% block pagename %} <img class="logo" src="{% static 'gestionaleapp/logo_fablab.png' %}"> {% endblock %}
 
 {% block content %}
-    <table class="table-bordered table-striped users-table">
-        <tr>
-            <th>Cognome</th>
-            <th>Nome</th>
-            <th>Tessera</th>
-            <th>Mail</th>
-            <th>Cellulare</th>
-        </tr>
-    {% for user in users %}
-        <tr>
-            <td>user.surname</td>
-            <td>user.name</td>
-            <td>user.card</td>
-            <td>user.mail</td>
-            <td>user.telephone</td>
-        </tr>
-    {% endfor %}
-    </table>
+    <div class="cl-div-tb">
+        <table class="table-bordered table-striped cl-tb">
+            <tr>
+                <th>Cognome</th>
+                <th>Nome</th>
+                <th>Tessera</th>
+                <th>Mail</th>
+                <th>Cellulare</th>
+            </tr>
+        {% for client in clients %}
+            <tr>
+                <td>{{client.surname}}</td>
+                <td>{{client.name}}</td>
+                <td>{{client.card}}</td>
+                <td>{{client.email}}</td>
+                <td>{{client.telephone}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+
     <form method="get" action="">
         <table class="insert-table">
             <tr>
