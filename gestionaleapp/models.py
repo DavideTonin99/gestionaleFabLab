@@ -27,7 +27,7 @@ class Event(models.Model):
 class Subscription(models.Model):
 	person = models.ForeignKey(Person, on_delete=models.CASCADE)
 	year = models.PositiveSmallIntegerField()
-	type = models.CharField(max_length=10)
+	type = models.CharField(max_length=11)
 	occasion = models.ForeignKey(Event, null=True, blank=True, on_delete=models.SET_NULL)
 
 
@@ -36,4 +36,4 @@ class Processing(models.Model):
 	data = models.DateTimeField("processing date")
 	cost = models.PositiveSmallIntegerField()
 	description = models.CharField(max_length=1000, null=True, blank=True)
-	person = models.ForeignKey(Person, on_delete=models.CASCADE)
+	person = models.ForeignKey(Person, on_delete=models.CASCADE, null=True)

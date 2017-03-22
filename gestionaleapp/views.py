@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 from .models import Person
 
@@ -6,6 +7,7 @@ from .models import Person
 # Create your views here.
 
 
+@login_required
 def anagrafica(request):
     context = {
         'clients': Person.objects.all()
