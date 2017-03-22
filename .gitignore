@@ -190,6 +190,7 @@ $RECYCLE.BIN/
 
 __pycache__/
 *.py[cod]
+.idea/
 
 # Packages
 *.egg
