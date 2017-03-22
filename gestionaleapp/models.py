@@ -20,7 +20,7 @@ class Event(models.Model):
 	participants = models.ManyToManyField(Person, blank=True)
 	name = models.CharField(max_length=200)
 	date = models.DateTimeField("event date")
-	cost = models.IntegerField(null=True, blank=True)
+	cost = models.PositiveIntegerField(null=True, blank=True)
 	description = models.CharField(max_length=1000, null=True, blank=True)
 
 
@@ -36,4 +36,4 @@ class Processing(models.Model):
 	data = models.DateTimeField("processing date")
 	cost = models.PositiveSmallIntegerField()
 	description = models.CharField(max_length=1000, null=True, blank=True)
-	person = models.ManyToManyField(Person, blank=True)
+	person = models.ForeignKey(Person, on_delete=models.CASCADE)
