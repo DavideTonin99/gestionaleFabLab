@@ -28,8 +28,24 @@ table tr {
     vertical-align: middle;
 }
 
-.users-table th {
+.cl-div-tb {
+    margin-top: 40px;
+    max-height: 150px;
+    overflow-y: scroll;
+}
+
+.cl-tb th {
 	text-align: center;
+    border-bottom: 2px solid black;
+/*    background-color: #50d872;*/
+}
+
+.cl-tb tr {
+    height: 40px;
+}
+
+.cl-tb td {
+    text-align: center;
 }
 
 input {
