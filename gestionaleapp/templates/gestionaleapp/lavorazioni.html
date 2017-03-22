@@ -1,18 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %} <title>FabLab | Anagrafica </title>{% endblock %}
+{% block title %} <title>FabLab | Lavorazioni </title>{% endblock %}
 {% block pagename %} <img class="logo" src="{% static 'gestionaleapp/logo_fablab.png' %}"> {% endblock %}
-{% block scripts%}
-    <script>
-        $(document).ready(function(){
-            $("tr").click(function(event){
-                var client_card = document.getElementsByClassName(event.target.className);
-                var prova = document.getElementsByName("surname");
-                prova[0].value = "provola";
-            });
-        });
-    </script>
-{% endblock %}
+
 {% block content %}
     <div class="cl-div-tb">
         <table class="table-bordered table-striped cl-tb">
@@ -25,22 +15,17 @@
             </tr>
         {% for client in clients %}
             <tr>
-                <td class="{{client.id}}">{{client.surname}}</td>
-                <td class="{{client.id}}">{{client.name}}</td>
-                <td class="{{client.id}}">{{client.card}}</td>
-                <td class="{{client.id}}">{{client.email}}</td>
-                <td class="{{client.id}}">{{client.telephone}}</td>
+                <td>{{client.surname}}</td>
+                <td>{{client.name}}</td>
+                <td>{{client.card}}</td>
+                <td>{{client.email}}</td>
+                <td>{{client.telephone}}</td>
             </tr>
         {% endfor %}
         </table>
     </div>
 
     <form method="get" action="">
-        <div class="actions-div">
-            <button type="button" class="btn btn-success btn-block">Salva nuovo</button>
-            <button type="button" class="btn btn-danger btn-block">Reset campi</button>
-            <button type="button" class="btn btn-primary btn-block">Salva modifiche</button>
-        </div>
         <table class="insert-table">
             <tr>
                 <td>Cognome: </td>
@@ -70,6 +55,5 @@
                 <td><input class="form-control" type="text" name="mail" maxlength="254">
             </tr>
         </table>
-
     </form>
 {% endblock%}
