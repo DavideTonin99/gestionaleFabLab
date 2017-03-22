@@ -28,15 +28,28 @@ table tr {
     vertical-align: middle;
 }
 
+.form-control {
+    width: 70% !important;
+}
+
 .cl-div-tb {
     margin-top: 40px;
-    max-height: 150px;
+    margin-left: 5%;
+    max-height: 400px;
     overflow-y: scroll;
+    width: 90%;
+    border: 1px solid #7c7c7c;
+}
+
+.cl-tb {
+    margin-top: 0px;
+    margin-bottom: 0px;  
+    margin-left: 0px;
+    width: 100%;
 }
 
 .cl-tb th {
 	text-align: center;
-    border-bottom: 2px solid black;
 /*    background-color: #50d872;*/
 }
 
@@ -50,4 +63,10 @@ table tr {
 
 input {
 	width: 40%;
+}
+
+footer {
+    width: 100%;
+    color: white;
+    background-color: black;
 }

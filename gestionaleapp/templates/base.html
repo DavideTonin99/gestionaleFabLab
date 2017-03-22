@@ -11,9 +11,16 @@
         <!-- script -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                var url = window.location.href;
+                var currentPage = url.split("/");
+                document.getElementById(currentPage[currentPage.length-2]).className = "active";
+            });
+        </script>
     </head>
     
-    <body onload="rowTable">
+    <body>
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -26,16 +33,18 @@
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav">
-                        <li><a href="#">Anagrafica</a></li>
-                        <li><a href="#">Eventi</a></li>
-                        <li><a href="#">Lavorazioni</a></li>
+                        <li id="anagrafica"><a href="../anagrafica">Anagrafica</a></li>
+                        <li id="eventi"><a href="../eventi">Eventi</a></li>
+                        <li id="lavorazioni"><a href="../lavorazioni">Lavorazioni</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
         {% block content %} {% endblock %}
         <footer>
-            Ciaone da tonzio e cyonti
+            <img class="logo" src="{% static 'gestionaleapp/logo_fablab.png' %}">
+            Gestionale FabLab
+            Ciaone da Tonzio
         </footer>
     </body>
 </html>
