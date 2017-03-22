@@ -4,5 +4,5 @@ from . import views
 
 app_name = 'gestionale'
 urlpatterns = [
-    url(r'^anagrafica/$', views.anagrafica),
+    url(r'^anagrafica/$', views.anagrafica, name="anagrafica"),
 ]

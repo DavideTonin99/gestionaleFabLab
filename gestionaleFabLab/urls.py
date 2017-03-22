@@ -16,7 +16,12 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from . import views
+
 urlpatterns = [
 	url(r'^gestionale/', include('gestionaleapp.urls')),
-    url(r'^admin/', admin.site.urls),
+	url(r'^login/$', views.login_view, name="login"),
+	url(r'^login/handle/$', views.login_handler, name='login_handler'),
+	url(r'^logout', views.logout_handler, name='logout'),
+	url(r'^admin/', admin.site.urls),
 ]
