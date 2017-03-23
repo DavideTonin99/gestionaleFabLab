@@ -19,6 +19,7 @@ from django.contrib import admin
 from . import views
 
 urlpatterns = [
+	url(r'^$', views.login_view),
 	url(r'^gestionale/', include('gestionaleapp.urls')),
 	url(r'^login/$', views.login_view, name="login"),
 	url(r'^login/handle/$', views.login_handler, name='login_handler'),

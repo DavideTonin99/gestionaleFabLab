@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 
 
 def login_view(request):
+	if request.user.is_authenticated():
+		return HttpResponseRedirect(reverse('gestionale:anagrafica'))
 	context = {
 		'next': request.GET.get('next', reverse('gestionale:anagrafica')),
 		'wrong_login': request.GET.get('wrong_login', False)

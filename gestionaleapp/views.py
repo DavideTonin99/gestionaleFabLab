@@ -15,6 +15,7 @@ def anagrafica(request):
     return render(request, 'gestionaleapp/anagrafica.html', context)
 
 
+@login_required
 def eventi(request):
     context = {
         'clients': Person.objects.all()
@@ -22,6 +23,7 @@ def eventi(request):
     return render(request, 'gestionaleapp/eventi.html', context)
 
 
+@login_required
 def lavorazioni(request):
     context = {
         'clients': Person.objects.all()
