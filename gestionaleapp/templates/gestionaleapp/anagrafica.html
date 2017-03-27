@@ -5,10 +5,36 @@
 {% block scripts%}
     <script>
         $(document).ready(function(){
-            $("tr").click(function(event){
-                var client_card = document.getElementsByClassName(event.target.className);
-                var prova = document.getElementsByName("surname");
-                prova[0].value = "try";
+            $(".tr-selectable").click(function(event){
+                // get the list of informations of the table
+                // get all the columns of the clicked row
+                var client_info = document.getElementsByClassName(event.target.className);
+
+                // get all the insert labels
+                var surname_label = document.getElementsByName("surname")[0];
+                var name_label = document.getElementsByName("name")[0];
+                // var born_date_label = document.getElementsByName("born_date")[0];
+                // var cap_label = document.getElementsByName("cap")[0];
+                var telephone_label = document.getElementsByName("telephone")[0];
+                var mail_label = document.getElementsByName("mail")[0];
+                var card_label = document.getElementsByName("card")[0];
+                
+                surname_label.value = client_info[0].innerText;
+                name_label.value = client_info[1].innerText;
+                // born_date_label.value = client_id[0].innerText;
+                // cap_label.value = client_info[0].innerText;
+                card_label.value = client_info[2].innerText;
+                mail_label.value = client_info[3].innerText;
+                telephone_label.value = client_info[4].innerText;
+            });
+            
+            $("button[name = 'reset-button']").click(function(event) {
+                var input_labels = document.getElementsByClassName("cl-info-input");
+                
+                for (i = 0; i < input_labels.length; i++) {
+                    var input = input_labels[i];
+                    input.value = "";
+                }
             });
         });
     </script>
@@ -24,7 +50,7 @@
                 <th>Cellulare</th>
             </tr>
         {% for client in clients %}
-            <tr>
+            <tr class="tr-selectable">
                 <td class="{{client.id}}">{{client.surname}}</td>
                 <td class="{{client.id}}">{{client.name}}</td>
                 <td class="{{client.id}}">{{client.card}}</td>
@@ -38,36 +64,36 @@
     <form method="post" action="">
         <div class="actions-div">
             <button type="button" class="btn btn-success btn-block">Salva nuovo</button>
-            <button type="button" class="btn btn-danger btn-block">Reset campi</button>
+            <button type="button" class="btn btn-danger btn-block" name="reset-button">Reset campi</button>
             <button type="button" class="btn btn-primary btn-block">Salva modifiche</button>
         </div>
         <table class="insert-table">
             <tr>
                 <td>Cognome: </td>
-                <td><input class="form-control" type="text" name="surname" maxlength="32"></td>
+                <td><input class="form-control cl-info-input" type="text" name="surname" maxlength="32"></td>
                 <td></td>
                 <td>Tessera:</td>
-                <td><input class="form-control" type="text" name="card" maxlength="32"></td>
+                <td><input class="form-control cl-info-input" type="text" name="card" maxlength="32"></td>
             </tr>
             <tr>
                 <td>Nome:</td>
-                <td><input class="form-control" type="text" name="name"></td>
+                <td><input class="form-control cl-info-input" type="text" name="name"></td>
             </tr>
             <tr>
                 <td>Nato:</td>
-                <td><input class="form-control" type="date"></td>
+                <td><input class="form-control cl-info-input" type="date"></td>
             </tr>
             <tr>
                 <td>C.A.P:</td>
-                <td><input class="form-control" type="text" name="cap"></td>
+                <td><input class="form-control cl-info-input" type="text" name="cap"></td>
             </tr>
             <tr>
                 <td>Cellulare:</td>
-                <td><input class="form-control" type="text" name="telephone" maxlength="15"></td>
+                <td><input class="form-control cl-info-input" type="text" name="telephone" maxlength="15"></td>
             </tr>
             <tr>
                 <td>Mail:</td>
-                <td><input class="form-control" type="text" name="mail" maxlength="254">
+                <td><input class="form-control cl-info-input" type="text" name="mail" maxlength="254">
             </tr>
         </table>
 
