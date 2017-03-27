@@ -39,9 +39,11 @@
                         <li id="eventi"><a href="{% url 'gestionale:eventi' %}">Eventi</a></li>
                         <li id="lavorazioni"><a href="{% url 'gestionale:lavorazioni' %}">Lavorazioni</a></li>
                     </ul>
+                    {% if user.is_authenticated %}
                     <ul class="nav navbar-nav navbar-right">
                         <li id="logout"><a href="{% url 'logout' %}?next={{request.path}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                     </ul>
+                    {% endif %}
                 </div>
             </div>
         </nav>
