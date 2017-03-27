@@ -4,39 +4,31 @@
 {% block pagename %} <img class="logo" src="{% static 'gestionaleapp/logo_fablab.png' %}"> {% endblock %}
 {% block scripts%}
     <script>
+        
         $(document).ready(function(){
-            $(".tr-selectable").click(function(event){
-                // get the list of informations of the table
-                // get all the columns of the clicked row
-                var client_info = document.getElementsByClassName(event.target.className);
-
-                // get all the insert labels
-                var surname_label = document.getElementsByName("surname")[0];
-                var name_label = document.getElementsByName("name")[0];
-                // var born_date_label = document.getElementsByName("born_date")[0];
-                // var cap_label = document.getElementsByName("cap")[0];
-                var telephone_label = document.getElementsByName("telephone")[0];
-                var mail_label = document.getElementsByName("mail")[0];
-                var card_label = document.getElementsByName("card")[0];
-                
-                surname_label.value = client_info[0].innerText;
-                name_label.value = client_info[1].innerText;
-                // born_date_label.value = client_id[0].innerText;
-                // cap_label.value = client_info[0].innerText;
-                card_label.value = client_info[2].innerText;
-                mail_label.value = client_info[3].innerText;
-                telephone_label.value = client_info[4].innerText;
-            });
-            
             $("button[name = 'reset-button']").click(function(event) {
                 var input_labels = document.getElementsByClassName("cl-info-input");
                 
                 for (i = 0; i < input_labels.length; i++) {
-                    var input = input_labels[i];
+                    input_labels[i].value = "";
                     input.value = "";
                 }
             });
+            
+            $(".tr-selectable").click(function(event){
+                var client_id = event.target.className;
+                
+                $.get("{% url 'get_client_data' %}?id="+client_id, function(data, status){
+                    var input_labels = document.getElementsByClassName("cl-info-input");
+                    
+                    for (i = 0; i < input_labels.length; i++) {
+                        var current_data = input_labels[i].getAttribute("name");
+                        input_labels[i].value = data.current_data;
+                    }
+                });
+            });
         });
+        
     </script>
 {% endblock %}
 {% block content %}
@@ -70,30 +62,30 @@
         <table class="insert-table">
             <tr>
                 <td>Cognome: </td>
-                <td><input class="form-control cl-info-input" type="text" name="surname" maxlength="32"></td>
+                <td><input class="form-control cl-info-input" type="text" name="surname" maxlength="32" placeholder="cognome"></td>
                 <td></td>
                 <td>Tessera:</td>
-                <td><input class="form-control cl-info-input" type="text" name="card" maxlength="32"></td>
+                <td><input class="form-control cl-info-input" type="text" name="card" maxlength="32" placeholder="tessera"></td>
             </tr>
             <tr>
                 <td>Nome:</td>
-                <td><input class="form-control cl-info-input" type="text" name="name"></td>
+                <td><input class="form-control cl-info-input" type="text" name="name" placeholder="nome"></td>
             </tr>
             <tr>
                 <td>Nato:</td>
-                <td><input class="form-control cl-info-input" type="date"></td>
+                <td><input class="form-control cl-info-input" type="date" name="born" placeholder="gg/mm/aaaa"></td>
             </tr>
             <tr>
                 <td>C.A.P:</td>
-                <td><input class="form-control cl-info-input" type="text" name="cap"></td>
+                <td><input class="form-control cl-info-input" type="text" name="cap" placeholder="cap"></td>
             </tr>
             <tr>
                 <td>Cellulare:</td>
-                <td><input class="form-control cl-info-input" type="text" name="telephone" maxlength="15"></td>
+                <td><input class="form-control cl-info-input" type="text" name="telephone" maxlength="15" placeholder="cellulare"></td>
             </tr>
             <tr>
                 <td>Mail:</td>
-                <td><input class="form-control cl-info-input" type="text" name="mail" maxlength="254">
+                <td><input class="form-control cl-info-input" type="text" name="mail" maxlength="254" placeholder="mail">
             </tr>
         </table>
 
