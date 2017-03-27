@@ -12,6 +12,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script>
+            // highlights the active page on the navbar
             $(document).ready(function(){
                 var url = window.location.href;
                 var currentPage = url.split("/");
@@ -38,10 +39,15 @@
                         <li id="eventi"><a href="{% url 'gestionale:eventi' %}">Eventi</a></li>
                         <li id="lavorazioni"><a href="{% url 'gestionale:lavorazioni' %}">Lavorazioni</a></li>
                     </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li id="logout"><a href="{% url 'logout' %}?next={{request.path}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    </ul>
                 </div>
             </div>
         </nav>
-        {% block content %} {% endblock %}
+        <div class="content">
+            {% block content %} {% endblock %}
+        </div>
         <footer>
             <img class="logo" src="{% static 'gestionaleapp/logo_fablab.png' %}">
             Gestionale FabLab
