@@ -11,19 +11,18 @@
                 
                 for (i = 0; i < input_labels.length; i++) {
                     input_labels[i].value = "";
-                    input.value = "";
                 }
             });
             
             $(".tr-selectable").click(function(event){
                 var client_id = event.target.className;
                 
-                $.get("{% url 'get_client_data' %}?id="+client_id, function(data, status){
+                $.get("{% url 'gestionale:get_client_data' %}?id="+client_id, function(data, status){
                     var input_labels = document.getElementsByClassName("cl-info-input");
                     
                     for (i = 0; i < input_labels.length; i++) {
                         var current_data = input_labels[i].getAttribute("name");
-                        input_labels[i].value = data.current_data;
+                        input_labels[i].value = data[current_data];
                     }
                 });
             });
