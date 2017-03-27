@@ -4,7 +4,8 @@ from . import views
 
 app_name = 'gestionale'
 urlpatterns = [
-    url(r'^anagrafica/$', views.anagrafica, name="anagrafica"),
-    url(r'^eventi/$', views.eventi, name="eventi"),
-    url(r'^lavorazioni/$', views.lavorazioni, name="lavorazioni"),
+    url(r'^anagrafica/$', views.customers, name="anagrafica"),
+    url(r'^eventi/$', views.events, name="eventi"),
+    url(r'^lavorazioni/$', views.processings, name="lavorazioni"),
+    url(r'^getclientdata/$', views.get_client_data, name="get_client_data")
 ]
