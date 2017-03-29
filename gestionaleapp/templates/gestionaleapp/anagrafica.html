@@ -13,13 +13,23 @@
                     input_labels[i].value = "";
                 }
             });
+
+            $("button[name = 'save-new-button']").click(function(event) {
+                // TODO
+            });
+
+            $("button[name = 'save-changes-button']").click(function(event) {
+                // TODO
+            });
             
             $(".tr-selectable").click(function(event){
                 var client_id = event.target.className;
+                document.getElementById("hidden-id").value = client_id;
                 
                 $.get("{% url 'gestionale:get_client_data' %}?id="+client_id, function(data, status){
                     var input_labels = document.getElementsByClassName("cl-info-input");
-                    
+                    console.log(data);
+
                     for (i = 0; i < input_labels.length; i++) {
                         var current_data = input_labels[i].getAttribute("name");
                         input_labels[i].value = data[current_data];
@@ -54,38 +64,39 @@
 
     <form method="post" action="{% url 'gestionale:handle_client_data' %}">
         {% csrf_token %}
+        <input id="hidden-id" type="hidden" value="x">
         <div class="actions-div">
-            <button type="button" class="btn btn-success btn-block">Salva nuovo</button>
+            <button type="button" class="btn btn-success btn-block" name="save-new-button">Salva nuovo</button>
             <button type="button" class="btn btn-danger btn-block" name="reset-button">Reset campi</button>
-            <button type="button" class="btn btn-primary btn-block">Salva modifiche</button>
+            <button type="button" class="btn btn-primary btn-block" name="save-changes-button">Salva modifiche</button>
         </div>
         <table class="insert-table">
             <tr>
                 <td>Cognome: </td>
-                <td><input class="form-control cl-info-input" type="text" name="surname" maxlength="32" placeholder="cognome"></td>
+                <td><input class="form-control cl-info-input" type="text" name="surname" maxlength="32" placeholder="cognome" required></td>
                 <td></td>
                 <td>Tessera:</td>
-                <td><input class="form-control cl-info-input" type="text" name="card" maxlength="32" placeholder="tessera"></td>
+                <td><input class="form-control cl-info-input" type="text" name="card" maxlength="32" placeholder="tessera" required></td>
             </tr>
             <tr>
                 <td>Nome:</td>
-                <td><input class="form-control cl-info-input" type="text" name="name" placeholder="nome"></td>
+                <td><input class="form-control cl-info-input" type="text" name="name" placeholder="nome" required></td>
             </tr>
             <tr>
                 <td>Nato:</td>
-                <td><input class="form-control cl-info-input" type="date" name="born" placeholder="gg/mm/aaaa"></td>
+                <td><input class="form-control cl-info-input" type="date" name="born" placeholder="gg/mm/aaaa" required></td>
             </tr>
             <tr>
                 <td>C.A.P:</td>
-                <td><input class="form-control cl-info-input" type="text" name="cap" placeholder="cap"></td>
+                <td><input class="form-control cl-info-input" type="text" name="cap" placeholder="cap" required></td>
             </tr>
             <tr>
                 <td>Cellulare:</td>
-                <td><input class="form-control cl-info-input" type="text" name="telephone" maxlength="15" placeholder="cellulare"></td>
+                <td><input class="form-control cl-info-input" type="text" name="telephone" maxlength="15" placeholder="cellulare" required></td>
             </tr>
             <tr>
                 <td>Mail:</td>
-                <td><input class="form-control cl-info-input" type="text" name="mail" maxlength="254" placeholder="mail">
+                <td><input class="form-control cl-info-input" type="email" name="email" maxlength="254" placeholder="mail" autocomplete="off" required>
             </tr>
         </table>
 
