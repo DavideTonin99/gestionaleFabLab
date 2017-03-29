@@ -33,19 +33,24 @@ def processings(request):
 
 
 def get_client_data(request):
-	if request.method == 'GET':
-		id_ = request.GET.get('id', False)
-		if not id_:
-			return HttpResponseBadRequest(request)
+	id_ = request.GET.get('id', False)
+	if not id_:
+		return HttpResponseBadRequest(request)
 
-		client = get_object_or_404(Person.objects.filter(id=id_))
-		data = {
-			'card': client.card,
-			'surname': client.surname,
-			'name': client.name,
-			'born': client.born,
-			'cap': client.cap,
-			'telephone': client.telephone,
-			'email': client.email
-		}
-		return JsonResponse(data)
+	client = get_object_or_404(Person.objects.filter(id=id_))
+	data = {
+		'card': client.card,
+		'surname': client.surname,
+		'name': client.name,
+		'born': '{}-{}-{}'.format(client.born.year, str(client.born.month).zfill(2), str(client.born.day).zfill(2)),
+		'cap': client.cap,
+		'telephone': client.telephone,
+		'email': client.email
+	}
+	return JsonResponse(data)
+
+
+def handle_client_data(request):
+	data = request.POST
+	del data
+	return render(request, 'gestionaleapp/anagrafica.html')
