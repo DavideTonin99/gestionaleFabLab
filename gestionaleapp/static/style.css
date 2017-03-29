@@ -26,6 +26,24 @@
     margin-top: 100px;
 }
 
+/* Pagina login*/
+.login {
+    width: 40%;
+    margin: auto;
+    margin-top: 7%;
+}
+
+.login>p {
+    text-align: center;
+    opacity: 0.9;
+}
+
+.login-input {
+    margin-left: 5%;
+    min-width: 100% !important;
+}
+
+
 /* Pagina anagrafica */
 table {
     margin-top: 2%;
