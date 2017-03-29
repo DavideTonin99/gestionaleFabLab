@@ -62,7 +62,8 @@
         </table>
     </div>
 
-    <form method="post" action="">
+    <form method="post" action="{% url 'gestionale:handle_client_data' %}">
+        {% csrf_token %}
         <input id="hidden-id" type="hidden" value="x">
         <div class="actions-div">
             <button type="button" class="btn btn-success btn-block" name="save-new-button">Salva nuovo</button>
