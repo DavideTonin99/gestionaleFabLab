@@ -1,14 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% if wrong_login %}
-<p><strong>Credenziali sbagliate, riprovare</strong></p>
-{% endif %}
 
-<form method="POST" action="{% url 'login_handler' %}?next={{next}}">
-  {% csrf_token %}
-  <p><input type="text" name="username" value="" placeholder="Nome utente"></p>
-  <p><input type="password" name="password" value="" placeholder="Password"></p>
-  <p class="submit"><input type="submit" value="Accedi"></p>
-</form>
+<style>
+    footer {
+        position: absolute;
+        bottom: 0;
+    }
+</style>
+
+<div class="login">
+    {% if wrong_login %}
+        <p><strong><font color="red">Credenziali sbagliate, riprovare</font></strong></p>
+    {% endif %}
+    <p>Inserire utente e password per accedere al gestionale:</p>
+    <form method="POST" action="{% url 'login_handler' %}?next={{next}}">
+        {% csrf_token %}
+        <input class="form-control login-input" type="text" name="username" value="" placeholder="Nome utente"><br>
+        <input class="form-control login-input" type="password" name="password" value="" placeholder="Password"><br>
+        <button type="submit" class="btn btn-primary btn-block login-input">Login</button>
+    </form>
+</div>
 {% endblock %}
