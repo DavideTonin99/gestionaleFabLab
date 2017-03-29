@@ -45,12 +45,13 @@ def get_client_data(request):
 		'born': '{}-{}-{}'.format(client.born.year, str(client.born.month).zfill(2), str(client.born.day).zfill(2)),
 		'cap': client.cap,
 		'telephone': client.telephone,
-		'email': client.email
+		'email': client.email,
+		'subscriptions': {sub.year: sub.type for sub in client.subscription_set.all()}
 	}
 	return JsonResponse(data)
 
 
 def handle_client_data(request):
 	data = request.POST
-	del data
-	return render(request, 'gestionaleapp/anagrafica.html')
+	print(data)
+	return render(request, 'login.html')

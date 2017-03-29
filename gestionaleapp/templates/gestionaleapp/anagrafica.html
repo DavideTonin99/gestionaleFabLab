@@ -52,7 +52,8 @@
         </table>
     </div>
 
-    <form method="post" action="">
+    <form method="post" action="{% url 'gestionale:handle_client_data' %}">
+        {% csrf_token %}
         <div class="actions-div">
             <button type="button" class="btn btn-success btn-block">Salva nuovo</button>
             <button type="button" class="btn btn-danger btn-block" name="reset-button">Reset campi</button>
