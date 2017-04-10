@@ -32,6 +32,7 @@ def processings(request):
 	return render(request, 'gestionaleapp/lavorazioni.html', context)
 
 
+@login_required
 def get_client_data(request):
 	id_ = request.GET.get('id', False)
 	if not id_:
@@ -51,6 +52,7 @@ def get_client_data(request):
 	return JsonResponse(data)
 
 
+@login_required
 def handle_client_data(request):
 	data = request.POST
 	print(data)
