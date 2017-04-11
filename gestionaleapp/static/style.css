@@ -33,14 +33,10 @@
     margin-top: 7%;
 }
 
-.login>p {
-    text-align: center;
-    opacity: 0.9;
-}
-
 .login-input {
-    margin-left: 5%;
     min-width: 100% !important;
+    margin-bottom: 20px;
+    margin-top: 5px;
 }
 
 
@@ -106,6 +102,8 @@ input {
 }
 
 footer {
+    position: absolute;
+    bottom: 0;
     clear: both;
     width: 100%;
     color: white;
