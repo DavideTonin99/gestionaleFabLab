@@ -5,22 +5,32 @@
 {% endblock %}
 
 {% block content %}
+<style>
+    footer {
+        position: absolute;
+        bottom: 0;
+    }
+</style>
 
-<form method="POST" action="{% url 'login' %}?next={{next}}">
-  {% csrf_token %}
-  <div class="col-md-4 col-xs-12">
-    {{ form.as_p }}
-    <p class="submit"><input type="submit" value="Accedi" class="btn btn-primary btn-block"></p>
-  </div>
-</form>
+    <div class="login">
+
+    <form method="POST" action="{% url 'login' %}?next={{next}}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-block login-input">Login</button>
+    </form>
+</div>
 
 <script>
 $("form :input").each(function(index, elem) {
     var eId = $(elem).attr("id");
     var label = null;
+    // check if exists the element's id and if exists the label associate to the input field
     if (eId && (label = $(elem).parents("form").find("label[for="+eId+"]")).length == 1) {
+        // set up the placeholder of the input
         $(elem).attr("placeholder", $(label).html().slice(0, -1));
-        $(elem).attr("class", "form-control cl-info-input");
+        // set up the classes of the input (for graphics)
+        $(elem).attr("class", "form-control login-input");
     }
 });
 </script>
