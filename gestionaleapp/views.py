@@ -1,35 +1,26 @@
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
+from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import FormView
 
 from .models import Person
+from .forms import ClientDataForm
 
 
 # Create your views here.
 
 
-@login_required
-def customers(request):
-	context = {
-		'clients': Person.objects.all()
-	}
-	return render(request, 'gestionaleapp/anagrafica.html', context)
+class ContactView(FormView):
+	template_name = 'gestionaleapp/anagrafica.html'
+	form_class = ClientDataForm
+	success_url = reverse_lazy('anagrafica')
 
-
-@login_required
-def events(request):
-	context = {
-		'clients': Person.objects.all()
-	}
-	return render(request, 'gestionaleapp/eventi.html', context)
-
-
-@login_required
-def processings(request):
-	context = {
-		'clients': Person.objects.all()
-	}
-	return render(request, 'gestionaleapp/lavorazioni.html', context)
+	def form_valid(self, form):
+		# This method is called when valid form data has been POSTed.
+		# It should return an HttpResponse.
+		form.send_email()
+		return super(ContactView, self).form_valid(form)
 
 
 @login_required
