@@ -89,10 +89,10 @@ WSGI_APPLICATION = 'gestionaleFabLab.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'gestionalefablab$default',
-        'USER': 'gestionalefablab',
-        'PASSWORD': 'fT"!w@8b6Q!RReGr',
-        'HOST': 'gestionalefablab.mysql.pythonanywhere-services.com',
+        'NAME': 'xxx',
+        'USER': 'xxx',
+        'PASSWORD': 'xxx',
+        'HOST': 'xxx',
     }
 }
 
