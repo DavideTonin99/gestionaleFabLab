@@ -5,8 +5,14 @@
 {% endblock %}
 
 {% block content %}
+<style>
+    footer {
+        position: absolute;
+        bottom: 0;
+    }
+</style>
 
-<div class="login">
+    <div class="login">
 
     <form method="POST" action="{% url 'login' %}?next={{next}}">
         {% csrf_token %}
@@ -17,14 +23,13 @@
 
 <script>
 $("form :input").each(function(index, elem) {
-    // si prende l'id dell'elemento
     var eId = $(elem).attr("id");
     var label = null;
-    // controlla se esiste l'id dell'elemento e se esiste la label associata al campo dell'input
+    // check if exists the element's id and if exists the label associate to the input field
     if (eId && (label = $(elem).parents("form").find("label[for="+eId+"]")).length == 1) {
-        // imposta il placeholder dell'input
+        // set up the placeholder of the input
         $(elem).attr("placeholder", $(label).html().slice(0, -1));
-        // imposta le classi dell'input (per grafica)
+        // set up the classes of the input (for graphics)
         $(elem).attr("class", "form-control login-input");
     }
 });
