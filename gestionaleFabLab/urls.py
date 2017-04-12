@@ -17,10 +17,10 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 
-from gestionaleapp import views
+from . import views
 
 urlpatterns = [
-	url(r'^$', login_required(views.ContactView.as_view()), name='index'),
+	url(r'^$', views.index, name='index'),
 	url(r'^gestionale/', include('gestionaleapp.urls')),
 	url(r'^', include('django.contrib.auth.urls')),
 	url(r'^admin/', admin.site.urls),
