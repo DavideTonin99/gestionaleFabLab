@@ -18,4 +18,5 @@ class CustomersForm(forms.ModelForm):
 		for field, label in zip(self.fields, labels):
 			field_ = self.fields[field]
 			field_.label = label
-			field_.widget.attrs['class'] = "cl-info-input"
+			field_.widget.attrs['placeholder'] = label
+			field_.widget.attrs['class'] = "cl-info-input form-control"
