@@ -41,6 +41,12 @@
 
 
 /* Pagina anagrafica */
+.errorlist {
+    padding-top: 10px;
+    list-style: none;
+    color: red;
+}
+
 table {
     margin-top: 2%;
     margin-left: 5%;
