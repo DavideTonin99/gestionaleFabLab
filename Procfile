@@ -1,1 +1,1 @@
-web: gunicorn gestionaleapp.wsgi --log-file -
+web: python3 manage.py runserver
