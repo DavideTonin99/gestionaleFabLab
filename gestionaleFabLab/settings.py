@@ -24,11 +24,11 @@ PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__))
 SECRET_KEY = 'xxx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
+"""
 SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
@@ -38,7 +38,7 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
 X_FRAME_OPTIONS = 'DENY'
-
+"""
 
 # Application definition
 
@@ -88,11 +88,11 @@ WSGI_APPLICATION = 'gestionaleFabLab.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'xxx',
-        'USER': 'xxx',
-        'PASSWORD': 'xxx',
-        'HOST': 'xxx',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'db.sqlite3',
+        # 'USER': 'xxx',
+        # 'PASSWORD': 'xxx',
+        # 'HOST': 'xxx',
     }
 }
 
