@@ -1,1 +1,1 @@
-web: gunicorn gestionaleapp.wsgi --log-file -
+web: gunicorn gestionaleFabLab.wsgi --log-file -
