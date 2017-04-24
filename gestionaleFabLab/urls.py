@@ -15,13 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.contrib.auth.decorators import login_required
 
-from . import views
+from gestionaleapp import views
 
 urlpatterns = [
-	url(r'^$', views.index, name='index'),
 	url(r'^gestionale/', include('gestionaleapp.urls')),
+	url(r'^$', views.CustomersView.as_view(), name='index'),
 	url(r'^', include('django.contrib.auth.urls')),
 	url(r'^admin/', admin.site.urls),
 ]
