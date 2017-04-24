@@ -105,8 +105,9 @@ DATABASES = {
         # 'PASSWORD': 'xxx',
         # 'HOST': 'xxx',
     }
-}
+ }
 """
+
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
@@ -150,8 +151,6 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'gestionaleapp/static'),
 )
 #STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-"""
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'"""
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = 'login'
