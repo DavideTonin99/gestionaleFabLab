@@ -6,10 +6,10 @@ from django.db import models
 class Person(models.Model):
 	name = models.CharField(max_length=50)
 	surname = models.CharField(max_length=50)
-	born = models.DateTimeField("born date")
+	born = models.DateField("born date")
 	cap = models.CharField(max_length=5)
 	telephone = models.CharField(max_length=15)
-	email = models.CharField(max_length=254)
+	email = models.EmailField(null=True, blank=True)
 	card = models.CharField(max_length=128, unique=True)
 
 	def __str__(self):

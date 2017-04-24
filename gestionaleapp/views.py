@@ -1,20 +1,19 @@
-from django.http import JsonResponse, HttpResponseBadRequest
-from django.shortcuts import render, get_object_or_404
-from django.core.urlresolvers import reverse_lazy
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
+from django.shortcuts import render, get_object_or_404, reverse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormView
 
 from .models import Person
 from .forms import CustomersForm
 
 
-# Create your views here.
-
-
-class CustomersView(FormView):
+class CustomersView(LoginRequiredMixin, FormView):
 	template_name = 'gestionaleapp/anagrafica.html'
 	form_class = CustomersForm
-	success_url = reverse_lazy('gestionale:anagrafica')
+
+	def get_success_url(self):
+		return reverse('gestionale:anagrafica')
 
 	def get_context_data(self, **kwargs):
 		context = super(CustomersView, self).get_context_data(**kwargs)
@@ -22,8 +21,15 @@ class CustomersView(FormView):
 		return context
 
 	def form_valid(self, form):
-		# todo save
+		modify_id = form.data.get('modify-id')
+		if modify_id and modify_id.isnumeric():
+			form = CustomersForm(form.cleaned_data, instance=get_object_or_404(Person.objects.filter(id=modify_id)))
+		form.save()
 		return super(CustomersView, self).form_valid(form)
+
+
+def wip(request):
+	return HttpResponse("Work in progress")
 
 
 @login_required
@@ -44,10 +50,3 @@ def get_client_data(request):
 		'subscriptions': {sub.year: sub.type for sub in client.subscription_set.all()}
 	}
 	return JsonResponse(data)
-
-
-@login_required
-def handle_client_data(request):
-	data = request.POST
-	print(data)
-	return render(request, 'login.html')

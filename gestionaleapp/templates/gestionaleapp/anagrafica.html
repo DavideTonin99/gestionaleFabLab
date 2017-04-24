@@ -5,36 +5,29 @@
 {% block scripts%}
     
     <script>
-        
         $(document).ready(function(){
             $("button[name = 'reset-button']").click(function(event) {
-                var input_labels = document.getElementsByClassName("cl-info-input");
-                
-                for (i = 0; i < input_labels.length; i++) {
-                    input_labels[i].value = "";
-                }
+                $("input[name = 'modify_id']").val('no');
+                $("#client-form")[0].reset();
             });
 
             $("button[name = 'save-new-button']").click(function(event) {
-                // TODO
-            });
-
-            $("button[name = 'save-changes-button']").click(function(event) {
-                // TODO
+                $("input[name = 'modify_id']").val('no');
+                $("#client-form")[0].submit();
             });
             
             $(".tr-selectable").click(function(event){
                 var client_id = event.target.className;
-                document.getElementById("hidden-id").value = client_id;
 
                 $.get("{% url 'gestionale:get_client_data' %}?id="+client_id, function(data, status){
-                    var input_labels = document.getElementsByClassName("cl-info-input");
+                    var input_labels = $(".cl-info-input");
                     console.log(data);
 
-                    for (i = 0; i < input_labels.length; i++) {
+                    for (var i = 0; i < input_labels.length; i++) {
                         var current_data = input_labels[i].getAttribute("name");
                         input_labels[i].value = data[current_data];
                     }
+                    $("input[name = 'modify_id']").val(client_id);
                 });
             });
         });
@@ -63,11 +56,11 @@
         </table>
     </div>
 
-    <form method="post" action="">
+    <form id="client-form" method="post" action="">
         {% csrf_token %}
-        <input id="hidden-id" type="hidden" name="modify-id" value="new">
+        {{ form.modify_id }}
         <div class="actions-div">
-            <button type="submit" class="btn btn-success btn-block" name="save-new-button">Salva nuovo</button>
+            <button type="button" class="btn btn-success btn-block" name="save-new-button">Salva nuovo</button>
             <button type="button" class="btn btn-danger btn-block" name="reset-button">Reset campi</button>
             <button type="submit" class="btn btn-primary btn-block" name="save-changes-button">Salva modifiche</button>
         </div>
