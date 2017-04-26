@@ -1,13 +1,14 @@
-# HOW TO DEPLOY THE APP ON HEROKU
+# DEPLOY THE APP ON HEROKU
 
 ---
 
-1. Install whitenoise, gunicorn, psycopg2 and dj-database-url:
+1. Install whitenoise, gunicorn, psycopg2, dj-database-url and python-decouple:
     
         pip install whitenoise
         pip install gunicorn
         pip install psycopg2
         pip install dj-database-url
+        pip install python-decouple
         
 1. Add requirements.txt file
         
@@ -34,7 +35,11 @@
         - application = DjangoWhiteNoise(application)
         
 5. Modify settings.py:
+
+        from decouple import config
+        import dj_database_url
         
+        # Database settings
         SECRET_KEY = config('SECRET_KEY')
         DEBUG = config('DEBUG', default=False, cast=bool)
         DATABASES = {
@@ -56,5 +61,8 @@
           and config SECRET_KEY, DATABASE_URL, USER, PASSWORD. 
           You can see this varaibles in the database informations/settings.
        
+
+On heroku you can set automatic deploy from a github project, 
+so everytime you pull, heroku upload changes almost in real time.
 
 *Davide Tonin, Forigo Ettore, Novelli Matteo, Conti Enrico*
