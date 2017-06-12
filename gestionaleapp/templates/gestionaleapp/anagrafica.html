@@ -5,7 +5,7 @@
 {% block scripts%}
     <script>
         $(document).ready(function(){
-            $( "#id_born" ).datepicker();
+            $("#id_born").datepicker();
             $("#id_name").parent().prepend("<span id='id_name_error' class='empty_input'>Questo campo è obbligatorio</span>");
             $("#id_surname").parent().prepend("<span id='id_surname_error' class='empty_input'>Questo campo è obbligatorio</span>");
             $("#id_born").parent().prepend("<span id='id_born_error' class='empty_input'>Questo campo è obbligatorio</span>");
@@ -49,10 +49,6 @@
                 // remove all errors in the page
                 $('.errorlist').each( function (i, element) {
                     element.remove();
-                })
-
-                $('.empty_input').each( function (i, element) {
-                    element.style = "display: none";
                 })
             });
 
