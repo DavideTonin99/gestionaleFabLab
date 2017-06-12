@@ -3,19 +3,30 @@
 {% block title %} <title>FabLab | Anagrafica </title>{% endblock %}
 {% block pagename %} <img class="logo" src="{% static 'gestionaleapp/logo_fablab.png' %}"> {% endblock %}
 {% block scripts%}
-    
     <script>
         $(document).ready(function(){
+            $( "#id_born" ).datepicker();
+
             $("button[name = 'reset-button']").click(function(event) {
                 $("input[name = 'modify_id']").val('no');
-                $("#client-form")[0].reset();
+                var form = $("#client-form")[0];
+                // clear the form fields
+                var inputs = form.getElementsByClassName('form-control');
+                for (var i=0; i < inputs.length; i++) {
+                    inputs[i].setAttribute("value", "");
+                }
+
+                // remove all errors in the page
+                $('.errorlist').each( function (i, element) {
+                    element.remove();
+                })
             });
 
             $("button[name = 'save-new-button']").click(function(event) {
                 $("input[name = 'modify_id']").val('no');
                 $("#client-form")[0].submit();
             });
-            
+
             $(".tr-selectable").click(function(event){
                 var client_id = event.target.className;
 
@@ -29,45 +40,55 @@
                     }
                     $("input[name = 'modify_id']").val(client_id);
                 });
+
+                // remove all errors in the page
+                $('.errorlist').each( function (i, element) {
+                    element.remove();
+                })
             });
         });
-        
     </script>
 {% endblock %}
+
 {% block content %}
-    <div class="cl-div-tb">
-        <table class="table-bordered table-striped cl-tb">
-            <tr>
-                <th>Cognome</th>
-                <th>Nome</th>
-                <th>Tessera</th>
-                <th>Mail</th>
-                <th>Cellulare</th>
-            </tr>
-        {% for client in clients %}
-            <tr class="tr-selectable">
-                <td class="{{client.id}}">{{client.surname}}</td>
-                <td class="{{client.id}}">{{client.name}}</td>
-                <td class="{{client.id}}">{{client.card}}</td>
-                <td class="{{client.id}}">{{client.email}}</td>
-                <td class="{{client.id}}">{{client.telephone}}</td>
-            </tr>
-        {% endfor %}
-        </table>
+    <div class="row">
+        <div class="cl-div-tb">
+            <table class="table-bordered table-striped cl-tb">
+                <tr>
+                    <th>Cognome</th>
+                    <th>Nome</th>
+                    <th>Tessera</th>
+                    <th>Mail</th>
+                    <th>Cellulare</th>
+                </tr>
+            {% for client in clients %}
+                <tr class="tr-selectable">
+                    <td class="{{client.id}}">{{client.surname}}</td>
+                    <td class="{{client.id}}">{{client.name}}</td>
+                    <td class="{{client.id}}">{{client.card}}</td>
+                    <td class="{{client.id}}">{{client.email}}</td>
+                    <td class="{{client.id}}">{{client.telephone}}</td>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <form id="client-form" method="post" action="">
+            {% csrf_token %}
+            {{ form.modify_id }}
+            <table class="col-sm-8">
+                {{ form.as_table }}
+            </table>
+            <div class="actions-div col-sm-4">
+                <button type="button" class="btn btn-success btn-block" name="save-new-button">Salva nuovo</button>
+                <button type="reset" class="btn btn-danger btn-block" name="reset-button">Reset campi</button>
+                <button type="submit" class="btn btn-primary btn-block" name="save-changes-button">Salva modifiche</button>
+            </div>
+
+        </form>
     </div>
 
-    <form id="client-form" method="post" action="">
-        {% csrf_token %}
-        {{ form.modify_id }}
-        <div class="actions-div">
-            <button type="button" class="btn btn-success btn-block" name="save-new-button">Salva nuovo</button>
-            <button type="button" class="btn btn-danger btn-block" name="reset-button">Reset campi</button>
-            <button type="submit" class="btn btn-primary btn-block" name="save-changes-button">Salva modifiche</button>
-        </div>
-        <table>
-            {{ form.as_table }}
-        </table>
-    </form>
     <hr>
 
     <div class="content-fluid">
