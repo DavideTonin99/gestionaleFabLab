@@ -6,6 +6,36 @@
     <script>
         $(document).ready(function(){
             $( "#id_born" ).datepicker();
+            $("#id_name").parent().prepend("<span id='id_name_error' class='empty_input'>Questo campo è obbligatorio</span>");
+            $("#id_surname").parent().prepend("<span id='id_surname_error' class='empty_input'>Questo campo è obbligatorio</span>");
+            $("#id_born").parent().prepend("<span id='id_born_error' class='empty_input'>Questo campo è obbligatorio</span>");
+            $("#id_cap").parent().prepend("<span id='id_cap_error' class='empty_input'>Questo campo è obbligatorio</span>");
+            $("#id_telephone").parent().prepend("<span id='id_telephone_error' class='empty_input'>Questo campo è obbligatorio</span>");
+            $("#id_card").parent().prepend("<span id='id_card_error' class='empty_input'>Questo campo è obbligatorio</span>");
+
+            $('#id_name').blur( function () {
+                checkInput("#id_name");
+            });
+
+            $('#id_surname').blur( function () {
+                checkInput("#id_surname");
+            });
+
+            $('#id_born').blur( function () {
+                checkInput("#id_born");
+            });
+
+            $('#id_cap').blur( function () {
+                checkInput("#id_cap");
+            });
+
+            $('#id_telephone').blur( function () {
+                checkInput("#id_telephone");
+            });
+
+            $('#id_card').blur( function () {
+                checkInput("#id_card");
+            });
 
             $("button[name = 'reset-button']").click(function(event) {
                 $("input[name = 'modify_id']").val('no');
@@ -20,11 +50,26 @@
                 $('.errorlist').each( function (i, element) {
                     element.remove();
                 })
+
+                $('.empty_input').each( function (i, element) {
+                    element.style = "display: none";
+                })
             });
 
             $("button[name = 'save-new-button']").click(function(event) {
-                $("input[name = 'modify_id']").val('no');
-                $("#client-form")[0].submit();
+                ret = true;
+                ret = ret & checkInput("#id_name");
+                ret = ret & checkInput("#id_surname");
+                ret = ret & checkInput("#id_born");
+                ret = ret & checkInput("#id_cap");
+                ret = ret & checkInput("#id_telephone");
+                ret = ret & checkInput("#id_card");
+
+                if (ret) {
+                    $("input[name = 'modify_id']").val('no');
+                    $("#client-form")[0].submit();
+                } else {
+                }
             });
 
             $(".tr-selectable").click(function(event){
@@ -47,6 +92,16 @@
                 })
             });
         });
+
+        function checkInput(input) {
+            if ($(input).val() === "") {
+                $(input+"_error").show(200);
+                return false;
+            } else {
+                $(input+"_error").hide(200);
+                return true;
+            }
+        }
     </script>
 {% endblock %}
 
