@@ -1,4 +1,5 @@
 .navbar-default {
+    z-index: 1000;
     position: fixed !important;
     top: 0;
     width: 100%;
@@ -23,7 +24,7 @@
 }
 
 .container {
-    margin-top: 100px;
+    margin-top: 70px;
 }
 
 /* Pagina login*/
@@ -46,13 +47,6 @@
     list-style: none;
     color: red;
 }
-
-/*
-table {
-    margin-left: 5%;
-    margin-bottom: 5%;
-    width: 70%;
-}*/
 
 table tr {
     height: 40px;
@@ -96,6 +90,11 @@ table tr {
 
 #client-form > table {
     margin-bottom: 20px;
+}
+
+.empty_input {
+    display: none;
+    color: red;
 }
 /*
 .actions-div {
