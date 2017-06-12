@@ -47,22 +47,28 @@
     color: red;
 }
 
-/*
 table {
+    margin-top: 2%;
     margin-left: 5%;
     margin-bottom: 5%;
     width: 70%;
-}*/
+}
 
 table tr {
     height: 40px;
     vertical-align: middle;
 }
 
+.form-control {
+    width: 90% !important;
+}
+
 .cl-div-tb {
     margin-top: 40px;
+    margin-left: 5%;
     max-height: 400px;
     overflow-y: scroll;
+    width: 90%;
     border: 1px solid #7c7c7c;
 }
 
@@ -90,20 +96,16 @@ table tr {
     cursor: pointer;
 }
 
-#client-form {
-    margin-top: 20px;
-}
-
-#client-form > table {
-    margin-bottom: 20px;
-}
-/*
 .actions-div {
     width: 20%;
     height: auto;
     float: right;
     margin-right: 5%;
-}*/
+}
+
+input {
+	width: 40%;
+}
 
 footer {
     clear: both;
