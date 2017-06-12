@@ -1,16 +1,15 @@
 from django.db import models
 
-# Create your models here.
-
 
 class Person(models.Model):
-	name = models.CharField(max_length=50)
-	surname = models.CharField(max_length=50)
-	born = models.DateField("born date")
-	cap = models.CharField(max_length=5)
-	telephone = models.CharField(max_length=15)
+	name = models.CharField("Nome", max_length=50)
+	surname = models.CharField("Cognome", max_length=50)
+	born = models.DateField("Data di nascita")
+	cap = models.IntegerField("CAP")
+	telephone = models.BigIntegerField("Cellulare")
 	email = models.EmailField(null=True, blank=True)
-	card = models.CharField(max_length=128, unique=True)
+	card = models.IntegerField("Tessera", unique=True)
+	first_association = models.DateField("Data associazione", default=None)
 
 	def __str__(self):
 		return self.name.capitalize() + ' ' + self.surname.capitalize()
