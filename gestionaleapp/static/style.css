@@ -99,7 +99,12 @@ table tr {
     margin-bottom: 20px;
 }
 
+.modal-body {
+    overflow: auto;
+}
+
 footer {
+    margin-top: 20px;
     clear: both;
     width: 100%;
     color: white;

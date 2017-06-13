@@ -8,6 +8,7 @@
         	var inputs = ["id_name", "id_surname", "id_born", "id_cap", "id_telephone", "id_card", "id_first_association"];
 
             $("#id_born").datepicker();
+            $("#id_first_association").datepicker();
 
             $(inputs).each( function(index, element) {
             	$("#" + element).parent().prepend("<ul id='" + element + "_empty' class='emptylist'><li>Questo campo è obbligatorio</li></ul>");
@@ -128,7 +129,7 @@
 
     <hr>
 
-    <div class="content-fluid">
+    <div class="row">
         <table class="table-bordered table-striped cl-tb">
             <tr>
                 <th>2018</th>
@@ -136,9 +137,9 @@
                 <th>2016</th>
             </tr>
             <tr>
-                <td>prova</td>
-                <td>prova</td>
-                <td>prova</td>
+                <td data-toggle="modal" data-target="#renew-modal">prova</td>
+                <td data-toggle="modal" data-target="#renew-modal">prova</td>
+                <td data-toggle="modal" data-target="#renew-modal">prova</td>
             </tr>
             <tr>
                 <th>2018</th>
@@ -146,9 +147,9 @@
                 <th>2016</th>
             </tr>
             <tr>
-                <td>prova</td>
-                <td>prova</td>
-                <td>prova</td>
+                <td data-toggle="modal" data-target="#renew-modal">prova</td>
+                <td data-toggle="modal" data-target="#renew-modal">prova</td>
+                <td data-toggle="modal" data-target="#renew-modal">prova</td>
             </tr>
             <tr>
                 <th>2018</th>
@@ -156,11 +157,101 @@
                 <th>2016</th>
             </tr>
             <tr>
-                <td>prova</td>
-                <td>prova</td>
-                <td>prova</td>
+                <td data-toggle="modal" data-target="#renew-modal">prova</td>
+                <td data-toggle="modal" data-target="#renew-modal">prova</td>
+                <td data-toggle="modal" data-target="#renew-modal">prova</td>
             </tr>
 
         </table>
+
+        <!-- Modal -->
+        <div class="modal fade" id="renew-modal" role="dialog">
+            <div class="modal-dialog modal-lg">
+            
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Rinnovo Tessera</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" id="renew-form">
+                            <table class="cl-tb" style="overflow: scroll;">
+                                <tr>
+                                    <th>Quota</th>
+                                    <th>Anno</th>
+                                    <th>Occasione</th>
+                                    <th>Pagamento</th>
+                                </tr>
+                                <tr>
+                                    <th>BASE</th>
+                                    <td><input class="form-control" type="date"></td>
+                                    <td>
+                                        <select class="form-control">
+                                            <option value="0" selected>-</option>
+                                            <option value="1">Occasione 1</option>
+                                            <option value="2">Occasione 1</option>
+                                            <option value="3">Occasione 1</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="form-control">
+                                            <option value="-" selected>-</option>
+                                            <option value="c">Contanti</option>
+                                            <option value="b">Bonifico</option>
+                                            <option value="p">Paypal</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Y.MAKER</th>
+                                    <td><input class="form-control" type="date"></td>
+                                    <td>
+                                        <select class="form-control">
+                                            <option value="0" selected>-</option>
+                                            <option value="1">Occasione 1</option>
+                                            <option value="2">Occasione 1</option>
+                                            <option value="3">Occasione 1</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="form-control">
+                                            <option value="-" selected>-</option>
+                                            <option value="c">Contanti</option>
+                                            <option value="b">Bonifico</option>
+                                            <option value="p">Paypal</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>MAKER</th>
+                                    <td><input class="form-control" type="date"></td>
+                                    <td>
+                                        <select class="form-control">
+                                            <option value="0" selected>-</option>
+                                            <option value="1">Occasione 1</option>
+                                            <option value="2">Occasione 1</option>
+                                            <option value="3">Occasione 1</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="form-control">
+                                            <option value="-" selected>-</option>
+                                            <option value="c">Contanti</option>
+                                            <option value="b">Bonifico</option>
+                                            <option value="p">Paypal</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+              
+            </div>
+        </div>
     </div>
 {% endblock%}
