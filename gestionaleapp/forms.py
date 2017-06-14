@@ -40,11 +40,13 @@ class ProcessingsForm(forms.ModelForm):
             field.widget.attrs['class'] = "form-control"
 
 
-'''
 class EventsForm(forms.ModelForm):
+    class Meta:
+        model = Event
+        fields = '__all__'
 
-	class Meta:
-		model = Event
-		fields = ['__all__']
+    def __init__(self, *args, **kwargs):
+        super(EventsForm, self).__init__(*args, **kwargs)
 
-'''
+        for field in self.fields.values():
+            field.widget.attrs['class'] = "form-control"

@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormView
 
 from .models import Person, Event, Processing
-from .forms import CustomersForm, ProcessingsForm#, EventsForm
+from .forms import CustomersForm, ProcessingsForm, EventsForm
 
 
 class CustomersView(LoginRequiredMixin, FormView):
@@ -44,6 +44,24 @@ class ProcessingsView(LoginRequiredMixin, FormView):
         form = ProcessingsForm()
         form.save()
         return super(ProcessingsView, self).form_valid(form)
+
+
+class EventsView(LoginRequiredMixin, FormView):
+    template_name = 'gestionaleapp/eventi.html'
+    form_class = EventsForm
+
+    def get_success_url(self):
+        return reverse('gestionale:eventi')
+
+    def get_context_data(self, **kwargs):
+        context = super(EventsView, self).get_context_data(**kwargs)
+        context['events'] = Event.objects.all()
+        return context
+
+    def form_valid(self, form):
+        form = EventsForm()
+        form.save()
+        return super(EventsView, self).form_valid(form)
 
 
 def wip(request):
