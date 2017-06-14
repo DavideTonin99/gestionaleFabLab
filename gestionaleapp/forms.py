@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Person
+from .models import Person, Event, Processing
 
 
 class CustomersForm(forms.ModelForm):  # todo born date format error; fix widgets not displaying correctly
@@ -27,3 +27,18 @@ class CustomersForm(forms.ModelForm):  # todo born date format error; fix widget
 			field.widget.attrs['class'] = "cl-info-input form-control"
 
 		self.fields['born'].widget.attrs['placeholder'] = "gg/mm/AAAA"
+
+class ProcessingsForm(forms.ModelForm):
+
+	class Meta:
+		model = Processing
+		fields = '__all__'
+
+'''
+class EventsForm(forms.ModelForm):
+
+	class Meta:
+		model = Event
+		fields = ['__all__']
+
+'''

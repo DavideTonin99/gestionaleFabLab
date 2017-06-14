@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormView
 
-from .models import Person
-from .forms import CustomersForm
+from .models import Person, Event, Processing
+from .forms import CustomersForm, ProcessingsForm#, EventsForm
 
 
 class CustomersView(LoginRequiredMixin, FormView):
@@ -27,6 +27,20 @@ class CustomersView(LoginRequiredMixin, FormView):
 		form.save()
 		return super(CustomersView, self).form_valid(form)
 
+
+class ProcessingsView(LoginRequiredMixin, FormView):
+    template_name = 'gestionaleapp/lavorazioni.html'
+    form_class = ProcessingsForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ProcessingsView, self).get_context_data(**kwargs)
+        context['processings'] = Processing.objects.all()
+        return context
+
+    def form_valid(self, form):
+        form = ProcessingsForm()
+        form.save()
+        return super(ProcessingsView, self).form_valid(form)
 
 def wip(request):
 	return HttpResponse("Work in progress")
