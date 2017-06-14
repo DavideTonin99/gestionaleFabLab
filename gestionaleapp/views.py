@@ -9,28 +9,31 @@ from .forms import CustomersForm, ProcessingsForm#, EventsForm
 
 
 class CustomersView(LoginRequiredMixin, FormView):
-	template_name = 'gestionaleapp/anagrafica.html'
-	form_class = CustomersForm
+    template_name = 'gestionaleapp/anagrafica.html'
+    form_class = CustomersForm
 
-	def get_success_url(self):
-		return reverse('gestionale:anagrafica')
+    def get_success_url(self):
+        return reverse('gestionale:anagrafica')
 
-	def get_context_data(self, **kwargs):
-		context = super(CustomersView, self).get_context_data(**kwargs)
-		context['clients'] = Person.objects.all()
-		return context
+    def get_context_data(self, **kwargs):
+        context = super(CustomersView, self).get_context_data(**kwargs)
+        context['clients'] = Person.objects.all()
+        return context
 
-	def form_valid(self, form):
-		modify_id = form.data.get('modify-id')
-		if modify_id and modify_id.isnumeric():
-			form = CustomersForm(form.cleaned_data, instance=get_object_or_404(Person.objects.filter(id=modify_id)))
-		form.save()
-		return super(CustomersView, self).form_valid(form)
+    def form_valid(self, form):
+        modify_id = form.data.get('modify-id')
+        if modify_id and modify_id.isnumeric():
+            form = CustomersForm(form.cleaned_data, instance=get_object_or_404(Person.objects.filter(id=modify_id)))
+        form.save()
+        return super(CustomersView, self).form_valid(form)
 
 
 class ProcessingsView(LoginRequiredMixin, FormView):
     template_name = 'gestionaleapp/lavorazioni.html'
     form_class = ProcessingsForm
+
+    def get_success_url(self):
+        return reverse('gestionale:lavorazioni')
 
     def get_context_data(self, **kwargs):
         context = super(ProcessingsView, self).get_context_data(**kwargs)
@@ -42,25 +45,26 @@ class ProcessingsView(LoginRequiredMixin, FormView):
         form.save()
         return super(ProcessingsView, self).form_valid(form)
 
+
 def wip(request):
-	return HttpResponse("Work in progress")
+    return HttpResponse("Work in progress")
 
 
 @login_required
 def get_client_data(request):
-	id_ = request.GET.get('id', False)
-	if not id_:
-		return HttpResponseBadRequest(request)
+    id_ = request.GET.get('id', False)
+    if not id_:
+        return HttpResponseBadRequest(request)
 
-	client = get_object_or_404(Person.objects.filter(id=id_))
-	data = {
-		'card': client.card,
-		'surname': client.surname,
-		'name': client.name,
-		'born': '{}-{}-{}'.format(client.born.year, str(client.born.month).zfill(2), str(client.born.day).zfill(2)),
-		'cap': client.cap,
-		'telephone': client.telephone,
-		'email': client.email,
-		'subscriptions': {sub.year: sub.type for sub in client.subscription_set.all()}
-	}
-	return JsonResponse(data)
+    client = get_object_or_404(Person.objects.filter(id=id_))
+    data = {
+        'card': client.card,
+        'surname': client.surname,
+        'name': client.name,
+        'born': '{}-{}-{}'.format(client.born.year, str(client.born.month).zfill(2), str(client.born.day).zfill(2)),
+        'cap': client.cap,
+        'telephone': client.telephone,
+        'email': client.email,
+        'subscriptions': {sub.year: sub.type for sub in client.subscription_set.all()}
+    }
+    return JsonResponse(data)
