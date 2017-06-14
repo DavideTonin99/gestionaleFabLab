@@ -109,6 +109,13 @@ table tr {
     margin-top: 30px;
 }
 
+.processings-table {
+    max-height: 400px;
+    overflow-y: scroll;
+    border: 1px solid #7c7c7c;
+    width: 100%;
+}
+
 footer {
     margin-top: 20px;
     clear: both;
