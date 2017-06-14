@@ -31,8 +31,8 @@ class Subscription(models.Model):
 
 
 class Processing(models.Model):
-    type = models.CharField(max_length=100)
-    data = models.DateTimeField("processing date")
-    cost = models.PositiveSmallIntegerField()
-    description = models.CharField(max_length=1000, null=True, blank=True)
+    data = models.DateTimeField("Data Lavorazione")
     person = models.ForeignKey(Person, on_delete=models.CASCADE, null=True)
+    type = models.CharField("Tipo", max_length=100)
+    cost = models.PositiveSmallIntegerField("Costo")
+    description = models.CharField("Descrizione", max_length=1000, null=True, blank=True)
