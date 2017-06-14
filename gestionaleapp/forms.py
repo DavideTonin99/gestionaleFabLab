@@ -43,7 +43,8 @@ class ProcessingsForm(forms.ModelForm):
 class EventsForm(forms.ModelForm):
     class Meta:
         model = Event
-        fields = '__all__'
+        #fields = '__all__'
+        exclude = ['participants']
 
     def __init__(self, *args, **kwargs):
         super(EventsForm, self).__init__(*args, **kwargs)

@@ -39,8 +39,7 @@
 
                 if (ret) {
                     $("input[name = 'modify_id']").val('no');
-                    console.log($("#processings_form")[0]);
-                    $("#processings-form")[0].submit();
+                    $("#events-form")[0].submit();
                 } else {
                 }
             });
@@ -69,7 +68,7 @@
                     <th>Descrizione</th>
                     <th>Data</th>
                     <th>Costo</th>
-                    <th>Partecipanti</th>
+                    <th>Operazioni</th>
                 </tr>
             {% for event in events %}
                 <tr class="tr-selectable">
@@ -85,14 +84,13 @@
     </div>
 
     <div class="row">
-        <form id='processings-form'>
+        <form id='events-form'>
             <table class="col-sm-8">
                 {{ form.as_table }}
             </table>
             <div class="actions-div col-sm-4">
                 <button type="button" class="btn btn-success btn-block" name="save-new-button">Salva nuovo</button>
                 <button type="reset" class="btn btn-danger btn-block" name="reset-button">Reset campi</button>
-                <button type="submit" class="btn btn-primary btn-block" name="save-changes-button">Salva modifiche</button>
             </div>
         </form>
 
