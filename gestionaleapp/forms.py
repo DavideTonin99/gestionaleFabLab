@@ -24,14 +24,21 @@ class CustomersForm(forms.ModelForm):  # todo born date format error; fix widget
 
         for field in self.fields.values():
             field.widget.attrs['placeholder'] = field.label
-            field.widget.attrs['class'] = "cl-info-input form-control"
+            field.widget.attrs['class'] = "form-control"
 
 
 class ProcessingsForm(forms.ModelForm):
+    class Meta:
+        model = Processing
+        fields = '__all__'
 
-	class Meta:
-		model = Processing
-		fields = '__all__'
+    def __init__(self, *args, **kwargs):
+        super(ProcessingsForm, self).__init__(*args, **kwargs)
+
+        for field in self.fields.values():
+            field.widget.attrs['placeholder'] = field.label
+            field.widget.attrs['class'] = "form-control"
+
 
 '''
 class EventsForm(forms.ModelForm):
@@ -41,4 +48,3 @@ class EventsForm(forms.ModelForm):
 		fields = ['__all__']
 
 '''
-

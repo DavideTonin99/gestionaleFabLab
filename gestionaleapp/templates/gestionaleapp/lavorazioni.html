@@ -4,56 +4,11 @@
 {% block pagename %} <img class="logo" src="{% static 'gestionaleapp/logo_fablab.png' %}"> {% endblock %}
 
 {% block content %}
-    <div class="cl-div-tb">
-        <table class="table-bordered table-striped cl-tb">
-            <tr>
-                <th>Cognome</th>
-                <th>Nome</th>
-                <th>Tessera</th>
-                <th>Mail</th>
-                <th>Cellulare</th>
-            </tr>
-        {% for client in clients %}
-            <tr>
-                <td>{{client.surname}}</td>
-                <td>{{client.name}}</td>
-                <td>{{client.card}}</td>
-                <td>{{client.email}}</td>
-                <td>{{client.telephone}}</td>
-            </tr>
-        {% endfor %}
-        </table>
+    <div class="row">
+        <form id='processings-form'>
+            <table class="col-sm-10">
+                {{ form.as_table }}
+            </table>
+        </form>
     </div>
-
-    <form method="post" action="">
-        <table class="insert-table">
-            <tr>
-                <td>Cognome: </td>
-                <td><input class="form-control" type="text" name="surname" maxlength="32"></td>
-                <td></td>
-                <td>Tessera:</td>
-                <td><input class="form-control" type="text" name="card" maxlength="32"></td>
-            </tr>
-            <tr>
-                <td>Nome:</td>
-                <td><input class="form-control" type="text" name="name"></td>
-            </tr>
-            <tr>
-                <td>Nato:</td>
-                <td><input class="form-control" type="date"></td>
-            </tr>
-            <tr>
-                <td>C.A.P:</td>
-                <td><input class="form-control" type="text" name="cap"></td>
-            </tr>
-            <tr>
-                <td>Cellulare:</td>
-                <td><input class="form-control" type="text" name="telephone" maxlength="15"></td>
-            </tr>
-            <tr>
-                <td>Mail:</td>
-                <td><input class="form-control" type="text" name="mail" maxlength="254">
-            </tr>
-        </table>
-    </form>
 {% endblock%}
