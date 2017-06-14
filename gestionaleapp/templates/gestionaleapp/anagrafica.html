@@ -7,16 +7,36 @@
         $(document).ready(function(){
         	var inputs = ["id_name", "id_surname", "id_born", "id_cap", "id_telephone", "id_card", "id_first_association"];
 
-            $("#id_born").datepicker();
-            $("#id_first_association").datepicker();
+            $("#id_born").datepicker({
+                dateFormat: "dd-mm-yy"
+            });
+            $("#id_first_association").datepicker({
+                dateFormat: "dd-mm-yy"
+            });
+            $("#base_date").datepicker({
+                dateFormat: "dd-mm-yy"
+            });
+            $("#ymaker_date").datepicker({
+                dateFormat: "dd-mm-yy"
+            });
+            $("#maker_date").datepicker({
+                dateFormat: "dd-mm-yy"
+            });
 
             $(inputs).each( function(index, element) {
-            	$("#" + element).parent().prepend("<ul id='" + element + "_empty' class='emptylist'><li>Questo campo è obbligatorio</li></ul>");
+            	$("#" + element).parent().prepend("<div id='" + element + "_empty' class='emptylist'>Questo campo è obbligatorio</div>");
 
-            	$("#" + element).blur ( function () {
-            		checkInput("#"+element);
-            	})
+                if (element !== "id_born" && element !== "id_first_association") {
+                	$("#" + element).blur ( function () {
+                		checkInput("#"+element);
+                	})
+                }
             });
+
+            $('.errorlist').each( function (index, element) {
+                $(element).replaceWith("<div class='errorlist'>" + $(element).children().text() + "</div>");
+            });
+
 
             $("button[name = 'reset-button']").click(function(event) {
                 $("input[name = 'modify_id']").val('no');
@@ -81,7 +101,6 @@
                 return false;
             } else {
                 $(input+"_empty").slideUp(200);
-                console.log("pieno");
                 return true;
             }
         }
@@ -185,7 +204,7 @@
                                 </tr>
                                 <tr>
                                     <th>BASE</th>
-                                    <td><input class="form-control" type="date"></td>
+                                    <td><input id="base_date" class="form-control" type="text"></td>
                                     <td>
                                         <select class="form-control">
                                             <option value="0" selected>-</option>
@@ -205,7 +224,7 @@
                                 </tr>
                                 <tr>
                                     <th>Y.MAKER</th>
-                                    <td><input class="form-control" type="date"></td>
+                                    <td><input id="ymaker_date" class="form-control" type="text"></td>
                                     <td>
                                         <select class="form-control">
                                             <option value="0" selected>-</option>
@@ -225,7 +244,7 @@
                                 </tr>
                                 <tr>
                                     <th>MAKER</th>
-                                    <td><input class="form-control" type="date"></td>
+                                    <td><input id="maker_date" class="form-control" type="text"></td>
                                     <td>
                                         <select class="form-control">
                                             <option value="0" selected>-</option>
