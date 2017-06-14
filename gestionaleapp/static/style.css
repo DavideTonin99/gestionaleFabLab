@@ -48,6 +48,13 @@
     color: red;
 }
 
+.emptylist {
+    padding-top: 10px;
+    list-style: none;
+    color: red;
+    display: none;
+}
+
 table tr {
     height: 40px;
     vertical-align: middle;
@@ -92,19 +99,12 @@ table tr {
     margin-bottom: 20px;
 }
 
-.empty_input {
-    display: none;
-    color: red;
+.modal-body {
+    overflow: auto;
 }
-/*
-.actions-div {
-    width: 20%;
-    height: auto;
-    float: right;
-    margin-right: 5%;
-}*/
 
 footer {
+    margin-top: 20px;
     clear: both;
     width: 100%;
     color: white;
