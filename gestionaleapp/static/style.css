@@ -28,6 +28,26 @@
     min-height: 70vh;
 }
 
+.info-table {
+    margin-top: 30px;
+    max-height: 400px;
+    overflow-y: scroll;
+    border: 1px solid #7c7c7c;
+    width: 100%;
+}
+
+.info-table th {
+    text-align: center;
+}
+
+.info-table tr {
+    height: 40px;
+}
+
+.info-table td {
+    text-align: center;
+}
+
 /* Pagina login*/
 .login {
     width: 40%;
@@ -61,34 +81,13 @@ table tr {
     vertical-align: middle;
 }
 
-.cl-div-tb {
-    margin-top: 40px;
-    max-height: 400px;
-    overflow-y: scroll;
-    border: 1px solid #7c7c7c;
-}
-
-.cl-tb {
-    margin-top: 0px;
+#client-table {
     margin-bottom: 0px;  
     margin-left: 0px;
     width: 100%;
 }
 
-.cl-tb th {
-	text-align: center;
-/*    background-color: #50d872;*/
-}
-
-.cl-tb tr {
-    height: 40px;
-}
-
-.cl-tb td {
-    text-align: center;
-}
-
-.cl-tb td:hover {
+#client-table, #renew-table td:hover {
     cursor: pointer;
 }
 
@@ -109,11 +108,9 @@ table tr {
     margin-top: 30px;
 }
 
-.processings-table {
-    max-height: 400px;
-    overflow-y: scroll;
-    border: 1px solid #7c7c7c;
-    width: 100%;
+/* Pagina eventi */
+#events-form {
+    margin-top: 30px;
 }
 
 footer {

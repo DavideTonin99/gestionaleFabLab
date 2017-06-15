@@ -61,26 +61,24 @@
 {% block content %}
 
     <div class="row">
-        <div class="cl-div-tb">
-            <table class="table-bordered table-striped cl-tb">
-                <tr>
-                    <th>Nome</th>
-                    <th>Descrizione</th>
-                    <th>Data</th>
-                    <th>Costo</th>
-                    <th>Operazioni</th>
-                </tr>
-            {% for event in events %}
-                <tr class="tr-selectable">
-                    <td class="{{event.id}}">{{event.name}}</td>
-                    <td class="{{event.id}}">{{event.description}}</td>
-                    <td class="{{event.id}}">{{event.date}}</td>
-                    <td class="{{event.id}}">{{event.cost}}</td>
-                    <td class="{{event.id}}">{{event.name}}</td>
-                </tr>
-            {% endfor %}
-            </table>
-        </div>
+        <table class="table-bordered table-striped info-table">
+            <tr>
+                <th>Nome</th>
+                <th>Descrizione</th>
+                <th>Data</th>
+                <th>Costo</th>
+                <th>Operazioni</th>
+            </tr>
+        {% for event in events %}
+            <tr class="tr-selectable">
+                <td class="{{event.id}}">{{event.name}}</td>
+                <td class="{{event.id}}">{{event.description}}</td>
+                <td class="{{event.id}}">{{event.date}}</td>
+                <td class="{{event.id}}">{{event.cost}}</td>
+                <td class="{{event.id}}">{{event.name}}</td>
+            </tr>
+        {% endfor %}
+        </table>
     </div>
 
     <div class="row">
