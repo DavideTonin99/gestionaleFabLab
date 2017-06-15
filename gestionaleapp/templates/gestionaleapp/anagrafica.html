@@ -109,26 +109,24 @@
 
 {% block content %}
     <div class="row">
-        <div class="cl-div-tb">
-            <table class="table-bordered table-striped cl-tb">
-                <tr>
-                    <th>Cognome</th>
-                    <th>Nome</th>
-                    <th>Tessera</th>
-                    <th>Mail</th>
-                    <th>Cellulare</th>
-                </tr>
-            {% for client in clients %}
-                <tr class="tr-selectable">
-                    <td class="{{client.id}}">{{client.surname}}</td>
-                    <td class="{{client.id}}">{{client.name}}</td>
-                    <td class="{{client.id}}">{{client.card}}</td>
-                    <td class="{{client.id}}">{{client.email}}</td>
-                    <td class="{{client.id}}">{{client.telephone}}</td>
-                </tr>
-            {% endfor %}
-            </table>
-        </div>
+        <table id="client-table" class="table-bordered table-striped info-table">
+            <tr>
+                <th>Cognome</th>
+                <th>Nome</th>
+                <th>Tessera</th>
+                <th>Mail</th>
+                <th>Cellulare</th>
+            </tr>
+        {% for client in clients %}
+            <tr class="tr-selectable">
+                <td class="{{client.id}}">{{client.surname}}</td>
+                <td class="{{client.id}}">{{client.name}}</td>
+                <td class="{{client.id}}">{{client.card}}</td>
+                <td class="{{client.id}}">{{client.email}}</td>
+                <td class="{{client.id}}">{{client.telephone}}</td>
+            </tr>
+        {% endfor %}
+        </table>
     </div>
     <div class="row">
         <form id="client-form" method="post" action="">
@@ -149,7 +147,7 @@
     <hr>
 
     <div class="row">
-        <table class="table-bordered table-striped cl-tb">
+        <table id="renew-table" class="table-bordered table-striped info-table">
             <tr>
                 <th>2018</th>
                 <th>2017</th>
@@ -195,7 +193,7 @@
                     </div>
                     <div class="modal-body">
                         <form method="post" id="renew-form">
-                            <table class="cl-tb" style="overflow: scroll;">
+                            <table class="info-table" style="border: none; margin: 0px;">
                                 <tr>
                                     <th>Quota</th>
                                     <th>Anno</th>
