@@ -2,10 +2,10 @@
 {% load static %}
 {% block title %} <title>FabLab | Anagrafica </title>{% endblock %}
 {% block pagename %} <img class="logo" src="{% static 'gestionaleapp/logo_fablab.png' %}"> {% endblock %}
-{% block scripts%}
+{% block scripts %}
     <script>
-        $(document).ready(function(){
-        	var inputs = ["id_name", "id_surname", "id_born", "id_cap", "id_telephone", "id_card", "id_first_association"];
+        $(document).ready(function () {
+            var inputs = ["id_name", "id_surname", "id_born", "id_cap", "id_telephone", "id_card", "id_first_association"];
 
             $("#id_born").datepicker({
                 dateFormat: "dd-mm-yy"
@@ -23,43 +23,43 @@
                 dateFormat: "dd-mm-yy"
             });
 
-            $(inputs).each( function(index, element) {
-            	$("#" + element).parent().prepend("<div id='" + element + "_empty' class='emptylist'>Questo campo è obbligatorio</div>");
+            $(inputs).each(function (index, element) {
+                $("#" + element).parent().prepend("<div id='" + element + "_empty' class='emptylist'>Questo campo è obbligatorio</div>");
 
                 if (element !== "id_born" && element !== "id_first_association") {
-                	$("#" + element).blur ( function () {
-                		checkInput("#"+element);
-                	})
+                    $("#" + element).blur(function () {
+                        checkInput("#" + element);
+                    })
                 }
             });
 
-            $('.errorlist').each( function (index, element) {
+            $('.errorlist').each(function (index, element) {
                 $(element).replaceWith("<div class='errorlist'>" + $(element).children().text() + "</div>");
             });
 
 
-            $("button[name = 'reset-button']").click(function(event) {
+            $("button[name = 'reset-button']").click(function (event) {
                 $("input[name = 'modify_id']").val('no');
                 var form = $("#client-form")[0];
                 // clear the form fields
                 var inputs = form.getElementsByClassName('form-control');
-                for (var i=0; i < inputs.length; i++) {
+                for (var i = 0; i < inputs.length; i++) {
                     inputs[i].setAttribute("value", "");
                 }
 
                 // remove all errors in the page
-                $('.errorlist').each( function (i, element) {
+                $('.errorlist').each(function (i, element) {
                     $(element).slideUp();
                 })
 
-                $('.emptylist').each( function (i, element) {
+                $('.emptylist').each(function (i, element) {
                     $(element).slideUp();
                 })
             });
 
-            $("button[name = 'save-new-button']").click(function(event) {
+            $("button[name = 'save-button']").click(function (event) {
                 ret = true;
-                $(inputs).each( function(index, element) {
+                $(inputs).each(function (index, element) {
                     ret = ret & checkInput("#" + element)
                 });
 
@@ -70,26 +70,59 @@
                 }
             });
 
-            $(".tr-selectable").click(function(event){
+
+
+            $(".tr-selectable").click(function (event) {
                 var client_id = event.target.className;
 
-                $.get("{% url 'gestionale:get_client_data' %}?id="+client_id, function(data, status){
+                $.get("{% url 'gestionale:get_client_data' %}?id=" + client_id, function (client, status) {
                     var input_labels = $(".cl-info-input");
-                    console.log(data);
 
                     for (var i = 0; i < input_labels.length; i++) {
                         var current_data = input_labels[i].getAttribute("name");
-                        input_labels[i].value = data[current_data];
+                        input_labels[i].value = client[current_data];
                     }
                     $("input[name = 'modify_id']").val(client_id);
                 });
 
+                $.get("{% url 'gestionale:get_processings' %}?id=" + client_id, function (processings, status) {
+                    console.log(processings);
+                    $("#processings-table").children("tbody").children("tr").remove();
+
+                    processing_table = $("#processings-table").children("tbody");
+
+                    processing_table.append("<tr>" +
+                        "<th>DATA</th> " +
+                        "<th>TITOLO</th> " +
+                        "<th>TIPO</th> " +
+                        "<th>COSTO</th> " +
+                        "</tr>");
+
+
+                    $(processings).each(function (index, row) {
+                        processing_table.append("<tr id='process-" + index + "'></tr>");
+                        process_row = $("#process-" + index + "")
+                        $(row).each (function (i, field) {
+                            process_row.append("<td>" + row["name"] + "</td>")
+                        });
+                    });
+
+                });
+
+                $.get("{% url 'gestionale:get_client_data' %}?id=" + client_id, function (event, status) {
+                    var events_table = $("#processings-table");
+
+                    $(event).each(function (index, row) {
+                        //scrivi table
+                    });
+                });
+
                 // remove all errors in the page
-                $('.errorlist').each( function (i, element) {
+                $('.errorlist').each(function (i, element) {
                     $(element).slideUp();
                 })
 
-                $('.emptylist').each( function (i, element) {
+                $('.emptylist').each(function (i, element) {
                     $(element).slideUp();
                 })
             });
@@ -97,10 +130,10 @@
 
         function checkInput(input) {
             if ($(input).val() === "") {
-                $(input+"_empty").slideDown(200);
+                $(input + "_empty").slideDown(200);
                 return false;
             } else {
-                $(input+"_empty").slideUp(200);
+                $(input + "_empty").slideUp(200);
                 return true;
             }
         }
@@ -117,28 +150,28 @@
                 <th>Mail</th>
                 <th>Cellulare</th>
             </tr>
-        {% for client in clients %}
-            <tr class="tr-selectable">
-                <td class="{{client.id}}">{{client.surname}}</td>
-                <td class="{{client.id}}">{{client.name}}</td>
-                <td class="{{client.id}}">{{client.card}}</td>
-                <td class="{{client.id}}">{{client.email}}</td>
-                <td class="{{client.id}}">{{client.telephone}}</td>
-            </tr>
-        {% endfor %}
+            {% for client in clients %}
+                <tr class="tr-selectable">
+                    <td class="{{ client.id }}">{{ client.surname }}</td>
+                    <td class="{{ client.id }}">{{ client.name }}</td>
+                    <td class="{{ client.id }}">{{ client.card }}</td>
+                    <td class="{{ client.id }}">{{ client.email }}</td>
+                    <td class="{{ client.id }}">{{ client.telephone }}</td>
+                </tr>
+            {% endfor %}
         </table>
     </div>
     <div class="row">
-        <form id="client-form" method="post" action="">
+        <form id="client-form" method="post">
             {% csrf_token %}
             {{ form.modify_id }}
             <table class="col-sm-8">
                 {{ form.as_table }}
             </table>
             <div class="actions-div col-sm-4">
-                <button type="button" class="btn btn-success btn-block" name="save-new-button">Salva nuovo</button>
+                <button type="button" class="btn btn-success btn-block" name="save-button">Salva nuovo</button>
                 <button type="reset" class="btn btn-danger btn-block" name="reset-button">Reset campi</button>
-                <button type="submit" class="btn btn-primary btn-block" name="save-changes-button">Salva modifiche</button>
+                <button type="button" class="btn btn-primary btn-block" name="save-button">Salva modifiche</button>
             </div>
 
         </form>
@@ -184,7 +217,7 @@
         <!-- Modal -->
         <div class="modal fade" id="renew-modal" role="dialog">
             <div class="modal-dialog modal-lg">
-            
+
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
@@ -267,8 +300,35 @@
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     </div>
                 </div>
-              
             </div>
         </div>
     </div>
-{% endblock%}
+
+    <hr>
+
+    <div class="row">
+        <h3>LAVORAZIONI</h3>
+        <table id="processings-table" class="table-bordered table-striped info-table">
+            <tr>
+                <th>DATA</th>
+                <th>TITOLO</th>
+                <th>TIPO</th>
+                <th>COSTO</th>
+            </tr>
+        </table>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <h3>EVENTI</h3>
+        <table id="events-table" class="table-bordered table-striped info-table">
+            <tr>
+                <th>DATA</th>
+                <th>DESCRIZIONE</th>
+                <th>TIPO</th>
+                <th>COSTO</th>
+            </tr>
+        </table>
+    </div>
+{% endblock %}

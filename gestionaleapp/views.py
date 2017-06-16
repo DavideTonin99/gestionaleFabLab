@@ -28,6 +28,7 @@ class CustomersView(LoginRequiredMixin, FormView):
         return super(CustomersView, self).form_valid(form)
 
 
+
 class ProcessingsView(LoginRequiredMixin, FormView):
     template_name = 'gestionaleapp/lavorazioni.html'
     form_class = ProcessingsForm

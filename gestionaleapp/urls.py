@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^eventi/$', views.EventsView.as_view(), name="eventi"),
     url(r'^lavorazioni/$', views.ProcessingsView.as_view(), name="lavorazioni"),
     url(r'^getclientdata/$', views.get_client_data, name="get_client_data"),
+    url(r'^getprocessings/$', views.get_processings, name="get_processings"),
 ]

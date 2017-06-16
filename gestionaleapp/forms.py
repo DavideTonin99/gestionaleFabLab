@@ -4,7 +4,7 @@ from .models import Person, Event, Processing
 
 
 class CustomersForm(forms.ModelForm):  # todo born date format error; fix widgets not displaying correctly
-    modify_id = forms.Field(widget=forms.HiddenInput(), initial='no')
+    # modify_id = forms.Field(widget=forms.HiddenInput(), initial='no')
 
     class Meta:
         model = Person
@@ -24,7 +24,7 @@ class CustomersForm(forms.ModelForm):  # todo born date format error; fix widget
 
         for field in self.fields.values():
             field.widget.attrs['placeholder'] = field.label
-            field.widget.attrs['class'] = "form-control"
+            field.widget.attrs['class'] = "cl-info-input form-control"
 
 
 class ProcessingsForm(forms.ModelForm):
