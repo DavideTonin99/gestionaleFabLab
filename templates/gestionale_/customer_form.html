@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} <title>FabLab | Anagrafica </title>{% endblock %}
+{% block pagename %} <img class="logo" src="{% static 'gestionale_/logo_fablab.png' %}"> {% endblock %}
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+    <br><br>
+    {% include "gestionale_/customers_table.html" with customers=customers only %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+    <button type="submit">Crea</button>
+    </form>
+{% endblock %}
