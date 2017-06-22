@@ -4,9 +4,28 @@
 {% endblock %}
 
 {% block content %}
-    <br><br>
 
+    <script>
+    $(document).ready( function () {
+        $("#id_year").datepicker({
+                dateFormat: "dd/mm/yy"
+            });
+    })
+    </script>
+
+    <br>
     {% include 'gestionale_/subscription_table.html' with id=id subscriptions=subscriptions only %}
 
-    {{ form.as_p }}
+    <br>
+
+    <div class="row">
+        <form id="renew-form" class="col-sm-6">
+            <table>
+                {{ form.as_table }}
+            </table>
+            <br>
+            <button type="submit" class="btn btn-success">{{ op }}</button>
+            <button class="btn btn-danger" type="reset" onclick="window.location.href='{% url 'gestionale_:create_customer' %}'">Reset</button>
+        </form>
+    </div>
 {% endblock %}
