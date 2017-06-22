@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from .models import Customer
+from .models import Customer, Subscription
 
 
 class CustomerForm(ModelForm):
@@ -13,3 +13,9 @@ class CustomerForm(ModelForm):
 
 		for field in self.fields.values():
 			field.widget.attrs['class'] = "form-control"
+
+
+class SubscriptionForm(ModelForm):
+	class Meta:
+		model = Subscription
+		fields = '__all__'

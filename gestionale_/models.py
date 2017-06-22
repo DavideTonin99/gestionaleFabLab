@@ -47,7 +47,9 @@ class Subscription(models.Model):
 
 	customer = models.ForeignKey(Customer, verbose_name='Cliente', unique_for_year='year', on_delete=models.CASCADE)
 	year = models.DateField(verbose_name='Anno', default=date.today)
-	type = models.PositiveSmallIntegerField(verbose_name='Tipo', choices=((0, 'BASE'), (1, 'MAKER')))
+	type = models.PositiveSmallIntegerField(verbose_name='Tipo', choices=((0, 'Base'), (1, 'Maker')))
+	payment = models.PositiveSmallIntegerField(verbose_name='Pagamento', choices=((0, 'Paypal'), (1, 'Bonifico'),
+	                                                                              (2, 'Contanti')))
 	occasion = models.ForeignKey(Event, verbose_name='Occasione', null=True, blank=True, on_delete=models.SET_NULL)
 
 	def __str__(self):
