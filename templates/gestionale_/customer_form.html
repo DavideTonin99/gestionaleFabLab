@@ -17,7 +17,7 @@
         });
     </script>
 
-    <div class="row" id="client-row">
+    <div class="row scrollable-table">
         <table id="client-table" class="table-bordered table-striped info-table">
             <thead>
                 <tr>
@@ -53,7 +53,31 @@
         </form>
     </div>
 
-    <br><br>
+    <hr>
+
+    <div class="row scrollable-table">
+        <h2>LAVORAZIONI</h2>
+        <table id="events-table" class="table-bordered table-striped info-table">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Descrizione</th>
+                    <th>Tipo</th>
+                    <th>Costo</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.data }}</td>
+                    <td>{{ event.description }}</td>
+                    <td>{{ event.type }}</td>
+                    <td>{{ event.cost }}&nbsp;&euro;</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     {{ subscriptions.2014.0 }}
     {{ subscriptions.2015.0 }}
@@ -71,10 +95,30 @@
     {{ subscriptions.2027.0 }}
     {{ subscriptions.2028.0 }}
 
-    <br><br>
+    <hr>
 
-    {% for proc in processings %}
-        <p>{{ proc }}</p>
-    {% endfor %}
+    <div class="row scrollable-table">
+        <h2>LAVORAZIONI</h2>
+        <table id="processings-table" class="table-bordered table-striped info-table">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Descrizione</th>
+                    <th>Tipo</th>
+                    <th>Costo</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for process in processings %}
+                <tr>
+                    <td>{{ process.data }}</td>
+                    <td>{{ process.description }}</td>
+                    <td>{{ process.type }}</td>
+                    <td>{{ process.cost }}&nbsp;&euro;</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 {% endblock %}
