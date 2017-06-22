@@ -1,63 +1,48 @@
-<table>
-    <tr>
-        <th>2014</th>
-        <th><p>{{ subscriptions.2014.0 }}</p></th>
-        <th><a href="{% url 'gestionale_:create_subscription' customer_id=id year=2014 %}">Crea</a></th>
-    </tr>
-    <tr>
-        <th>2015</th>
-        <th>{{ subscriptions.2015.0 }}</th>
-    </tr>
-    <tr>
-        <th>2016</th>
-        <th>{{ subscriptions.2016.0 }}</th>
-    </tr>
-    <tr>
-        <th>2017</th>
-        <th>{{ subscriptions.2017.0 }}</th>
-    </tr>
-    <tr>
-        <th>2018</th>
-        <th>{{ subscriptions.2018.0 }}</th>
-    </tr>
-    <tr>
-        <th>2019</th>
-        <th>{{ subscriptions.2019.0 }}</th>
-    </tr>
-    <tr>
-        <th>2020</th>
-        <th>{{ subscriptions.2020.0 }}</th>
-    </tr>
-    <tr>
-        <th>2021</th>
-        <th>{{ subscriptions.2021.0 }}</th>
-    </tr>
-    <tr>
-        <th>2022</th>
-        <th>{{ subscriptions.2022.0 }}</th>
-    </tr>
-    <tr>
-        <th>2023</th>
-        <th>{{ subscriptions.2023.0 }}</th>
-    </tr>
-    <tr>
-        <th>2024</th>
-        <th>{{ subscriptions.2024.0 }}</th>
-    </tr>
-    <tr>
-        <th>2025</th>
-        <th>{{ subscriptions.2025.0 }}</th>
-    </tr>
-    <tr>
-        <th>2026</th>
-        <th>{{ subscriptions.2026.0 }}</th>
-    </tr>
-    <tr>
-        <th>2027</th>
-        <th>{{ subscriptions.2027.0 }}</th>
-    </tr>
-    <tr>
-        <th>2028</th>
-        <th>{{ subscriptions.2028.0 }}</th>
-    </tr>
-</table>
+<div clas="row">
+    <table id="subscriptions-table" class="table-bordered table-striped info-table">
+        <tr>
+            <th>2014</th>
+            <th>2015</th>
+            <th>2016</th>
+            <th>2017</th>
+            <th>2018</th>
+        </tr>
+        <tr>
+            <td><a href="{% url 'gestionale_:create_subscription' customer_id=id year=2014 %}">Crea</a>
+                {{ subscriptions.2014.0 }}</td>
+            <td>{{ subscriptions.2015.0 }}</td>
+            <td>{{ subscriptions.2016.0 }}</td>
+            <td>{{ subscriptions.2017.0.customer }}</td>
+            <td>{{ subscriptions.2018.0 }}</td>
+        </tr>
+        <tr>
+            <th>2019</th>
+            <th>2020</th>
+            <th>2021</th>
+            <th>2022</th>
+            <th>2023</th>
+        </tr>
+        <tr>
+            <td>{{ subscriptions.2019.0 }}</td>
+            <td>{{ subscriptions.2020.0 }}</td>
+            <td>{{ subscriptions.2021.0 }}</td>
+            <td>{{ subscriptions.2022.0 }}</td>
+            <td>{{ subscriptions.2023.0 }}</td>
+        </tr>
+        <tr>
+            <th>2024</th>
+            <th>2025</th>
+            <th>2026</th>
+            <th>2027</th>
+            <th>2028</th>
+        </tr>
+        <tr>
+            <td>{{ subscriptions.2024.0 }}</td>
+            <td>{{ subscriptions.2025.0 }}</td>
+            <td>{{ subscriptions.2026.0 }}</td>
+            <td>{{ subscriptions.2027.0 }}</td>
+            <td>{{ subscriptions.2028.0 }}</td>
+        </tr>
+
+    </table>
+</div>
