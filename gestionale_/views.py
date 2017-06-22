@@ -37,10 +37,12 @@ class UpdateCustomerView(LoginRequiredMixin, UpdateView):
 		context['id'] = self.object.id
 
 		all_subs = self.object.subscription_set.all()
+
 		context['show_tables'] = True
 		context['subscriptions'] = {year: all_subs.filter(year__year=year) for year in range(2014, 2028 + 1)}
-
 		context['processings'] = self.object.processing_set.all()
+		context['events'] = self.object.event_set.all()
+
 		return context
 
 
