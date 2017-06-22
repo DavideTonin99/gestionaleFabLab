@@ -14,13 +14,6 @@
             $("#id_first_association").datepicker({
                 dateFormat: "dd/mm/yy"
             });
-
-            var inputs = ["id_name", "id_surname", "id_born", "id_cap", "id_telephone", "id_email", "id_card", "id_first_association"];
-
-            $(inputs).each( function (index, element) {
-                console.log(element);
-                $("#" + element).addClass("form-control");
-            })
         });
     </script>
 
@@ -46,9 +39,6 @@
             {% endfor %}
         </table>
     </div>
-    <!--{% for customer in customers %}
-        <a href="{% url 'gestionale_:update_customer' customer_id=customer.id %}">{{ customer.name }}</a>
-    {% endfor %}-->
 
     <div class="row">
         <form method="post" id="client-form">
