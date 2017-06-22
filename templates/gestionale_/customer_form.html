@@ -53,10 +53,8 @@
     </div>
 
     {% if show_tables %}
-    <br><br>
-    <hr>
 
-
+    {% include 'gestionale_/subscription_table.html' with id=id subscriptions=subscriptions only %}
 
     <div class="row scrollable-table">
         <h2>LAVORAZIONI</h2>
@@ -81,8 +79,6 @@
             </tbody>
         </table>
     </div>
-
-    {% include 'gestionale_/subscription_table.html' with id=id subscriptions=subscriptions only %}
 
     <hr>
 
