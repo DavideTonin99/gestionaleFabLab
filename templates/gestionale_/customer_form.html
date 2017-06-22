@@ -6,17 +6,92 @@
 {% endblock %}
 
 {% block content %}
-    <br><br>
+    <script>
+        $(document).ready(function () {
+                var inputs = ["id_name", "id_surname", "id_born", "id_cap", "id_telephone", "id_card", "id_first_association"];
 
-    {% for customer in customers %}
+                $("#id_born").datepicker({
+                    dateFormat: "yy-mm-dd"
+                });
+                $("#id_first_association").datepicker({
+                    dateFormat: "yy-mm-dd"
+                });
+            });
+    </script>
+
+    <div class="row" id="client-row">
+        <table id="client-table" class="table-bordered table-striped info-table">
+            <thead>
+                <tr>
+                    <th>Cognome</th>
+                    <th>Nome</th>
+                    <th>Tessera</th>
+                    <th>Mail</th>
+                    <th>Cellulare</th>
+                </tr>
+            </thead>
+            {% for customer in customers %}
+                <tr class="tr-selectable"  onclick="document.location.href = '{% url 'gestionale_:update_customer' customer_id=customer.id%}'">
+                    <td>{{ customer.surname }}</td>
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.card }}</td>
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.telephone }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <!--{% for customer in customers %}
         <a href="{% url 'gestionale_:update_customer' customer_id=customer.id %}">{{ customer.name }}</a>
-    {% endfor %}
+    {% endfor %}-->
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">{{ op }}</button>
-    </form>
+    <div class="row">
+        <form method="post" id="client-form">
+            {% csrf_token %}
+            <table class="col-sm-8">
+                <!--{{ form.as_table }}-->
+                <tr>
+                    <th><label for="id_name">Nome:</label></th>
+                    <td><input class="form-control" id="id_name" maxlength="50" name="name" required type="text" value="{{ form.name.value}}" /></td>
+                </tr>
+                <tr>
+                    <th><label for="id_surname">Cognome:</label></th>
+                    <td><input class="form-control" id="id_surname" maxlength="50" name="surname" required type="text" value="{{ form.surname.value }}" /></td>
+                </tr>
+                <tr>
+                    <th><label for="id_born">Data di nascita:</label></th>
+                    <td><input class="form-control" id="id_born" name="born" required type="text" value="{{ form.born.value }}" /></td>
+                </tr>
+                <tr>
+                    <th><label for="id_cap">Cap:</label></th>
+                    <td><input class="form-control" id="id_cap" maxlength="5" name="cap" required type="text" value="{{ form.cap.value }}" /></td>
+                </tr>
+                <tr>
+                    <th><label for="id_telephone">Cellulare:</label></th>
+                    <td><input class="form-control" id="id_telephone" maxlength="17" name="telephone" value="{{ form.telephone.value }}" required type="text" /></td>
+                </tr>
+                <tr>
+                    <th><label for="id_email">Email:</label></th>
+                    <td><input class="form-control" id="id_email" maxlength="254" name="email" type="email" value="{{ form.email.value }}" /></td>
+                </tr>
+                <tr>
+                    <th><label for="id_card">Tessera:</label></th>
+                    <td><input class="form-control" id="id_card" maxlength="9" name="card" value="{{ form.card.value }}" required type="text" /></td>
+                </tr>
+                <tr>
+                    <th><label for="id_first_association">Data associazione:</label></th>
+                    <td>
+                        <input class="form-control" id="id_first_association" name="first_association" value="{{ form.first_association.value }}" required type="text" />
+                    </td>
+                </tr>
+
+            </table>
+            <div class="actions-div col-sm-4">
+                <button type="submit" class="btn btn-success">{{ op }}</button>
+                <button type="reset" class="btn btn-danger">Reset</button>
+            </div>
+        </form>
+    </div>
 
     <br><br>
 
