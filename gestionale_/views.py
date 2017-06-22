@@ -52,9 +52,6 @@ class CreateSubscriptionView(LoginRequiredMixin, CreateView):
 	model = Subscription
 	form_class = SubscriptionForm
 
-	def get_customer(self):
-		return Customer.objects.filter(id=self.kwargs.get('customer_id')).get()
-
 	def get_initial(self):
 		initial = super(CreateSubscriptionView, self).get_initial()
 		initial['customer'] = get_customer(self.kwargs.get('customer_id'))

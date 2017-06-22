@@ -19,7 +19,8 @@
     <br>
 
     <div class="row">
-        <form id="renew-form" class="col-sm-6">
+        <form id="renew-form" method="post" class="col-sm-6">
+            {% csrf_token %}
             <table>
                 {{ form.as_table }}
             </table>
