@@ -109,6 +109,7 @@ LANGUAGE_CODE = 'it-it'
 TIME_ZONE = 'Europe/Rome'
 
 DATE_FORMAT = 'd/m/Y'
+DATE_INPUT_FORMATS = ('%d/%m/%Y',)
 
 USE_I18N = True
 
