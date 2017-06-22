@@ -17,8 +17,8 @@
             // highlights the active page on the navbar
             $(document).ready(function(){
                 var url = window.location.href;
-                var currentPage = url.split("/");
-                document.getElementById(currentPage[currentPage.length-2]).className = "active";
+                var currentPage = url.split("/")[3];
+                document.getElementById("" + currentPage + "").className = "active";
             });
         </script>
         {% block scripts %} {% endblock %}
