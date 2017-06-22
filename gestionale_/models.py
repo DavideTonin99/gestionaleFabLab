@@ -12,12 +12,12 @@ class Customer(models.Model):
 		verbose_name = 'Cliente'
 		verbose_name_plural = 'Clienti'
 
-	name = models.CharField(verbose_name='Nome', max_length=50, default="")
-	surname = models.CharField(verbose_name='Cognome', max_length=50, default="")
-	born = models.DateField(verbose_name='Data di nascita', default="")
-	cap = models.CharField(verbose_name='CAP', validators=[cap_regex], max_length=5, default="")
+	name = models.CharField(verbose_name='Nome', max_length=50)
+	surname = models.CharField(verbose_name='Cognome', max_length=50)
+	born = models.DateField(verbose_name='Data di nascita')
+	cap = models.CharField(verbose_name='CAP', validators=[cap_regex], max_length=5)
 	telephone = models.CharField(verbose_name='Cellulare', default='+39', validators=[phone_regex], max_length=17)
-	email = models.EmailField(null=True, blank=True, default="")
+	email = models.EmailField(null=True, blank=True)
 	card = models.CharField(verbose_name='Tessera', default='VRFL', validators=[card_regex], max_length=9, unique=True)
 	first_association = models.DateField(verbose_name='Data associazione', default=date.today)
 
