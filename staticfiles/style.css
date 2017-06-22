@@ -112,6 +112,9 @@ table tr {
     color: black;
     font-weight: 400;
     overflow: auto;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 #subscriptions-table > tbody > tr > td > a:hover {

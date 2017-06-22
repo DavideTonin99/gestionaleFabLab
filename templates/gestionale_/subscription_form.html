@@ -27,7 +27,7 @@
             </table>
             <br>
             <button type="submit" class="btn btn-success">{{ op }}</button>
-            <button class="btn btn-danger" type="reset" onclick="window.location.href='{% url 'gestionale_:create_customer' %}'">Reset</button>
+            <button class="btn btn-danger" type="reset" onclick=window.location.reload()>Reset</button>
         </form>
     </div>
 {% endblock %}
