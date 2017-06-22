@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %} <title>FabLab | Anagrafica</title> {% endblock %}
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+    <br><br>
+
+    {% include 'gestionale_/subscription_table.html' with id=id subscriptions=subscriptions only %}
+
+    {{ form.as_p }}
+{% endblock %}

@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %} <title>FabLab | Anagrafica </title>{% endblock %}
-{% block pagename %} <img class="logo" src="{% static 'gestionale_/logo_fablab.png' %}"> {% endblock %}
+{% block title %} <title>FabLab | Anagrafica</title> {% endblock %}
 {% block scripts %}
 {% endblock %}
 
@@ -53,28 +52,17 @@
         </form>
     </div>
 
+    {% if show_tables %}
     <br><br>
 
-    {{ subscriptions.2014.0 }}
-    {{ subscriptions.2015.0 }}
-    {{ subscriptions.2016.0 }}
-    {{ subscriptions.2017.0 }}
-    {{ subscriptions.2018.0 }}
-    {{ subscriptions.2019.0 }}
-    {{ subscriptions.2020.0 }}
-    {{ subscriptions.2021.0 }}
-    {{ subscriptions.2022.0 }}
-    {{ subscriptions.2023.0 }}
-    {{ subscriptions.2024.0 }}
-    {{ subscriptions.2025.0 }}
-    {{ subscriptions.2026.0 }}
-    {{ subscriptions.2027.0 }}
-    {{ subscriptions.2028.0 }}
+    {% include 'gestionale_/subscription_table.html' with id=id subscriptions=subscriptions only %}
 
     <br><br>
 
     {% for proc in processings %}
         <p>{{ proc }}</p>
     {% endfor %}
+
+    {% endif %}
 
 {% endblock %}
