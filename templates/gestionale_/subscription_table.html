@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row scrollable-table">
     <table id="subscriptions-table" class="table-bordered table-striped info-table">
         <tr>
             <th>2014</th>
@@ -10,16 +10,44 @@
         <tr>
             <td>
                 {% if subscriptions.2014 %}
-                    {{ subscriptions.2014 }}
+                    {{ subscriptions.2014.type }}
                     <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2014 %}">Modifica</a>
                 {% else %}
-                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2014 %}">Crea</a>
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2014 %}">Aggiungi</a>
                 {% endif %}
             </td>
-            <td>{{ subscriptions.2015 }}</td>
-            <td>{{ subscriptions.2016 }}</td>
-            <td>{{ subscriptions.2017 }}</td>
-            <td>{{ subscriptions.2018 }}</td>
+            <td>
+                {% if subscriptions.2015 %}
+                    {{ subscriptions.2015.type }}
+                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2015 %}">Modifica</a>
+                {% else %}
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2015 %}">Aggiungi</a>
+                {% endif %}
+            </td>
+            <td>
+                {% if subscriptions.2016 %}
+                    {{ subscriptions.2016.type }}
+                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2016 %}">Modifica</a>
+                {% else %}
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2016 %}">Aggiungi</a>
+                {% endif %}
+            </td>
+            <td>
+                {% if subscriptions.2017 %}
+                    {{ subscriptions.2017.type }}
+                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2017 %}">Modifica</a>
+                {% else %}
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2017 %}">Aggiungi</a>
+                {% endif %}
+            </td>
+            <td>
+                {% if subscriptions.2018 %}
+                    {{ subscriptions.2018.type }}
+                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2018 %}">Modifica</a>
+                {% else %}
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2018 %}">Aggiungi</a>
+                {% endif %}
+            </td>
         </tr>
         <tr>
             <th>2019</th>
@@ -29,11 +57,46 @@
             <th>2023</th>
         </tr>
         <tr>
-            <td>{{ subscriptions.2019 }}</td>
-            <td>{{ subscriptions.2020 }}</td>
-            <td>{{ subscriptions.2021 }}</td>
-            <td>{{ subscriptions.2022 }}</td>
-            <td>{{ subscriptions.2023 }}</td>
+            <td>
+                {% if subscriptions.2019 %}
+                    {{ subscriptions.2019.type }}
+                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2019 %}">Modifica</a>
+                {% else %}
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2019 %}">Aggiungi</a>
+                {% endif %}
+            </td>
+            <td>
+                {% if subscriptions.2020 %}
+                    {{ subscriptions.2020.type }}
+                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2020 %}">Modifica</a>
+                {% else %}
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2020 %}">Aggiungi</a>
+                {% endif %}
+            </td>
+            <td>
+                {% if subscriptions.2021 %}
+                    {{ subscriptions.2021.type }}
+                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2021 %}">Modifica</a>
+                {% else %}
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2021 %}">Aggiungi</a>
+                {% endif %}
+            </td>
+            <td>
+                {% if subscriptions.2022 %}
+                    {{ subscriptions.2022.type }}
+                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2022 %}">Modifica</a>
+                {% else %}
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2022 %}">Aggiungi</a>
+                {% endif %}
+            </td>
+            <td>
+                {% if subscriptions.2023 %}
+                    {{ subscriptions.2023.type }}
+                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2023 %}">Modifica</a>
+                {% else %}
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2023 %}">Aggiungi</a>
+                {% endif %}
+            </td>
         </tr>
         <tr>
             <th>2024</th>
@@ -43,11 +106,46 @@
             <th>2028</th>
         </tr>
         <tr>
-            <td>{{ subscriptions.2024 }}</td>
-            <td>{{ subscriptions.2025 }}</td>
-            <td>{{ subscriptions.2026 }}</td>
-            <td>{{ subscriptions.2027 }}</td>
-            <td>{{ subscriptions.2028 }}</td>
+            <td>
+                {% if subscriptions.2024 %}
+                    {{ subscriptions.2024.type }}
+                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2024 %}">Modifica</a>
+                {% else %}
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2024 %}">Aggiungi</a>
+                {% endif %}
+            </td>
+            <td>
+                {% if subscriptions.2025 %}
+                    {{ subscriptions.2025.type }}
+                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2025 %}">Modifica</a>
+                {% else %}
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2025 %}">Aggiungi</a>
+                {% endif %}
+            </td>
+            <td>
+                {% if subscriptions.2026 %}
+                    {{ subscriptions.2026.type }}
+                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2018 %}">Modifica</a>
+                {% else %}
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2018 %}">Aggiungi</a>
+                {% endif %}
+            </td>
+            <td>
+                {% if subscriptions.2027 %}
+                    {{ subscriptions.2027.type }}
+                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2027 %}">Modifica</a>
+                {% else %}
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2027 %}">Aggiungi</a>
+                {% endif %}
+            </td>
+            <td>
+                {% if subscriptions.2028 %}
+                    {{ subscriptions.2028.type }}
+                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2028 %}">Modifica</a>
+                {% else %}
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2028 %}">Aggiungi</a>
+                {% endif %}
+            </td>
         </tr>
 
     </table>

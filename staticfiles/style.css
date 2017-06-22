@@ -107,6 +107,19 @@ table tr {
     margin-top: 30px;
 }
 
+/* Tabella iscrizioni */
+#subscriptions-table > tbody > tr > td > a {
+    font-weight: 400;
+    padding: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    overflow: auto;
+}
+
+#subscriptions-table > tbody > tr > td > a:hover {
+    text-decoration: none;
+}
+
 footer {
     margin-top: 20px;
     clear: both;
