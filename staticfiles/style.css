@@ -30,8 +30,6 @@
 
 .info-table {
     margin-top: 30px;
-    max-height: 400px;
-    overflow: scroll;
     border: 1px solid #7c7c7c;
     width: 100%;
 }
@@ -46,6 +44,8 @@
 
 .info-table td {
     text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 /* Pagina login*/
@@ -74,12 +74,12 @@ table tr {
     vertical-align: middle;
 }
 
-#client-row {
+.scrollable-table {
     overflow: auto;
     max-height: 400px;
 }
 
-#client-table {
+#client-table, #processings-table {
     margin-bottom: 0;
     margin-left: 0;
     width: 100%;

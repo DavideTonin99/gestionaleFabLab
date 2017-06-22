@@ -16,7 +16,7 @@
         });
     </script>
 
-    <div class="row" id="client-row">
+    <div class="row scrollable-table">
         <table id="client-table" class="table-bordered table-striped info-table">
             <thead>
                 <tr>
@@ -54,14 +54,61 @@
 
     {% if show_tables %}
     <br><br>
+    <hr>
+
+
+
+    <div class="row scrollable-table">
+        <h2>LAVORAZIONI</h2>
+        <table id="events-table" class="table-bordered table-striped info-table">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Descrizione</th>
+                    <th>Tipo</th>
+                    <th>Costo</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.data }}</td>
+                    <td>{{ event.description }}</td>
+                    <td>{{ event.type }}</td>
+                    <td>{{ event.cost }}&nbsp;&euro;</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     {% include 'gestionale_/subscription_table.html' with id=id subscriptions=subscriptions only %}
 
-    <br><br>
+    <hr>
 
-    {% for proc in processings %}
-        <p>{{ proc }}</p>
-    {% endfor %}
+    <div class="row scrollable-table">
+        <h2>LAVORAZIONI</h2>
+        <table id="processings-table" class="table-bordered table-striped info-table">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Descrizione</th>
+                    <th>Tipo</th>
+                    <th>Costo</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for process in processings %}
+                <tr>
+                    <td>{{ process.data }}</td>
+                    <td>{{ process.description }}</td>
+                    <td>{{ process.type }}</td>
+                    <td>{{ process.cost }}&nbsp;&euro;</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     {% endif %}
 
