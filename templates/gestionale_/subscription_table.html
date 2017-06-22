@@ -10,42 +10,87 @@
         <tr>
             <td>
                 {% if subscriptions.2014 %}
-                    {{ subscriptions.2014.type }}
-                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2014.id %}">Modifica</a>
+                    {% if subscriptions.2014.type == 0 %}
+                        <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2014.id %}">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    {% elif subscriptions.2014.type ==  1 %}
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                    {% endif %}
+
                 {% else %}
-                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2014 %}">Aggiungi</a>
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2014 %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+
                 {% endif %}
             </td>
             <td>
                 {% if subscriptions.2015 %}
-                    {{ subscriptions.2015.type }}
-                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2015.id %}">Modifica</a>
+                    {% if subscriptions.2015.type == 0 %}
+                        <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2015.id %}">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    {% elif subscriptions.2015.type ==  1 %}
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                    {% endif %}
+
                 {% else %}
-                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2015 %}">Aggiungi</a>
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2015 %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+
                 {% endif %}
             </td>
             <td>
                 {% if subscriptions.2016 %}
-                    {{ subscriptions.2016.type }}
-                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2016.id %}">Modifica</a>
+                    {% if subscriptions.2016.type == 0 %}
+                        <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2016.id %}">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    {% elif subscriptions.2016.type ==  1 %}
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                    {% endif %}
+
                 {% else %}
-                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2016 %}">Aggiungi</a>
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2016 %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+
                 {% endif %}
             </td>
             <td>
                 {% if subscriptions.2017 %}
-                    {{ subscriptions.2017.type }}
-                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2017.id %}">Modifica</a>
+                    {% if subscriptions.2017.type == 0 %}
+                        <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2017.id %}">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    {% elif subscriptions.2017.type ==  1 %}
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                    {% endif %}
+
                 {% else %}
-                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2017 %}">Aggiungi</a>
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2017 %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+
                 {% endif %}
             </td>
             <td>
                 {% if subscriptions.2018 %}
-                    {{ subscriptions.2018.type }}
-                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2018.id %}">Modifica</a>
+                    {% if subscriptions.2018.type == 0 %}
+                        <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2018.id %}">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    {% elif subscriptions.2018.type ==  1 %}
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                    {% endif %}
+
                 {% else %}
-                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2018 %}">Aggiungi</a>
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2018 %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+
                 {% endif %}
             </td>
         </tr>
@@ -59,42 +104,87 @@
         <tr>
             <td>
                 {% if subscriptions.2019 %}
-                    {{ subscriptions.2019.type }}
-                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2019.id %}">Modifica</a>
+                    {% if subscriptions.2019.type == 0 %}
+                        <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2019.id %}">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    {% elif subscriptions.2019.type ==  1 %}
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                    {% endif %}
+
                 {% else %}
-                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2019 %}">Aggiungi</a>
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2019 %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+
                 {% endif %}
             </td>
             <td>
                 {% if subscriptions.2020 %}
-                    {{ subscriptions.2020.type }}
-                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2020.id %}">Modifica</a>
+                    {% if subscriptions.2020.type == 0 %}
+                        <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2020.id %}">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    {% elif subscriptions.2020.type ==  1 %}
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                    {% endif %}
+
                 {% else %}
-                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2020 %}">Aggiungi</a>
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2020 %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+
                 {% endif %}
             </td>
             <td>
                 {% if subscriptions.2021 %}
-                    {{ subscriptions.2021.type }}
-                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2021.id %}">Modifica</a>
+                    {% if subscriptions.2021.type == 0 %}
+                        <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2021.id %}">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    {% elif subscriptions.2021.type ==  1 %}
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                    {% endif %}
+
                 {% else %}
-                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2021 %}">Aggiungi</a>
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2021 %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+
                 {% endif %}
             </td>
             <td>
                 {% if subscriptions.2022 %}
-                    {{ subscriptions.2022.type }}
-                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2022.id %}">Modifica</a>
+                    {% if subscriptions.2022.type == 0 %}
+                        <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2022.id %}">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    {% elif subscriptions.2022.type ==  1 %}
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                    {% endif %}
+
                 {% else %}
-                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2022 %}">Aggiungi</a>
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2022 %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+
                 {% endif %}
             </td>
             <td>
                 {% if subscriptions.2023 %}
-                    {{ subscriptions.2023.type }}
-                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2023.id %}">Modifica</a>
+                    {% if subscriptions.2023.type == 0 %}
+                        <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2023.id %}">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    {% elif subscriptions.2023.type ==  1 %}
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                    {% endif %}
+
                 {% else %}
-                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2023 %}">Aggiungi</a>
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2023 %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+
                 {% endif %}
             </td>
         </tr>
@@ -108,42 +198,87 @@
         <tr>
             <td>
                 {% if subscriptions.2024 %}
-                    {{ subscriptions.2024.type }}
-                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2024.id %}">Modifica</a>
+                    {% if subscriptions.2024.type == 0 %}
+                        <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2024.id %}">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    {% elif subscriptions.2024.type ==  1 %}
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                    {% endif %}
+
                 {% else %}
-                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2024 %}">Aggiungi</a>
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2024 %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+
                 {% endif %}
             </td>
             <td>
                 {% if subscriptions.2025 %}
-                    {{ subscriptions.2025.type }}
-                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2025.id %}">Modifica</a>
+                    {% if subscriptions.2025.type == 0 %}
+                        <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2025.id %}">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    {% elif subscriptions.2025.type ==  1 %}
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                    {% endif %}
+
                 {% else %}
-                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2025 %}">Aggiungi</a>
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2025 %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+
                 {% endif %}
             </td>
             <td>
                 {% if subscriptions.2026 %}
-                    {{ subscriptions.2026.type }}
-                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2018.id %}">Modifica</a>
+                    {% if subscriptions.2026.type == 0 %}
+                        <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2026.id %}">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    {% elif subscriptions.2026.type ==  1 %}
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                    {% endif %}
+
                 {% else %}
-                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2018 %}">Aggiungi</a>
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2026 %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+
                 {% endif %}
             </td>
             <td>
                 {% if subscriptions.2027 %}
-                    {{ subscriptions.2027.type }}
-                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2027.id %}">Modifica</a>
+                    {% if subscriptions.2027.type == 0 %}
+                        <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2027.id %}">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    {% elif subscriptions.2027.type ==  1 %}
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                    {% endif %}
+
                 {% else %}
-                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2027 %}">Aggiungi</a>
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2027 %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+
                 {% endif %}
             </td>
             <td>
                 {% if subscriptions.2028 %}
-                    {{ subscriptions.2028.type }}
-                    <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2028.id %}">Modifica</a>
+                    {% if subscriptions.2028.type == 0 %}
+                        <a href="{% url 'gestionale_:update_subscription' customer_id=id subscription_id=subscriptions.2028.id %}">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    {% elif subscriptions.2028.type ==  1 %}
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                    {% endif %}
+
                 {% else %}
-                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2028 %}">Aggiungi</a>
+                    <a href="{% url 'gestionale_:create_subscription' customer_id=id year=2028 %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
+
                 {% endif %}
             </td>
         </tr>
