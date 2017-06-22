@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.shortcuts import reverse, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView
@@ -39,7 +41,7 @@ class UpdateCustomerView(LoginRequiredMixin, UpdateView):
 		all_subs = self.object.subscription_set.all()
 
 		context['show_tables'] = True
-		context['subscriptions'] = {year: all_subs.filter(year__year=year) for year in range(2014, 2028 + 1)}
+		context['subscriptions'] = filter_queryset_in_years(all_subs, 2014, 2028)
 		context['processings'] = self.object.processing_set.all()
 		context['events'] = self.object.event_set.all()
 
@@ -56,6 +58,15 @@ class CreateSubscriptionView(LoginRequiredMixin, CreateView):
 	def get_initial(self):
 		initial = super(CreateSubscriptionView, self).get_initial()
 		initial['customer'] = self.get_customer()
+
+		year = self.kwargs.get('year')
+		if year:
+			try:
+				year = date(day=1, month=1, year=int(year))
+				initial['year'] = year
+			except ValueError:
+				pass
+
 		return initial
 
 	def get_success_url(self):
@@ -70,6 +81,17 @@ class CreateSubscriptionView(LoginRequiredMixin, CreateView):
 
 		all_subs = customer.subscription_set.all()
 		context['show_tables'] = True
-		context['subscriptions'] = {year: all_subs.filter(year__year=year) for year in range(2014, 2028 + 1)}
+		context['subscriptions'] = filter_queryset_in_years(all_subs, 2014, 2028)
 
 		return context
+
+
+def filter_queryset_in_years(queryset, from_, to):
+	return {year: get(queryset.filter(year__year=year), 0) for year in range(from_, to + 1)}
+
+
+def get(k, i, default=None):
+	try:
+		return k[i]
+	except IndexError:
+		return default
