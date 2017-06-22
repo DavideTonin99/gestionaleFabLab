@@ -54,44 +54,11 @@
         <form method="post" id="client-form">
             {% csrf_token %}
             <table class="col-sm-8">
-                <!--{{ form.as_table }}-->
-                <tr>
-                    <th><label for="{{ form.name.id_for_label }}">Nome:</label></th>
-                    <td>{{ form.name.errors }}{{ form.name }}</td>
-                </tr>
-                <tr>
-                    <th><label for="{{ form.surname.id_for_label }}">Cognome:</label></th>
-                    <td>{{ form.surname.errors }}{{ form.surname }}</td>
-                </tr>
-                <tr>
-                    <th><label for="{{ form.born.id_for_label }}">Data di nascita:</label></th>
-                    <td>{{ form.born.errors }}{{ form.born }}</td>
-                </tr>
-                <tr>
-                    <th><label for="{{ form.cap.id_for_label }}">Cap:</label></th>
-                    <td>{{ form.cap.errors }}{{ form.cap }}</td>
-                </tr>
-                <tr>
-                    <th><label for="{{ form.telephone.id_for_label }}">Cellulare:</label></th>
-                    <td>{{ form.telephone.errors }}{{ form.telephone }}</td>
-                </tr>
-                <tr>
-                    <th><label for="{{ form.email.id_for_label }}">Email:</label></th>
-                    <td>{{ form.email.errors }}{{ form.email }}</td>
-                </tr>
-                <tr>
-                    <th><label for="{{ form.card.id_for_label }}">Tessera:</label></th>
-                    <td>{{ form.card.errors }}{{ form.card }}</td>
-                </tr>
-                <tr>
-                    <th><label for="{{ form.first_association.id_for_label }}">Data associazione:</label></th>
-                    <td>{{ form.firs_association.errors }}{{ form.first_association }}</td>
-                </tr>
-
+                {{ form.as_table }}
             </table>
             <div class="actions-div col-sm-4">
                 <button type="submit" class="btn btn-success">{{ op }}</button>
-                <button type="reset" class="btn btn-danger" onclick="window.location.href='{% url 'gestionale_:create_customer' %}'">Reset</button>
+                <button class="btn btn-danger" onclick="window.location.href='{% url 'gestionale_:create_customer' %}'">Reset</button>
             </div>
         </form>
     </div>
