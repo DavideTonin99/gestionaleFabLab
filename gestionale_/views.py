@@ -57,7 +57,7 @@ class CreateSubscriptionView(LoginRequiredMixin, CreateView):
 
 	def get_initial(self):
 		initial = super(CreateSubscriptionView, self).get_initial()
-		initial['customer'] = self.get_customer()
+		initial['customer'] = get_customer(self.kwargs.get('customer_id'))
 
 		year = self.kwargs.get('year')
 		if year:
@@ -76,11 +76,32 @@ class CreateSubscriptionView(LoginRequiredMixin, CreateView):
 		context = super(CreateSubscriptionView, self).get_context_data(**kwargs)
 		context['op'] = 'Crea'
 
-		customer = self.get_customer()
+		customer = get_customer(self.kwargs.get('customer_id'))
 		context['id'] = customer.id
 
 		all_subs = customer.subscription_set.all()
-		context['show_tables'] = True
+		context['subscriptions'] = filter_queryset_in_years(all_subs, 2014, 2028)
+
+		return context
+
+
+class UpdateSubscriptionView(LoginRequiredMixin, UpdateView):
+	model = Subscription
+	form_class = SubscriptionForm
+
+	def get_success_url(self):
+		return reverse('gestionale_:update_subscription', args=(self.object.customer.id, self.object.id))
+
+	def get_object(self, queryset=None):
+		return get_object_or_404(get_customer(self.kwargs.get('customer_id')).
+		                         subscription_set.filter(id=self.kwargs.get('subscription_id')))
+
+	def get_context_data(self, **kwargs):
+		context = super(UpdateSubscriptionView, self).get_context_data(**kwargs)
+		context['op'] = 'Modifica'
+		context['id'] = self.object.customer.id
+
+		all_subs = self.object.customer.subscription_set.all()
 		context['subscriptions'] = filter_queryset_in_years(all_subs, 2014, 2028)
 
 		return context
@@ -88,6 +109,10 @@ class CreateSubscriptionView(LoginRequiredMixin, CreateView):
 
 def filter_queryset_in_years(queryset, from_, to):
 	return {year: get(queryset.filter(year__year=year), 0) for year in range(from_, to + 1)}
+
+
+def get_customer(id_):
+	return get_object_or_404(Customer.objects.filter(id=id_))
 
 
 def get(k, i, default=None):
