@@ -52,20 +52,6 @@ class CreateSubscriptionView(LoginRequiredMixin, CreateView):
 	model = Subscription
 	form_class = SubscriptionForm
 
-	def get_initial(self):
-		initial = super(CreateSubscriptionView, self).get_initial()
-		initial['customer'] = get_customer(self.kwargs.get('customer_id'))
-
-		year = self.kwargs.get('year')
-		if year:
-			try:
-				year = date(day=1, month=1, year=int(year))
-				initial['year'] = year
-			except ValueError:
-				pass
-
-		return initial
-
 	def get_success_url(self):
 		return reverse('gestionale_:update_subscription', args=(self.object.customer.id, self.object.id))
 
@@ -75,11 +61,31 @@ class CreateSubscriptionView(LoginRequiredMixin, CreateView):
 
 		customer = get_customer(self.kwargs.get('customer_id'))
 		context['id'] = customer.id
+		context['customer_name'] = str(customer)
+		context['year'] = self.kwargs.get('year')
 
 		all_subs = customer.subscription_set.all()
 		context['subscriptions'] = filter_queryset_in_years(all_subs, 2014, 2028)
 
 		return context
+
+	def form_valid(self, form):
+		form.instance.customer = get_customer(self.kwargs.get('customer_id'))
+
+		year = self.kwargs.get('year')
+		valid = False
+		if year:
+			try:
+				year = date(day=1, month=1, year=int(year))
+				form.instance.year = year
+				valid = True
+			except ValueError:
+				pass
+
+		if not valid:
+			return super(CreateSubscriptionView, self).form_invalid(form)
+
+		return super(CreateSubscriptionView, self).form_valid(form)
 
 
 class UpdateSubscriptionView(LoginRequiredMixin, UpdateView):
@@ -97,6 +103,8 @@ class UpdateSubscriptionView(LoginRequiredMixin, UpdateView):
 		context = super(UpdateSubscriptionView, self).get_context_data(**kwargs)
 		context['op'] = 'Modifica'
 		context['id'] = self.object.customer.id
+		context['customer_name'] = str(self.object.customer)
+		context['year'] = self.object.year.year
 
 		all_subs = self.object.customer.subscription_set.all()
 		context['subscriptions'] = filter_queryset_in_years(all_subs, 2014, 2028)
