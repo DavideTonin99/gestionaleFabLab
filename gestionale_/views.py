@@ -3,6 +3,8 @@ from datetime import date
 from django.shortcuts import reverse, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView
+from django.forms.utils import ErrorList
+from django.forms.forms import NON_FIELD_ERRORS
 
 from .models import Customer, Subscription
 from .forms import CustomerForm, SubscriptionForm
@@ -17,9 +19,13 @@ class CreateCustomerView(LoginRequiredMixin, CreateView):
 
 	def get_context_data(self, **kwargs):
 		context = super(CreateCustomerView, self).get_context_data(**kwargs)
-		context['customers'] = self.model.objects.all()
+
+		customers = self.model.objects.all()
+		context['customers'] = [(customer, get(customer.subscription_set.filter(year__year=date.today().year), 0))
+		                        for customer in customers]
+
 		context['op'] = 'Crea'
-		context['year'] = date.today().year
+
 		return context
 
 
@@ -82,7 +88,11 @@ class CreateSubscriptionView(LoginRequiredMixin, CreateView):
 			except ValueError:
 				pass
 
+		valid = valid and not bool(len(self.model.objects.filter(year__year=year.year)))
+
 		if not valid:
+			errors = form.errors.setdefault(NON_FIELD_ERRORS, ErrorList())
+			errors.append("Anno non valido")
 			return super(CreateSubscriptionView, self).form_invalid(form)
 
 		return super(CreateSubscriptionView, self).form_valid(form)
