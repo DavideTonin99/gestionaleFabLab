@@ -19,6 +19,7 @@ class CreateCustomerView(LoginRequiredMixin, CreateView):
 		context = super(CreateCustomerView, self).get_context_data(**kwargs)
 		context['customers'] = self.model.objects.all()
 		context['op'] = 'Crea'
+		context['year'] = date.today().year
 		return context
 
 
@@ -62,7 +63,6 @@ class CreateSubscriptionView(LoginRequiredMixin, CreateView):
 		customer = get_customer(self.kwargs.get('customer_id'))
 		context['id'] = customer.id
 		context['customer_name'] = str(customer)
-		context['year'] = self.kwargs.get('year')
 
 		all_subs = customer.subscription_set.all()
 		context['subscriptions'] = filter_queryset_in_years(all_subs, 2014, 2028)
