@@ -28,12 +28,12 @@
                 </tr>
             </thead>
             {% for customer in customers %}
-                <tr class="tr-selectable"  onclick="document.location.href = '{% url 'gestionale_:update_customer' customer_id=customer.id%}'">
-                    <td>{{ customer.surname }}</td>
-                    <td>{{ customer.name }}</td>
-                    <td>{{ customer.card }}</td>
-                    <td>{{ customer.email }}</td>
-                    <td>{{ customer.telephone }}</td>
+                <tr class="tr-selectable"  onclick="document.location.href = '{% url 'gestionale_:update_customer' customer_id=customer.0.id%}'">
+                    <td>{{ customer.0.surname }}</td>
+                    <td>{{ customer.0.name }}</td>
+                    <td>{{ customer.0.card }}</td>
+                    <td>{{ customer.0.email }}</td>
+                    <td>{{ customer.0.telephone }}</td>
                 </tr>
             {% endfor %}
         </table>
