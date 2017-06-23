@@ -69,7 +69,6 @@ class CreateSubscriptionView(LoginRequiredMixin, CreateView):
 		customer = get_customer(self.kwargs.get('customer_id'))
 		context['id'] = customer.id
 		context['customer_name'] = str(customer)
-		context['year'] = self.kwargs.get('year')
 
 		all_subs = customer.subscription_set.all()
 		context['subscriptions'] = filter_queryset_in_years(all_subs, 2014, 2028)

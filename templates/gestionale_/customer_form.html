@@ -6,34 +6,60 @@
 
 {% block content %}
     <script>
+        var selected_customer;
+
         $(document).ready(function () {
+            // cambia colore alla riga selezionata in base all'id dell'utente
+            //url = (window.location.href).split("/");
+            selected_customer = url[url.length - 2];
+
+            if (selected_customer && selected_customer !== "") {
+                try {
+
+                    $('#customer-'+selected_customer).css("background-color", "#ffeba3");
+                } catch(error) {}
+            }
+
             $("#id_born").datepicker({
                 dateFormat: "dd/mm/yy"
             });
             $("#id_first_association").datepicker({
                 dateFormat: "dd/mm/yy"
             });
+
+            $(".tr-selectable").on ({
+                mouseover: function(event) {
+                    var customer_id = event.target.className;
+                    $("#" + customer_id).css("text-decoration", "underline");
+                },
+                mouseleave: function(event) {
+                    var customer_id = event.target.className;
+                    $("#" + customer_id).css("text-decoration", "none");
+                }
+            });
+
         });
     </script>
 
     <div class="row scrollable-table">
-        <table id="client-table" class="table-bordered table-striped info-table">
-            <thead>
-                <tr>
-                    <th>Cognome</th>
-                    <th>Nome</th>
-                    <th>Tessera</th>
-                    <th>Mail</th>
-                    <th>Cellulare</th>
-                </tr>
-            </thead>
+        <table id="client-table" class="table-striped table-bordered info-table">
+            <tr>
+                <th>Cognome</th>
+                <th>Nome</th>
+                <th>Tessera</th>
+                <th>Mail</th>
+                <th>Cellulare</th>
+                <th>Quota attuale</th>
+            </tr>
             {% for customer in customers %}
-                <tr class="tr-selectable"  onclick="document.location.href = '{% url 'gestionale_:update_customer' customer_id=customer.0.id%}'">
-                    <td>{{ customer.0.surname }}</td>
-                    <td>{{ customer.0.name }}</td>
-                    <td>{{ customer.0.card }}</td>
-                    <td>{{ customer.0.email }}</td>
-                    <td>{{ customer.0.telephone }}</td>
+
+                <tr class="tr-selectable" id="customer-{{ customer.id }}" onclick="document.location.href = '{% url 'gestionale_:update_customer' customer_id=customer.id%}'">
+                    <td class="customer-{{ customer.0.id }}">{{ customer.0.surname }}</td>
+                    <td class="customer-{{ customer.0.id }}">{{ customer.0.name }}</td>
+                    <td class="customer-{{ customer.0.id }}">{{ customer.0.card }}</td>
+                    <td class="customer-{{ customer.0.id }}">{{ customer.0.email }}</td>
+                    <td class="customer-{{ customer.0.id }}">{{ customer.0.telephone }}</td>
+
                 </tr>
             {% endfor %}
         </table>
@@ -42,7 +68,7 @@
     <div class="row">
         <form method="post" id="client-form">
             {% csrf_token %}
-            <table class="col-sm-8">
+            <table class="col-sm-6">
                 {{ form.as_table }}
             </table>
             <div class="actions-div col-sm-4">
