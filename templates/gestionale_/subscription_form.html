@@ -21,7 +21,7 @@
     <div class="row">
         <form id="renew-form" method="post" class="col-sm-6">
             {% csrf_token %}
-            <p>Iscrizione anno {{ year }}, {{ customer_name }}</p>
+            <h4>Iscrizione anno {{ year }}, {{ customer_name }}</h4>
             <table>
                 {{ form.as_table }}
             </table>
