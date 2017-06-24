@@ -6,8 +6,8 @@ from django.views.generic import CreateView, UpdateView
 from django.forms.utils import ErrorList
 from django.forms.forms import NON_FIELD_ERRORS
 
-from .models import Customer, Subscription
-from .forms import CustomerForm, SubscriptionForm
+from .models import Customer, Subscription, Event
+from .forms import CustomerForm, SubscriptionForm, EventForm
 
 
 class CreateCustomerView(LoginRequiredMixin, CreateView):
@@ -120,6 +120,41 @@ class UpdateSubscriptionView(LoginRequiredMixin, UpdateView):
 
 		all_subs = self.object.customer.subscription_set.all()
 		context['subscriptions'] = filter_queryset_in_years(all_subs, 2014, 2028)
+
+		return context
+
+
+class CreateEventView(LoginRequiredMixin, CreateView):
+	model = Event
+	form_class = EventForm
+
+	def get_success_url(self):
+		return reverse('gestionale_:update_event', args=(self.object.id,))
+
+	def get_context_data(self, **kwargs):
+		context = super(CreateEventView, self).get_context_data(**kwargs)
+
+		context['events'] = self.model.objects.all()
+		context['op'] = 'Crea'
+
+		return context
+
+
+class UpdateEventView(LoginRequiredMixin, UpdateView):
+	model = Event
+	form_class = EventForm
+
+	def get_success_url(self):
+		return reverse('gestionale_:update_event', args=(self.object.id,))
+
+	def get_object(self, queryset=None):
+		return get_object_or_404(self.model.objects.filter(id=self.kwargs.get('event_id')))
+
+	def get_context_data(self, **kwargs):
+		context = super(UpdateEventView, self).get_context_data(**kwargs)
+
+		context['events'] = self.model.objects.all()
+		context['op'] = 'Modifica'
 
 		return context
 

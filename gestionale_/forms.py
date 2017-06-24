@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from .models import Customer, Subscription
+from .models import Customer, Subscription, Event
 
 
 class CustomerForm(ModelForm):
@@ -12,7 +12,7 @@ class CustomerForm(ModelForm):
 		super(CustomerForm, self).__init__(*args, **kwargs)
 
 		for field in self.fields.values():
-			field.widget.attrs['class'] = "form-control"
+			field.widget.attrs['class'] = 'form-control'
 
 
 class SubscriptionForm(ModelForm):
@@ -24,4 +24,16 @@ class SubscriptionForm(ModelForm):
 		super(SubscriptionForm, self).__init__(*args, **kwargs)
 
 		for field in self.fields.values():
-			field.widget.attrs['class'] = "form-control"
+			field.widget.attrs['class'] = 'form-control'
+
+
+class EventForm(ModelForm):
+	class Meta:
+		model = Event
+		fields = '__all__'
+
+	def __init__(self, *args, **kwargs):
+		super(EventForm, self).__init__(*args, **kwargs)
+
+		for field in self.fields.values():
+			field.widget.attrs['class'] = 'form-control'

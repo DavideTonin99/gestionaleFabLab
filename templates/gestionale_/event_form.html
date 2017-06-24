@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %} <title>FabLab | Eventi</title> {% endblock %}
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+    <br><br>
+
+    {% include 'gestionale_/events_table.html' with events=events only %}
+
+    <br>
+
+    {% csrf_token %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" >{{ op }}</button>
+    </form>
+{% endblock %}

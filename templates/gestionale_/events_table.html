@@ -1,0 +1,3 @@
+{% for event in events %}
+    <a href="{% url 'gestionale_:update_event' event_id=event.id %}">{{ event.name }}</a><br>
+{% endfor %}
