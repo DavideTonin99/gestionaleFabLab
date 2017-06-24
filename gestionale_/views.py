@@ -41,7 +41,8 @@ class UpdateCustomerView(LoginRequiredMixin, UpdateView):
 
 	def get_context_data(self, **kwargs):
 		context = super(UpdateCustomerView, self).get_context_data(**kwargs)
-		context['customers'] = self.model.objects.all()
+		context['customers'] = [(customer, get(customer.subscription_set.filter(year__year=date.today().year), 0))
+		                        for customer in self.model.objects.all()]
 		context['op'] = 'Modifica'
 		context['id'] = self.object.id
 
