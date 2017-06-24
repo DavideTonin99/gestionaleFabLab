@@ -41,8 +41,8 @@
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav">
                         <li id="anagrafica"><a href="{% url 'gestionale_:create_customer' %}">Anagrafica</a></li>
-                        <li id="eventi"><a href="{% url 'gestionale_:create_event' %}">Eventi</a></li><!--TODO-->
-                        <li id="lavorazioni"><a href="">Lavorazioni</a></li><!--TODO-->
+                        <li id="eventi"><a href="{% url 'gestionale_:create_event' %}">Eventi</a></li>
+                        <li id="lavorazioni"><a href="{% url 'gestionale_:create_processing' %}">Lavorazioni</a></li>
                     </ul>
                     {% if user.is_authenticated %}
                     <ul class="nav navbar-nav navbar-right">
