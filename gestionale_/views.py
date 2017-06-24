@@ -90,7 +90,8 @@ class CreateSubscriptionView(LoginRequiredMixin, CreateView):
 			except ValueError:
 				pass
 
-		valid = valid and not bool(len(self.model.objects.filter(year__year=year.year)))
+		valid = valid and not bool(len(self.model.objects.filter(customer=form.instance.customer,
+		                                                         year__year=year.year)))
 
 		if not valid:
 			errors = form.errors.setdefault(NON_FIELD_ERRORS, ErrorList())
