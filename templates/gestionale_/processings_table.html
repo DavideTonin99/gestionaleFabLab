@@ -1,0 +1,3 @@
+{% for processing in processings %}
+    <a href="{% url 'gestionale_:update_processing' processing_id=processing.id %}">{{ processing.type }}</a><br>
+{% endfor %}

@@ -6,8 +6,8 @@ from django.views.generic import CreateView, UpdateView
 from django.forms.utils import ErrorList
 from django.forms.forms import NON_FIELD_ERRORS
 
-from .models import Customer, Subscription, Event
-from .forms import CustomerForm, SubscriptionForm, EventForm
+from .models import Customer, Subscription, Event, Processing
+from .forms import CustomerForm, SubscriptionForm, EventForm, ProcessingForm
 
 
 class CreateCustomerView(LoginRequiredMixin, CreateView):
@@ -90,7 +90,8 @@ class CreateSubscriptionView(LoginRequiredMixin, CreateView):
 			except ValueError:
 				pass
 
-		valid = valid and not bool(len(self.model.objects.filter(year__year=year.year)))
+		valid = valid and not bool(len(self.model.objects.filter(customer=form.instance.customer,
+		                                                         year__year=year.year)))
 
 		if not valid:
 			errors = form.errors.setdefault(NON_FIELD_ERRORS, ErrorList())
@@ -154,6 +155,41 @@ class UpdateEventView(LoginRequiredMixin, UpdateView):
 		context = super(UpdateEventView, self).get_context_data(**kwargs)
 
 		context['events'] = self.model.objects.all()
+		context['op'] = 'Modifica'
+
+		return context
+
+
+class CreateProcessingView(LoginRequiredMixin, CreateView):
+	model = Processing
+	form_class = ProcessingForm
+
+	def get_success_url(self):
+		return reverse('gestionale_:update_processing', args=(self.object.id,))
+
+	def get_context_data(self, **kwargs):
+		context = super(CreateProcessingView, self).get_context_data(**kwargs)
+
+		context['processings'] = self.model.objects.all()
+		context['op'] = 'Crea'
+
+		return context
+
+
+class UpdateProcessingView(LoginRequiredMixin, UpdateView):
+	model = Processing
+	form_class = ProcessingForm
+
+	def get_success_url(self):
+		return reverse('gestionale_:update_processing', args=(self.object.id,))
+
+	def get_object(self, queryset=None):
+		return get_object_or_404(self.model.objects.filter(id=self.kwargs.get('processing_id')))
+
+	def get_context_data(self, **kwargs):
+		context = super(UpdateProcessingView, self).get_context_data(**kwargs)
+
+		context['processings'] = self.model.objects.all()
 		context['op'] = 'Modifica'
 
 		return context

@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 from .views import CreateCustomerView, UpdateCustomerView, CreateSubscriptionView, UpdateSubscriptionView,\
-	CreateEventView, UpdateEventView
+	CreateEventView, UpdateEventView, CreateProcessingView, UpdateProcessingView
 
 app_name = 'gestionale_'
 urlpatterns = [
@@ -13,5 +13,7 @@ urlpatterns = [
 	url(r'anagrafica/(?P<customer_id>[0-9]+)/modifica/(?P<subscription_id>[0-9]+)/$', UpdateSubscriptionView.as_view(),
 	    name='update_subscription'),
 	url(r'^eventi/crea/$', CreateEventView.as_view(), name='create_event'),
-	url(r'^eventi/modifica/(?P<event_id>[0-9]+)/$', UpdateEventView.as_view(), name='update_event')
+	url(r'^eventi/modifica/(?P<event_id>[0-9]+)/$', UpdateEventView.as_view(), name='update_event'),
+	url(r'^lavorazioni/crea/$', CreateProcessingView.as_view(), name='create_processing'),
+	url(r'^lavorazioni/modifica/(?P<processing_id>[0-9]+)/$', UpdateProcessingView.as_view(), name='update_processing')
 ]
