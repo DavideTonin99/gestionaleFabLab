@@ -1,6 +1,8 @@
 from datetime import date
+from io import StringIO
+import csv
 
-from django.shortcuts import reverse, get_object_or_404
+from django.shortcuts import reverse, get_object_or_404, HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView
 from django.forms.utils import ErrorList
@@ -193,6 +195,20 @@ class UpdateProcessingView(LoginRequiredMixin, UpdateView):
 		context['op'] = 'Modifica'
 
 		return context
+
+
+def get_participants_emails_csv(request, event_id):
+	event = get_object_or_404(Event.objects.filter(id=event_id))
+
+	output = StringIO()
+	csv.writer(output).writerows([participant.email] for participant in event.participants.all())
+	content = output.getvalue()
+
+	response = HttpResponse(content, content_type='text/csv')
+	response['Content-Disposition'] = 'inline; filename="{}.csv"'.format(event.name or event.id)
+	response['Content-Length'] = len(content)
+
+	return response
 
 
 def filter_queryset_in_years(queryset, from_, to):
