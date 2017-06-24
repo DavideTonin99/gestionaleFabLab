@@ -11,7 +11,7 @@
         </thead>
         <tbody>
         {% for processing in processings %}
-            <tr class="tr-selectable" id="{{ processing.id }}" onclick="window.location.href = '{% url 'gestionale_:update_processing' processing_id=processing.id %}'">
+            <tr class="tr-selectable" id="processing-{{ processing.id }}" onclick="window.location.href = '{% url 'gestionale_:update_processing' processing_id=processing.id %}'">
                 <td class="processing-{{ processing.id }}">{{ processing.data }}</td>
                 <td class="processing-{{ processing.id }}">{{ processing.customer }}</td>
                 <td class="processing-{{ processing.id }}">{{ processing.type }}</td>

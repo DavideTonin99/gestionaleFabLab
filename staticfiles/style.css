@@ -25,7 +25,7 @@
 
 .container {
     margin-top: 70px;
-    min-height: 70vh;
+    min-height: 75vh;
 }
 
 table tr {
@@ -49,20 +49,6 @@ table tr {
     text-align: center;
     padding: 5px;
 }
-
-/* Pagina login*/
-.login {
-    width: 40%;
-    margin: auto;
-    margin-top: 7%;
-}
-
-.login-input {
-    min-width: 100% !important;
-    margin-bottom: 20px;
-    margin-top: 5px;
-}
-
 
 /* Pagina anagrafica */
 .errorlist {
@@ -120,8 +106,35 @@ table tr {
 
 footer {
     margin-top: 20px;
+    padding: 20px;
+    line-height: 30px;
     clear: both;
     width: 100%;
-    color: white;
-    background-color: black;
+    color: #555;
+    background-color: #f8f8f8;
+    border-top: 2px solid #e7e7e7;
+}
+
+@media screen and (max-width: 767px) {
+    .navbar-brand>img {
+        margin-top: -10px;
+        height: 40px;
+    }
+
+    .nav>li {
+        height: 40px;
+    }
+
+    .nav>li>a {
+        padding: 0;
+    }
+
+    .navbar-nav>li>a {
+        line-height: 20px !important;
+        vertical-align: middle;
+    }
+
+    .container {
+        min-height: 70vh;
+    }
 }

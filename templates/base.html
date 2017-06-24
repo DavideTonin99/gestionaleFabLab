@@ -19,16 +19,18 @@
             $(document).ready(function(){
                 url = (window.location.href).split("/");
                 var currentPage = url[3];
-                document.getElementById("" + currentPage + "").className = "active";
+                try {
+                    document.getElementById("" + currentPage + "").className = "active";
+                } catch(error){}
 
                 $(".tr-selectable").on ({
                     mouseover: function(event) {
-                        var id = event.target.className;
-                        $("#" + id[id.length-1]).css("text-decoration", "underline");
+                        var row_id = event.target.className;
+                        $("#" + row_id).css("text-decoration", "underline");
                     },
                     mouseleave: function(event) {
-                        var id = event.target.className;
-                        $("#" + id[id.length-1]).css("text-decoration", "none");
+                        var row_id = event.target.className;
+                        $("#" + row_id).css("text-decoration", "none");
                     }
                 });
 
@@ -36,8 +38,22 @@
                 selected_row = url[url.length - 2];
 
                 if (selected_row && selected_row !== "") {
+
                     try {
-                        $('#'+selected_row).css("background-color", "#ffeba3");
+                        switch (currentPage) {
+                            case "anagrafica":
+                                $('#customer-'+selected_row).css("background-color", "#ffeba3");
+                                break;
+                            case "eventi":
+                                $('#event-'+selected_row).css("background-color", "#ffeba3");
+                                break;
+                            case "lavorazioni":
+                                $('#processing-'+selected_row).css("background-color", "#ffeba3");
+                                break;
+                            default:
+                                break;
+                        }
+
                     } catch(error) {}
                 }
 
@@ -77,9 +93,8 @@
             {% block content %} {% endblock %}
         </div>
         <footer>
-            <img class="logo" src="{% static 'gestionale_/logo_fablab.png' %}">
             Gestionale FabLab
-            Credits: Tonin Davide, Novelli Matteo, Conti Enrico, Forigo Ettore
+            Credits: Tonin Davide, Forigo Ettore, Novelli Matteo, Conti Enrico
         </footer>
     </body>
 </html>

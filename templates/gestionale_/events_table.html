@@ -11,7 +11,7 @@
         </thead>
         <tbody>
         {% for event in events %}
-            <tr class="tr-selectable" id="{{ event.id }}" onclick="window.location.href = '{% url 'gestionale_:update_event' event_id=event.id %}'">
+            <tr class="tr-selectable" id="event-{{ event.id }}" onclick="window.location.href = '{% url 'gestionale_:update_event' event_id=event.id %}'">
                 <td class="event-{{ event.id }}">{{ event.date }}</td>
                 <td class="event-{{ event.id }}">{{ event.name }}</td>
                 <td class="event-{{ event.id }}">{{ event.cost }}&nbsp;&euro;</td>
