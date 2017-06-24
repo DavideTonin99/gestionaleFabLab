@@ -48,7 +48,7 @@
                 <th>Tessera</th>
                 <th>Mail</th>
                 <th>Cellulare</th>
-                <th>Quota attuale</th>
+                <th>Iscrizione <script>document.write(new Date().getFullYear())</script></th>
             </tr>
             {% for customer in customers %}
                 <tr class="tr-selectable" id="customer-{{ customer.0.id }}" onclick="document.location.href = '{% url 'gestionale_:update_customer' customer_id=customer.0.id%}'">
