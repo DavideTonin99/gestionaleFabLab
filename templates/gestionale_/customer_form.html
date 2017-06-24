@@ -8,35 +8,12 @@
     <script>
         var selected_customer;
         $(document).ready(function () {
-            // cambia colore alla riga selezionata in base all'id dell'utente
-            //url = (window.location.href).split("/");
-            selected_customer = url[url.length - 2];
-
-            if (selected_customer && selected_customer !== "") {
-                try {
-
-                    $('#customer-'+selected_customer).css("background-color", "#ffeba3");
-                } catch(error) {}
-            }
-
             $("#id_born").datepicker({
                 dateFormat: "dd/mm/yy"
             });
             $("#id_first_association").datepicker({
                 dateFormat: "dd/mm/yy"
             });
-
-            $(".tr-selectable").on ({
-                mouseover: function(event) {
-                    var customer_id = event.target.className;
-                    $("#" + customer_id).css("text-decoration", "underline");
-                },
-                mouseleave: function(event) {
-                    var customer_id = event.target.className;
-                    $("#" + customer_id).css("text-decoration", "none");
-                }
-            });
-
         });
     </script>
 
@@ -51,7 +28,7 @@
                 <th>Iscrizione <script>document.write(new Date().getFullYear())</script></th>
             </tr>
             {% for customer in customers %}
-                <tr class="tr-selectable" id="customer-{{ customer.0.id }}" onclick="document.location.href = '{% url 'gestionale_:update_customer' customer_id=customer.0.id%}'">
+                <tr class="tr-selectable" id="{{ customer.0.id }}" onclick="document.location.href = '{% url 'gestionale_:update_customer' customer_id=customer.0.id%}'">
                     <td class="customer-{{ customer.0.id }}">{{ customer.0.surname }}</td>
                     <td class="customer-{{ customer.0.id }}">{{ customer.0.name }}</td>
                     <td class="customer-{{ customer.0.id }}">{{ customer.0.card }}</td>
@@ -92,7 +69,7 @@
     
     <div class="row scrollable-table">
         <h2>EVENTI</h2>
-        <table id="events-table" class="table-bordered table-striped info-table">
+        <table class="table-bordered table-striped info-table">
             <thead>
                 <tr>
                     <th>Data</th>
@@ -104,9 +81,9 @@
             <tbody>
             {% for event in events %}
                 <tr>
-                    <td>{{ event.data }}</td>
+                    <td>{{ event.date }}</td>
                     <td>{{ event.description }}</td>
-                    <td>{{ event.type }}</td>
+                    <td>{{ event.name }}</td>
                     <td>{{ event.cost }}&nbsp;&euro;</td>
                 </tr>
             {% endfor %}
@@ -118,7 +95,7 @@
 
     <div class="row scrollable-table">
         <h2>LAVORAZIONI</h2>
-        <table id="processings-table" class="table-bordered table-striped info-table">
+        <table class="table-bordered table-striped info-table">
             <thead>
                 <tr>
                     <th>Data</th>

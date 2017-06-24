@@ -1,3 +1,24 @@
-{% for event in events %}
-    <a href="{% url 'gestionale_:update_event' event_id=event.id %}">{{ event.name }}</a><br>
-{% endfor %}
+<div class="row scrollable-table">
+    <table id="events-table" class="table-bordered table-striped info-table">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Tipo</th>
+                <th>Costo</th>
+                <th>Descrizione</th>
+                <th>Operazioni</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+            <tr class="tr-selectable" id="{{ event.id }}" onclick="window.location.href = '{% url 'gestionale_:update_event' event_id=event.id %}'">
+                <td class="event-{{ event.id }}">{{ event.date }}</td>
+                <td class="event-{{ event.id }}">{{ event.name }}</td>
+                <td class="event-{{ event.id }}">{{ event.cost }}&nbsp;&euro;</td>
+                <td class="event-{{ event.id }}">{{ event.description }}</td>
+                <td class="event-{{ event.id }}">#TODO</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

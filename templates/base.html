@@ -17,9 +17,30 @@
             // highlights the active page on the navbar
             var url;
             $(document).ready(function(){
-                url = window.location.href;
-                var currentPage = url.split("/")[3];
+                url = (window.location.href).split("/");
+                var currentPage = url[3];
                 document.getElementById("" + currentPage + "").className = "active";
+
+                $(".tr-selectable").on ({
+                    mouseover: function(event) {
+                        var id = event.target.className;
+                        $("#" + id[id.length-1]).css("text-decoration", "underline");
+                    },
+                    mouseleave: function(event) {
+                        var id = event.target.className;
+                        $("#" + id[id.length-1]).css("text-decoration", "none");
+                    }
+                });
+
+                // cambia colore alla riga selezionata in base all'id
+                selected_row = url[url.length - 2];
+
+                if (selected_row && selected_row !== "") {
+                    try {
+                        $('#'+selected_row).css("background-color", "#ffeba3");
+                    } catch(error) {}
+                }
+
             });
         </script>
         {% block scripts %} {% endblock %}

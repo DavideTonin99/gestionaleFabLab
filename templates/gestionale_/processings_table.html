@@ -1,3 +1,24 @@
-{% for processing in processings %}
-    <a href="{% url 'gestionale_:update_processing' processing_id=processing.id %}">{{ processing.type }}</a><br>
-{% endfor %}
+<div class="row scrollable-table">
+    <table id="processings-table" class="table-bordered table-striped info-table">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Cliente</th>
+                <th>Tipo</th>
+                <th>Costo</th>
+                <th>Descrizione</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for processing in processings %}
+            <tr class="tr-selectable" id="{{ processing.id }}" onclick="window.location.href = '{% url 'gestionale_:update_processing' processing_id=processing.id %}'">
+                <td class="processing-{{ processing.id }}">{{ processing.data }}</td>
+                <td class="processing-{{ processing.id }}">{{ processing.customer }}</td>
+                <td class="processing-{{ processing.id }}">{{ processing.type }}</td>
+                <td class="processing-{{ processing.id }}">{{ processing.cost }}&nbsp;&euro;</td>
+                <td class="processing-{{ processing.id }}">{{ processing.description }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

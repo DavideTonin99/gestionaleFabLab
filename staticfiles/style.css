@@ -82,7 +82,7 @@ table tr {
     width: 100%;
 }
 
-#client-table, #renew-table td:hover {
+#client-table, #renew-table, #events-table, #processings-table td:hover {
     cursor: pointer;
 }
 
