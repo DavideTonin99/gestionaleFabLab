@@ -51,12 +51,21 @@
                 <th>Quota attuale</th>
             </tr>
             {% for customer in customers %}
-                <tr class="tr-selectable" id="customer-{{ customer.id }}" onclick="document.location.href = '{% url 'gestionale_:update_customer' customer_id=customer.id%}'">
-                    <td class="customer-{{ customer.id }}">{{ customer.surname }}</td>
-                    <td class="customer-{{ customer.id }}">{{ customer.name }}</td>
-                    <td class="customer-{{ customer.id }}">{{ customer.card }}</td>
-                    <td class="customer-{{ customer.id }}">{{ customer.email }}</td>
-                    <td class="customer-{{ customer.id }}">{{ customer.telephone }}</td>
+                <tr class="tr-selectable" id="customer-{{ customer.0.id }}" onclick="document.location.href = '{% url 'gestionale_:update_customer' customer_id=customer.0.id%}'">
+                    <td class="customer-{{ customer.0.id }}">{{ customer.0.surname }}</td>
+                    <td class="customer-{{ customer.0.id }}">{{ customer.0.name }}</td>
+                    <td class="customer-{{ customer.0.id }}">{{ customer.0.card }}</td>
+                    <td class="customer-{{ customer.0.id }}">{{ customer.0.email }}</td>
+                    <td class="customer-{{ customer.0.id }}">{{ customer.0.telephone }}</td>
+                    <td class="customer-{{ customer.0.id }}">
+                    {% if customer.1.type == 0 %}
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                    {% elif customer.1.type == 1 %}
+                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                    {% else %}
+                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                    {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
         </table>
