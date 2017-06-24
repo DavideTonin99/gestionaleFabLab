@@ -126,6 +126,8 @@ TIME_ZONE = 'Europe/Rome'
 
 DATE_FORMAT = 'd/m/Y'
 DATE_INPUT_FORMATS = ('%d/%m/%Y',)
+DATETIME_FORMAT = 'd/m/Y-H:i'
+DATETIME_INPUT_FORMATS = ('%d/%m/%Y-%H:%M',)
 
 USE_I18N = True
 
