@@ -28,7 +28,7 @@
                 <th>Iscrizione <script>document.write(new Date().getFullYear())</script></th>
             </tr>
             {% for customer in customers %}
-                <tr class="tr-selectable" id="{{ customer.0.id }}" onclick="document.location.href = '{% url 'gestionale_:update_customer' customer_id=customer.0.id%}'">
+                <tr class="tr-selectable" id="customer-{{ customer.0.id }}" onclick="document.location.href = '{% url 'gestionale_:update_customer' customer_id=customer.0.id%}'">
                     <td class="customer-{{ customer.0.id }}">{{ customer.0.surname }}</td>
                     <td class="customer-{{ customer.0.id }}">{{ customer.0.name }}</td>
                     <td class="customer-{{ customer.0.id }}">{{ customer.0.card }}</td>
