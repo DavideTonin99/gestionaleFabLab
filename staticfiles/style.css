@@ -50,6 +50,14 @@ table tr {
     padding: 5px;
 }
 
+ .payment-icon {
+     height: 20px;
+ }
+
+ .cash-icon {
+    height: 30px;
+ }
+
 /* Pagina anagrafica */
 .errorlist {
     padding-top: 10px;
