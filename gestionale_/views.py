@@ -1,15 +1,16 @@
+import csv
 from datetime import date
 from io import StringIO
-import csv
 
-from django.shortcuts import reverse, get_object_or_404, HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, UpdateView
-from django.forms.utils import ErrorList
 from django.forms.forms import NON_FIELD_ERRORS
+from django.forms.utils import ErrorList
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
+from django.shortcuts import reverse, get_object_or_404
+from django.views.generic import CreateView, UpdateView
 
-from .models import Customer, Subscription, Event, Processing
 from .forms import CustomerForm, SubscriptionForm, EventForm, ProcessingForm
+from .models import Customer, Subscription, Event, Processing
 
 
 class CreateCustomerView(LoginRequiredMixin, CreateView):
@@ -209,6 +210,21 @@ def get_participants_emails_csv(request, event_id):
 	response['Content-Length'] = len(content)
 
 	return response
+
+
+def get_homonyms(request):
+	try:
+		assert request.method == 'POST'
+
+		name, surname = request.POST.get('name'), request.POST.get('surname')
+		assert bool(name) and bool(surname)
+
+		return JsonResponse({
+			'results': [[customer.name, customer.surname, reverse('gestionale_:update_customer', args=(customer.id,))]
+		                for customer in Customer.objects.filter(name__istartswith=name, surname__istartswith=surname)]
+		})
+	except AssertionError:
+		return HttpResponseBadRequest()
 
 
 def filter_queryset_in_years(queryset, from_, to):

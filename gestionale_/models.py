@@ -1,6 +1,7 @@
-from django.db import models
-from django.core.validators import RegexValidator
 from datetime import date
+
+from django.core.validators import RegexValidator
+from django.db import models
 
 cap_regex = RegexValidator(regex=r'^\d{5}$', message='CAP non valido')
 card_regex = RegexValidator(regex=r'^VRFL\d{5}$', message='Tessera non valida')
@@ -22,7 +23,7 @@ class Customer(models.Model):
 	first_association = models.DateField(verbose_name='Data associazione', default=date.today)
 
 	def __str__(self):
-		return ' '.join((self.name.capitalize(), self.surname.capitalize()))
+		return ' '.join((self.card, self.name.capitalize(), self.surname.capitalize()))
 
 
 class Event(models.Model):
