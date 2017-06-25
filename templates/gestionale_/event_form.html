@@ -21,8 +21,8 @@
                 {{ form.as_table }}
             </table>
             <div class="actions-div col-sm-4">
-                <button type="submit" class="btn btn-success">{{ op }}</button>
-                <button class="btn btn-danger" type="reset" onclick="window.location.href='{% url 'gestionale_:create_event' %}'">Reset</button>
+                <button type="submit" class="btn btn-success action-button">{{ op }}</button>
+                <button class="btn btn-danger action-button" type="reset" onclick="window.location.href='{% url 'gestionale_:create_event' %}'">Reset</button>
             </div>
         </form>
     </div>
