@@ -220,8 +220,8 @@ def get_homonyms(request):
 		assert bool(name) and bool(surname)
 
 		return JsonResponse({
-			'results': [[customer.name, customer.surname, reverse('gestionale_:update_customer', args=(customer.id,))]
-		                for customer in Customer.objects.filter(name__istartswith=name, surname__istartswith=surname)]
+			'results': [[str(customer), reverse('gestionale_:update_customer', args=(customer.id,))]
+			            for customer in Customer.objects.filter(name__istartswith=name, surname__istartswith=surname)]
 		})
 	except AssertionError:
 		return HttpResponseBadRequest()

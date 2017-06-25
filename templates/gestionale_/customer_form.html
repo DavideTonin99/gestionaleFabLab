@@ -8,6 +8,36 @@
     <script>
         var selected_customer;
         $(document).ready(function () {
+            // using jQuery
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            var csrftoken = getCookie('csrftoken');
+
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+
             $("#id_born").datepicker({
                 dateFormat: "dd/mm/yy"
             });
@@ -19,18 +49,17 @@
                 if ($("#id_name").val() && $("#id_name").val() !== "" && $("#id_surname").val() && $("#id_surname").val() !== "") {
 
                     $.post("{% url 'gestionale_:get_homonyms' %}", { name: $("#id_name").val(), surname: $("#id_surname").val()}, function(client, status) {
-                        $httpProvider.defaults.xsrfCookieName = 'csrftoken';
-                        $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-
                         var result = client.results;
 
                         if (result.length > 0) {
-                            $("#omonimi-body").removeAll();
+                            $("#omonimi-body").empty();
                             $("#omonimi-body").append("<p>Chiudi la finestra per creare un nuovo associato, altrimenti seleziona uno dei seguenti per modificare: </p>")
 
                             $(result).each ( function(index, element) {
-                                $("#omonimi-body").append(element.0 + " " + element.1 + " <a href='" + element.2 + "'>Modifica</a><br>")
-                            });                        
+                                $("#omonimi-body").append(element[0] + " <a href='" + element[1] + "'>Modifica</a><br>")
+                            });
+
+                            $("#omonimi-modal").modal();
                         }
                     });
                 }
