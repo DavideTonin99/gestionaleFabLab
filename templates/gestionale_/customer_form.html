@@ -14,19 +14,64 @@
             $("#id_first_association").datepicker({
                 dateFormat: "dd/mm/yy"
             });
+
+            $("#id_name, #id_surname").blur( function() {
+                if ($("#id_name").val() && $("#id_name").val() !== "" && $("#id_surname").val() && $("#id_surname").val() !== "") {
+
+                    $.post("{% url 'gestionale_:get_homonyms' %}", { name: $("#id_name").val(), surname: $("#id_surname").val()}, function(client, status) {
+                        $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+                        $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+                        var result = client.results;
+
+                        if (result.length > 0) {
+                            $("#omonimi-body").removeAll();
+                            $("#omonimi-body").append("<p>Chiudi la finestra per creare un nuovo associato, altrimenti seleziona uno dei seguenti per modificare: </p>")
+
+                            $(result).each ( function(index, element) {
+                                $("#omonimi-body").append(element.0 + " " + element.1 + " <a href='" + element.2 + "'>Modifica</a><br>")
+                            });                        
+                        }
+                    });
+                }
+            });
         });
     </script>
 
+    <div class="modal fade" id="omonimi-modal" role="dialog">
+        <div class="modal-dialog">
+        
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Omonimi trovati</h4>
+                </div>
+
+                <div class="modal-body" id="omonimi-body">
+                </div>
+                
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            
+            </div>
+          
+        </div>
+    </div>
+
     <div class="row scrollable-table">
         <table id="client-table" class="table-striped table-bordered info-table">
-            <tr>
-                <th>Cognome</th>
-                <th>Nome</th>
-                <th>Tessera</th>
-                <th>Mail</th>
-                <th>Cellulare</th>
-                <th>Iscrizione <script>document.write(new Date().getFullYear())</script></th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Cognome</th>
+                    <th>Nome</th>
+                    <th>Tessera</th>
+                    <th>Mail</th>
+                    <th>Cellulare</th>
+                    <th>Iscrizione <script>document.write(new Date().getFullYear())</script></th>
+                </tr>
+            </thead>
             {% for customer in customers %}
                 <tr class="tr-selectable" id="customer-{{ customer.0.id }}" onclick="document.location.href = '{% url 'gestionale_:update_customer' customer_id=customer.0.id%}'">
                     <td class="customer-{{ customer.0.id }}">{{ customer.0.surname }}</td>

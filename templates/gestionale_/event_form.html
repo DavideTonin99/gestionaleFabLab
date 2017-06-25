@@ -17,11 +17,11 @@
     <div class="row">
         <form method="post" id="events-form">
             {% csrf_token %}
-            <table class="col-sm-6">
+            <table class="col-sm-6" style="margin-bottom: 10px;">
                 {{ form.as_table }}
             </table>
             <div class="actions-div col-sm-4">
-                <button type="submit" class="btn btn-success action-button">{{ op }}</button>
+                <button type="submit" class="btn btn-success action-button" style="margin-top: 0;">{{ op }}</button>
                 <button class="btn btn-danger action-button" type="reset" onclick="window.location.href='{% url 'gestionale_:create_event' %}'">Reset</button>
             </div>
         </form>
