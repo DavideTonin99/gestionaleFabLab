@@ -52,11 +52,91 @@
         <form method="post" id="client-form">
             {% csrf_token %}
             <table class="col-sm-6">
-                {{ form.as_table }}
+                <tr>
+                    <th>
+                        {{ form.name.label_tag }}
+                    </th>
+                    <td>
+                        {{ form.name.errors }}
+                        {{ form.name }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        {{ form.surname.label_tag }}
+                    </th>
+                    <td>
+                        {{ form.surname.errors }}
+                        {{ form.surname }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        {{ form.born.label_tag }}
+                    </th>
+                    <td>
+                        {{ form.born.errors }}
+                        {{ form.born }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        {{ form.cap.label_tag }}
+                    </th>
+                    <td>
+                        {{ form.cap.errors }}
+                        {{ form.cap }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        {{ form.telephone.label_tag }}
+                    </th>
+                    <td>
+                        {{ form.telephone.errors }}
+                        {{ form.telephone }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        {{ form.email.label_tag }}
+                    </th>
+                    <td>
+                        {{ form.email.errors }}
+                        {{ form.email }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>
+                        {{ form.first_association.label_tag }}
+                    </th>
+                    <td>
+                        {{ form.first_association.errors }}
+                        {{ form.first_association }}
+                    </td>
+                </tr>
+                <!--{{ form.as_table }} -->
             </table>
-            <div class="actions-div col-sm-4">
-                <button type="submit" class="btn btn-success">{{ op }}</button>
-                <button class="btn btn-danger" type="reset" onclick="window.location.href='{% url 'gestionale_:create_customer' %}'">Reset</button>
+            <div class="col-sm-4">
+                <table>
+                    <tr>
+                        <th>
+                            {{ form.card.label_tag }}
+                        </th>
+                        <td style="padding-left: 10px">
+                            {{ form.card.errors }}
+                            {{ form.card }}
+                        </td>
+                    </tr>
+                </table>
+                    <button type="submit" class="btn btn-success action-button">{{ op }}</button>
+                    <button class="btn btn-danger action-button" type="reset" onclick="window.location.href='{% url 'gestionale_:create_customer' %}'">Reset</button>
             </div>
         </form>
     </div>
