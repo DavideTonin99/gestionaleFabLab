@@ -58,6 +58,11 @@ table tr {
     height: 30px;
  }
 
+ .action-button {
+     width: 100%;
+     margin-top: 10px;
+ }
+
 /* Pagina anagrafica */
 .errorlist {
     padding-top: 10px;
