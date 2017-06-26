@@ -34,6 +34,7 @@ class Event(models.Model):
 	participants = models.ManyToManyField(Customer, verbose_name='Partecipanti', blank=True)
 	name = models.CharField(verbose_name='Nome', max_length=200)
 	date = models.DateTimeField(verbose_name='Data')
+	duration = models.DurationField(verbose_name='Durata', blank=True, null=True)
 	cost = models.DecimalField(verbose_name='Costo', max_digits=6, decimal_places=2, null=True, blank=True)
 	description = models.CharField(verbose_name='Descrizione', max_length=1000, null=True, blank=True)
 
@@ -64,8 +65,7 @@ class Processing(models.Model):
 
 	data = models.DateField(verbose_name='Data', default=date.today)
 	customer = models.ForeignKey(Customer, verbose_name='Cliente', on_delete=models.CASCADE)
-	type = models.PositiveSmallIntegerField(verbose_name='Tipo', choices=((0, 'Laser'), (1, 'Stampa3D'), (2, 'Fresa')))
-	#type = models.CharField(verbose_name='Tipo', max_length=100)
+	type = models.PositiveSmallIntegerField(verbose_name='Tipo', choices=((0, 'Laser'), (1, 'Stampa 3D'), (2, 'Fresa')))
 	cost = models.DecimalField(verbose_name='Costo', max_digits=6, decimal_places=2, null=True, blank=True)
 	description = models.CharField(verbose_name='Descrizione', max_length=1000, null=True, blank=True)
 

@@ -222,12 +222,12 @@
     <hr>
 
     <h2>EVENTI</h2>
-    {% include 'gestionale_/events_table.html' with events=events show_extended_table=show_extended_table only %}
+    {% include 'gestionale_/events_table.html' with events=events show_extended_table=False only %}
 
     <hr>
     
     <h2>LAVORAZIONI</h2>
-    {% include 'gestionale_/processings_table.html' with processings=processings show_extended_table=show_extended_table only %}
+    {% include 'gestionale_/processings_table.html' with processings=processings show_extended_table=False only %}
 
     {% endif %}
 
