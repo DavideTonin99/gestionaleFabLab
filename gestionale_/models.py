@@ -64,7 +64,8 @@ class Processing(models.Model):
 
 	data = models.DateField(verbose_name='Data', default=date.today)
 	customer = models.ForeignKey(Customer, verbose_name='Cliente', on_delete=models.CASCADE)
-	type = models.CharField(verbose_name='Tipo', max_length=100)
+	type = models.PositiveSmallIntegerField(verbose_name='Tipo', choices=((0, 'Laser'), (1, 'Stampa3D'), (2, 'Fresa')))
+	#type = models.CharField(verbose_name='Tipo', max_length=100)
 	cost = models.DecimalField(verbose_name='Costo', max_digits=6, decimal_places=2, null=True, blank=True)
 	description = models.CharField(verbose_name='Descrizione', max_length=1000, null=True, blank=True)
 
