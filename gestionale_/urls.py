@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from .views import CreateCustomerView, UpdateCustomerView, CreateSubscriptionView, UpdateSubscriptionView, \
 	CreateEventView, UpdateEventView, CreateProcessingView, UpdateProcessingView, get_participants_emails_csv,\
-	get_homonyms
+	get_homonyms, StatsView
 
 app_name = 'gestionale_'
 urlpatterns = [
@@ -18,5 +18,6 @@ urlpatterns = [
 	url(r'^lavorazioni/crea/$', CreateProcessingView.as_view(), name='create_processing'),
 	url(r'^lavorazioni/modifica/(?P<processing_id>[0-9]+)/$', UpdateProcessingView.as_view(), name='update_processing'),
 	url(r'^gpec/(?P<event_id>[0-9]+)/$', get_participants_emails_csv, name='get_participants_emails_csv'),
-	url(r'^gh/$', get_homonyms, name='get_homonyms')
+	url(r'^gh/$', get_homonyms, name='get_homonyms'),
+	url(r'^statistiche/$', StatsView.as_view(), name='stats')
 ]
