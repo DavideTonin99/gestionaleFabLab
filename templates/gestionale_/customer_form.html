@@ -220,56 +220,14 @@
     {% include 'gestionale_/subscriptions_table.html' with id=id subscriptions=subscriptions only %}
 
     <hr>
-    
-    <div class="row scrollable-table">
-        <h2>EVENTI</h2>
-        <table class="table-bordered table-striped info-table">
-            <thead>
-                <tr>
-                    <th>Data</th>
-                    <th>Descrizione</th>
-                    <th>Tipo</th>
-                    <th>Costo</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for event in events %}
-                <tr>
-                    <td>{{ event.date }}</td>
-                    <td>{{ event.description }}</td>
-                    <td>{{ event.name }}</td>
-                    <td>{{ event.cost }}&nbsp;&euro;</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+
+    <h2>EVENTI</h2>
+    {% include 'gestionale_/events_table.html' with events=events show_extended_table=show_extended_table only %}
 
     <hr>
-
-    <div class="row scrollable-table">
-        <h2>LAVORAZIONI</h2>
-        <table class="table-bordered table-striped info-table">
-            <thead>
-                <tr>
-                    <th>Data</th>
-                    <th>Descrizione</th>
-                    <th>Tipo</th>
-                    <th>Costo</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for process in processings %}
-                <tr>
-                    <td>{{ process.data }}</td>
-                    <td>{{ process.description }}</td>
-                    <td>{{ process.type }}</td>
-                    <td>{{ process.cost }}&nbsp;&euro;</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    
+    <h2>LAVORAZIONI</h2>
+    {% include 'gestionale_/processings_table.html' with processings=processings show_extended_table=show_extended_table only %}
 
     {% endif %}
 
