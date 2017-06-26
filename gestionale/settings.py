@@ -29,9 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Commentare in locale
-
 
 SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
@@ -99,7 +97,6 @@ DATABASES = {
     }
 }
 '''
-
 # per heroku
 
 SECRET_KEY = config('SECRET_KEY')
