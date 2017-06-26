@@ -7,7 +7,7 @@ from django.forms.forms import NON_FIELD_ERRORS
 from django.forms.utils import ErrorList
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.shortcuts import reverse, get_object_or_404
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, TemplateView
 
 from .forms import CustomerForm, SubscriptionForm, EventForm, ProcessingForm
 from .models import Customer, Subscription, Event, Processing
@@ -211,6 +211,14 @@ def get_participants_emails_csv(request, event_id):
 	response['Content-Length'] = len(content)
 
 	return response
+
+
+class StatsView(TemplateView):
+	template_name = "gestionale_/stats.html"
+
+	def get_context_data(self, **kwargs):
+		context = super(StatsView, self).get_context_data()
+		return context
 
 
 def get_homonyms(request):

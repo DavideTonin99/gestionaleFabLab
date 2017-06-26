@@ -80,6 +80,7 @@
                         <li id="anagrafica"><a href="{% url 'gestionale_:create_customer' %}">Anagrafica</a></li>
                         <li id="eventi"><a href="{% url 'gestionale_:create_event' %}">Eventi</a></li>
                         <li id="lavorazioni"><a href="{% url 'gestionale_:create_processing' %}">Lavorazioni</a></li>
+                        <li id="statistiche"><a href="{% url 'gestionale_:stats' %}">Statistiche</a></li>
                     </ul>
                     {% if user.is_authenticated %}
                     <ul class="nav navbar-nav navbar-right">
