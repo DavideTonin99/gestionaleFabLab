@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <th>Data</th>
-                {% if show_extended_table == True %}
+                {% if show_extended_table %}
                 <th>Cliente</th>
                 {% endif %}
                 <th>Tipo</th>
@@ -15,7 +15,7 @@
         {% for processing in processings %}
             <tr class="tr-selectable" id="processing-{{ processing.id }}" onclick="window.location.href = '{% url 'gestionale_:update_processing' processing_id=processing.id %}'">
                 <td class="processing-{{ processing.id }}">{{ processing.data }}</td>
-                {% if show_extended_table == True %}
+                {% if show_extended_table %}
                 <td class="processing-{{ processing.id }}">{{ processing.customer }}</td>
                 {% endif %}
                 <td class="processing-{{ processing.id }}">

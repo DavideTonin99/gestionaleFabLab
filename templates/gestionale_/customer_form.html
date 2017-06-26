@@ -6,37 +6,38 @@
 
 {% block content %}
     <script>
-        var selected_customer;
         $(document).ready(function () {
-            // using jQuery
-            function getCookie(name) {
-                var cookieValue = null;
-                if (document.cookie && document.cookie !== '') {
-                    var cookies = document.cookie.split(';');
-                    for (var i = 0; i < cookies.length; i++) {
-                        var cookie = jQuery.trim(cookies[i]);
-                        // Does this cookie string begin with the name we want?
-                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
+            {% if search_homonyms %}
+                // using jQuery
+                function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = jQuery.trim(cookies[i]);
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
                         }
                     }
+                    return cookieValue;
                 }
-                return cookieValue;
-            }
-            var csrftoken = getCookie('csrftoken');
+                var csrftoken = getCookie('csrftoken');
 
-            function csrfSafeMethod(method) {
-                // these HTTP methods do not require CSRF protection
-                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-            }
-            $.ajaxSetup({
-                beforeSend: function(xhr, settings) {
-                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
+                function csrfSafeMethod(method) {
+                    // these HTTP methods do not require CSRF protection
+                    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
                 }
-            });
+                $.ajaxSetup({
+                    beforeSend: function(xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                    }
+                });
+            {% endif %}
 
             $("#id_born").datepicker({
                 dateFormat: "dd/mm/yy"
@@ -45,25 +46,27 @@
                 dateFormat: "dd/mm/yy"
             });
 
-            $("#id_name, #id_surname").blur( function() {
-                if ($("#id_name").val() && $("#id_name").val() !== "" && $("#id_surname").val() && $("#id_surname").val() !== "") {
+            {% if search_homonyms %}
+                $("#id_name, #id_surname").blur( function() {
+                    if ($("#id_name").val() && $("#id_name").val() !== "" && $("#id_surname").val() && $("#id_surname").val() !== "") {
 
-                    $.post("{% url 'gestionale_:get_homonyms' %}", { name: $("#id_name").val(), surname: $("#id_surname").val()}, function(client, status) {
-                        var result = client.results;
+                        $.post("{% url 'gestionale_:get_homonyms' %}", { name: $("#id_name").val(), surname: $("#id_surname").val()}, function(client, status) {
+                            var result = client.results;
 
-                        if (result.length > 0) {
-                            $("#omonimi-body").empty();
-                            $("#omonimi-body").append("<p>Chiudi la finestra per creare un nuovo associato, altrimenti seleziona uno dei seguenti per modificare: </p>")
+                            if (result.length > 0) {
+                                $("#omonimi-body").empty();
+                                $("#omonimi-body").append("<p>Chiudi la finestra per creare un nuovo associato, altrimenti seleziona uno dei seguenti per modificare: </p>")
 
-                            $(result).each ( function(index, element) {
-                                $("#omonimi-body").append(element[0] + " <a href='" + element[1] + "'>Modifica</a><br>")
-                            });
+                                $(result).each ( function(index, element) {
+                                    $("#omonimi-body").append(element[0] + " <a href='" + element[1] + "'>Modifica</a><br>")
+                                });
 
-                            $("#omonimi-modal").modal();
-                        }
-                    });
-                }
-            });
+                                $("#omonimi-modal").modal();
+                            }
+                        });
+                    }
+                });
+            {% endif %}
         });
     </script>
 
