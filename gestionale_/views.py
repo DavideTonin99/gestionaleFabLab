@@ -218,6 +218,11 @@ class StatsView(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super(StatsView, self).get_context_data()
+
+		context['associated_yearly'] = {year: {'base': len(Subscription.objects.filter(year__year=year, type=0)),
+		                                       'maker': len(Subscription.objects.filter(year__year=year, type=1))}
+		                                for year in range(2014, date.today().year + 1)}
+
 		return context
 
 
