@@ -28,6 +28,7 @@ class CreateCustomerView(LoginRequiredMixin, CreateView):
 		                        for customer in customers]
 
 		context['op'] = 'Crea'
+		context['search_homonyms'] = True
 
 		return context
 
