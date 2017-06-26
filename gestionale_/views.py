@@ -55,7 +55,6 @@ class UpdateCustomerView(LoginRequiredMixin, UpdateView):
 		context['subscriptions'] = filter_queryset_in_years(all_subs, 2014, 2028)
 		context['processings'] = self.object.processing_set.all()
 		context['events'] = self.object.event_set.all()
-		context['show_extended_table'] = False
 
 		return context
 
@@ -141,7 +140,6 @@ class CreateEventView(LoginRequiredMixin, CreateView):
 
 		context['events'] = self.model.objects.all()
 		context['op'] = 'Crea'
-		context['show_extended_table'] = True
 
 		return context
 
@@ -161,7 +159,6 @@ class UpdateEventView(LoginRequiredMixin, UpdateView):
 
 		context['events'] = self.model.objects.all()
 		context['op'] = 'Modifica'
-		context['show_extended_table'] = True
 
 		return context
 
@@ -178,7 +175,6 @@ class CreateProcessingView(LoginRequiredMixin, CreateView):
 
 		context['processings'] = self.model.objects.all()
 		context['op'] = 'Crea'
-		context['show_extended_table'] = True
 
 		return context
 
@@ -198,7 +194,6 @@ class UpdateProcessingView(LoginRequiredMixin, UpdateView):
 
 		context['processings'] = self.model.objects.all()
 		context['op'] = 'Modifica'
-		context['show_extended_table'] = True
 
 		return context
 
