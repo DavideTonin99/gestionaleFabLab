@@ -1,8 +1,8 @@
 from django.conf.urls import url
 
 from .views import CreateCustomerView, UpdateCustomerView, CreateSubscriptionView, UpdateSubscriptionView, \
-	CreateEventView, UpdateEventView, CreateProcessingView, UpdateProcessingView, get_participants_emails_csv,\
-	get_homonyms, StatsView, get_associations_per_year
+	CreateEventView, UpdateEventView, CreateProcessingView, UpdateProcessingView, get_participants_emails_csv, \
+	get_homonyms, StatsView, get_associations_per_year, get_associations_per_month, get_renewals_for_year
 
 app_name = 'gestionale_'
 urlpatterns = [
@@ -20,5 +20,7 @@ urlpatterns = [
 	url(r'^statistiche/$', StatsView.as_view(), name='stats'),
 	url(r'^ajax/customers/gh/$', get_homonyms, name='get_homonyms'),
 	url(r'^ajax/events/gpec/(?P<event_id>[0-9]+)/$', get_participants_emails_csv, name='get_participants_emails_csv'),
-	url(r'^ajax/stats/gapy/$', get_associations_per_year, name='get_associations_per_year')
+	url(r'^ajax/stats/gapy/$', get_associations_per_year, name='get_associations_per_year'),
+	url(r'^ajax/stats/gapm/$', get_associations_per_month, name='get_associations_per_month'),
+	url(r'^ajax/stats/grpy/$', get_renewals_for_year, name='get_renewals_per_year')
 ]

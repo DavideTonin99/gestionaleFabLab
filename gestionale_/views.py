@@ -1,4 +1,5 @@
 import csv
+import re
 from datetime import date
 from io import StringIO
 
@@ -89,7 +90,7 @@ class CreateSubscriptionView(LoginRequiredMixin, CreateView):
 		valid = False
 		if year:
 			try:
-				year = date(day=1, month=1, year=int(year))
+				year = date(day=1, month=date.today().month, year=int(year))
 				form.instance.year = year
 				valid = True
 			except ValueError:
@@ -237,7 +238,7 @@ def get_homonyms(request):
 
 @login_required
 def get_associations_per_year(request):
-	years = range(2014, date.today().year + 1)
+	years = range(2014, 2028 + 1)
 	return JsonResponse({
 		'categories': list(years),
 		'series': [{
@@ -246,6 +247,54 @@ def get_associations_per_year(request):
 		}, {
 			'name': 'Maker',
 			'data': [len(Subscription.objects.filter(year__year=year, type=1)) for year in years]
+		}]})
+
+
+@login_required
+def get_associations_per_month(request):
+	try:
+		assert request.method == 'GET'
+
+		year = request.GET.get('year', '')
+		assert re.match('^\d{4}$', year)
+		year = int(year)
+
+		months = range(1, 12 + 1)
+
+		return JsonResponse({
+			'categories': list(months),
+			'series': [{
+				'name': 'Base',
+				'data': [len(Subscription.objects.filter(year__year=year, year__month=month, type=0)) for month in
+				         months]
+			}, {
+				'name': 'Maker',
+				'data': [len(Subscription.objects.filter(year__year=year, year__month=month, type=1)) for month in
+				         months]
+			}]})
+
+	except AssertionError:
+		return HttpResponseBadRequest()
+
+
+@login_required
+def get_renewals_for_year(request):
+	years = range(2014, 2028 + 1)
+
+	return JsonResponse({
+		'categories': list(years),
+		'series': [{
+			'name': 'Base',
+			'data': [sum(map(lambda sub: bool(sub) and bool(get(Subscription.objects.filter(customer=sub.customer,
+			                                                                                year__year=year - 1),
+			                                                    0, False)),
+			                 Subscription.objects.filter(year__year=year, type=0))) for year in years]
+		}, {
+			'name': 'Maker',
+			'data': [sum(map(lambda sub: bool(sub) and bool(get(Subscription.objects.filter(customer=sub.customer,
+			                                                                                year__year=year - 1),
+			                                                    0, False)),
+			                 Subscription.objects.filter(year__year=year, type=1))) for year in years]
 		}]})
 
 
