@@ -3,7 +3,102 @@
 {% block scripts %}
 {% endblock %}
 {% block content %}
-    <br><br>
+    <script>
 
-    {{ associated_yearly }}
+        var numberWithCommas = function (x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        };
+
+        var colors = ["rgba(255, 0, 0, 0.8)", "rgba(0, 255, 0, 0.8)", "rgba(0, 0, 255, 0.8)"];
+
+        $(document).ready(function () {
+            $.get("{% url 'gestionale_:get_associations_per_year' %}", function (data, status) {
+                if (data.categories !== undefined && data.series !== undefined) {
+                    $("#associated_yearly").parent().prepend('<h2 style="text-align: center;">Associati per anno</h2><br>');
+                    console.log($("h2"));
+                    associated_yearly_chart(data);
+                }
+            });
+
+            function associated_yearly_chart(data) {
+                var associated_yearly = document.getElementById('associated_yearly').getContext("2d");
+
+                var years = [];
+                var baseDataset;
+                var makerDataset;
+
+                $(data.categories).each( function (index, year) {
+                    years.push(year);
+                });
+
+                baseDataset = {
+                        label: "Base",
+                        data: data.series[0].data,
+                        backgroundColor: colors[0],
+                        hoverBackgroundColor: colors[0],
+                        hoverBorderWidth: 2,
+                        hoverBorderColor: 'lightgrey'
+                    };
+
+                makerDataset = {
+                        label: "Maker",
+                        data: data.series[1].data,
+                        backgroundColor: colors[1],
+                        hoverBackgroundColor: colors[1],
+                        hoverBorderWidth: 2,
+                        hoverBorderColor: 'lightgrey'
+                    };
+
+                var associated_yearly_chart = new Chart(associated_yearly, {
+                        type: 'bar',
+                        responsive: true,
+
+                        data: {
+                            labels: years,
+                            datasets: [
+                                baseDataset,
+                                makerDataset
+                            ]
+                        },
+                        options: {
+                            animation: {
+                                duration: 10,
+                            },
+                            tooltips: {
+                                mode: 'label',
+                                callbacks: {
+                                    label: function (tooltipItem, data) {
+                                        return data.datasets[tooltipItem.datasetIndex].label + ": " + numberWithCommas(tooltipItem.yLabel);
+                                    }
+                                }
+                            },
+                            scales: {
+                                xAxes: [{
+                                    stacked: true,
+                                    gridLines: {display: false},
+                                }],
+                                yAxes: [{
+                                    stacked: true,
+                                    ticks: {
+                                        callback: function (value) {
+                                            return numberWithCommas(value);
+                                        },
+                                        min: 0,
+                                        stepSize: 1,
+                                    },
+                                }],
+                            }, // scales
+                            legend: {display: true}
+                        } // options
+                    }
+                );
+            }
+
+        });
+    </script>
+    <br><br>
+    <div class="row">
+        <canvas id="associated_yearly" style="width:100%; height:50vh"></canvas>
+    </div>
+
 {% endblock %}
