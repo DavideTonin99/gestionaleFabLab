@@ -33,8 +33,8 @@ class Event(models.Model):
 
 	participants = models.ManyToManyField(Customer, verbose_name='Partecipanti', blank=True)
 	name = models.CharField(verbose_name='Nome', max_length=200)
-	date = models.DateTimeField(verbose_name='Data')
-	duration = models.DurationField(verbose_name='Durata', blank=True, null=True)
+	date = models.DateField(verbose_name='Data')
+	duration = models.PositiveSmallIntegerField(verbose_name='Durata (ore)')
 	cost = models.DecimalField(verbose_name='Costo', max_digits=6, decimal_places=2, null=True, blank=True)
 	description = models.CharField(verbose_name='Descrizione', max_length=1000, null=True, blank=True)
 
