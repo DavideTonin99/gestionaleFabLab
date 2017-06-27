@@ -286,14 +286,12 @@ def get_renewals_for_year(request):
 		'series': [{
 			'name': 'Base',
 			'data': [sum(map(lambda sub: bool(sub) and bool(get(Subscription.objects.filter(customer=sub.customer,
-			                                                                                year__year=year - 1),
-			                                                    0, False)),
+			                                                                                year__year=year - 1), 0)),
 			                 Subscription.objects.filter(year__year=year, type=0))) for year in years]
 		}, {
 			'name': 'Maker',
 			'data': [sum(map(lambda sub: bool(sub) and bool(get(Subscription.objects.filter(customer=sub.customer,
-			                                                                                year__year=year - 1),
-			                                                    0, False)),
+			                                                                                year__year=year - 1), 0)),
 			                 Subscription.objects.filter(year__year=year, type=1))) for year in years]
 		}]})
 
