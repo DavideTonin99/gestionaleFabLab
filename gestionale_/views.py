@@ -199,6 +199,10 @@ class UpdateProcessingView(LoginRequiredMixin, UpdateView):
 		return context
 
 
+class StatsView(TemplateView):
+	template_name = "gestionale_/stats.html"
+
+
 def get_participants_emails_csv(request, event_id):
 	event = get_object_or_404(Event.objects.filter(id=event_id))
 
@@ -211,19 +215,6 @@ def get_participants_emails_csv(request, event_id):
 	response['Content-Length'] = len(content)
 
 	return response
-
-
-class StatsView(TemplateView):
-	template_name = "gestionale_/stats.html"
-
-	def get_context_data(self, **kwargs):
-		context = super(StatsView, self).get_context_data()
-
-		context['associated_yearly'] = {year: {'base': len(Subscription.objects.filter(year__year=year, type=0)),
-		                                       'maker': len(Subscription.objects.filter(year__year=year, type=1))}
-		                                for year in range(2014, date.today().year + 1)}
-
-		return context
 
 
 def get_homonyms(request):
@@ -239,6 +230,19 @@ def get_homonyms(request):
 		})
 	except AssertionError:
 		return HttpResponseBadRequest()
+
+
+def get_associations_per_year(request):
+	years = range(2014, date.today().year + 1)
+	return JsonResponse({
+		'categories': list(years),
+		'series': [{
+			'name': 'Base',
+			'data': [len(Subscription.objects.filter(year__year=year, type=0)) for year in years]
+		}, {
+			'name': 'Maker',
+			'data': [len(Subscription.objects.filter(year__year=year, type=1)) for year in years]
+		}]})
 
 
 def filter_queryset_in_years(queryset, from_, to):
