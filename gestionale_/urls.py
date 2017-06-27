@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from .views import CreateCustomerView, UpdateCustomerView, CreateSubscriptionView, UpdateSubscriptionView, \
 	CreateEventView, UpdateEventView, CreateProcessingView, UpdateProcessingView, get_participants_emails_csv,\
-	get_homonyms, StatsView
+	get_homonyms, StatsView, get_associations_per_year
 
 app_name = 'gestionale_'
 urlpatterns = [
@@ -17,7 +17,8 @@ urlpatterns = [
 	url(r'^eventi/modifica/(?P<event_id>[0-9]+)/$', UpdateEventView.as_view(), name='update_event'),
 	url(r'^lavorazioni/crea/$', CreateProcessingView.as_view(), name='create_processing'),
 	url(r'^lavorazioni/modifica/(?P<processing_id>[0-9]+)/$', UpdateProcessingView.as_view(), name='update_processing'),
-	url(r'^gpec/(?P<event_id>[0-9]+)/$', get_participants_emails_csv, name='get_participants_emails_csv'),
-	url(r'^gh/$', get_homonyms, name='get_homonyms'),
-	url(r'^statistiche/$', StatsView.as_view(), name='stats')
+	url(r'^statistiche/$', StatsView.as_view(), name='stats'),
+	url(r'^ajax/customers/gh/$', get_homonyms, name='get_homonyms'),
+	url(r'^ajax/events/gpec/(?P<event_id>[0-9]+)/$', get_participants_emails_csv, name='get_participants_emails_csv'),
+	url(r'^ajax/stats/gapy/$', get_associations_per_year, name='get_associations_per_year')
 ]
