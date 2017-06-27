@@ -1,6 +1,6 @@
 from datetime import date
 
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MinValueValidator
 from django.db import models
 
 cap_regex = RegexValidator(regex=r'^\d{5}$', message='CAP non valido')
@@ -35,11 +35,12 @@ class Event(models.Model):
 	name = models.CharField(verbose_name='Nome', max_length=200)
 	date = models.DateField(verbose_name='Data')
 	duration = models.PositiveSmallIntegerField(verbose_name='Durata (ore)')
-	cost = models.DecimalField(verbose_name='Costo', max_digits=6, decimal_places=2, null=True, blank=True)
+	price = models.DecimalField(verbose_name='Prezzo', max_digits=6, decimal_places=2,
+	                            validators=[MinValueValidator(0)], null=True, blank=True)
 	description = models.CharField(verbose_name='Descrizione', max_length=1000, null=True, blank=True)
 
 	def __str__(self):
-		return self.name[:12] + '...'
+		return self.name[:32] + '...'
 
 
 class Subscription(models.Model):
@@ -66,8 +67,9 @@ class Processing(models.Model):
 	data = models.DateField(verbose_name='Data', default=date.today)
 	customer = models.ForeignKey(Customer, verbose_name='Cliente', on_delete=models.CASCADE)
 	type = models.PositiveSmallIntegerField(verbose_name='Tipo', choices=((0, 'Laser'), (1, 'Stampa 3D'), (2, 'Fresa')))
-	cost = models.DecimalField(verbose_name='Costo', max_digits=6, decimal_places=2, null=True, blank=True)
+	price = models.DecimalField(verbose_name='Prezzo', max_digits=6, decimal_places=2,
+	                            validators=[MinValueValidator(0)], null=True, blank=True)
 	description = models.CharField(verbose_name='Descrizione', max_length=1000, null=True, blank=True)
 
 	def __str__(self):
-		return self.type
+		return ' '.join((str(self.type), str(self.customer), str(self.data)))

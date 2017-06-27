@@ -18,7 +18,7 @@
                 <td class="event-{{ event.id }}">{{ event.date }}</td>
                 <td class="event-{{ event.id }}">{{ event.duration }}</td>
                 <td class="event-{{ event.id }}">{{ event.name }}</td>
-                <td class="event-{{ event.id }}">{{ event.cost }}&nbsp;&euro;</td>
+                <td class="event-{{ event.id }}">{{ event.price }}&nbsp;&euro;</td>
                 <td class="event-{{ event.id }}">{{ event.description }}</td>
                 {% if show_extended_table %}
                 <td class="event-{{ event.id }}"><a href="{% url 'gestionale_:get_participants_emails_csv' event_id=event.id %}" >Scarica emails partecipanti</a></td>
