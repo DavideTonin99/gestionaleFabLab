@@ -2,6 +2,7 @@ import csv
 from datetime import date
 from io import StringIO
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms.forms import NON_FIELD_ERRORS
 from django.forms.utils import ErrorList
@@ -199,10 +200,11 @@ class UpdateProcessingView(LoginRequiredMixin, UpdateView):
 		return context
 
 
-class StatsView(TemplateView):
+class StatsView(LoginRequiredMixin, TemplateView):
 	template_name = "gestionale_/stats.html"
 
 
+@login_required
 def get_participants_emails_csv(request, event_id):
 	event = get_object_or_404(Event.objects.filter(id=event_id))
 
@@ -217,6 +219,7 @@ def get_participants_emails_csv(request, event_id):
 	return response
 
 
+@login_required
 def get_homonyms(request):
 	try:
 		assert request.method == 'POST'
@@ -232,6 +235,7 @@ def get_homonyms(request):
 		return HttpResponseBadRequest()
 
 
+@login_required
 def get_associations_per_year(request):
 	years = range(2014, date.today().year + 1)
 	return JsonResponse({
