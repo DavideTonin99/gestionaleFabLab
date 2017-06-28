@@ -1,4 +1,4 @@
-function earnings_chart(data) {
+function draw_earnings_chart(data) {
     var earnings_canvas = document.getElementById('earnings').getContext("2d");
 
     var years = [];
@@ -37,7 +37,7 @@ function earnings_chart(data) {
         hoverBorderColor: border_colors[4]
     };
 
-    var earnings_chart = new Chart(earnings_canvas, {
+    window.earnings_chart = new Chart(earnings_canvas, {
             type: 'bar',
             responsive: true,
 
