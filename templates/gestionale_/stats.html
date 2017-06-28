@@ -9,105 +9,123 @@
 {% endblock %}
 {% block content %}
     <script>
-        var numberWithCommas = function (x) {
-            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        };
-
-        var colors = ["rgba(244, 173, 66, 1)", "rgba(84, 172, 255, 1)", "rgb(67, 224, 239)", "rgba(239, 67, 67, 0.7)", "rgb(255, 240, 79)"];
-        var border_colors = ["rgba(255, 127, 0, 1)", "rgba(0, 131, 255, 1)", "rgb(67, 190, 239)", "rgba(239, 67, 67, 1)", "rgb(255, 208, 79)"];
+        var colors = ["rgba(244, 173, 66, 0.8)", "rgba(84, 172, 255, 0.8)", "rgba(239, 67, 67, 0.7)", "rgb(67, 224, 239)", "rgb(255, 240, 79)"];
+        var border_colors = ["rgba(255, 127, 0, 1)", "rgba(0, 131, 255, 1)", "rgba(239, 67, 67, 1)", "rgb(67, 190, 239)", "rgb(255, 208, 79)"];
 
         $(document).ready(function () {
             years = ["2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024",
                 "2025", "2026", "2027", "2028"];
 
+            // ASSOCIATI PER ANNO
             $.get("{% url 'gestionale_:get_associations_per_year' %}", function (data, status) {
                 if (data.categories !== undefined && data.series !== undefined) {
-                    associated_yearly_chart(data);
+                    draw_associated_yearly_chart(data);
                 }
             });
 
-            try {
-                $(years).each(function (index, year) {
-                    $('#year-select').append("<option value=\"" + year + "\">" + year + "</option>");
-                });
-                getAssociatedPerMonth()
-            } catch (error) {
-            }
-
-            $('#year-select').change(function () {
-                if ($('#year-select').val() !== "") {
-                    $.get("{% url 'gestionale_:get_associations_per_month' %}", {year: $('#year-select').val()}, function (data, status) {
-                        if (data.categories !== undefined && data.series !== undefined) {
-                            $("#associated_per_month_title").empty();
-                            $("#associated_per_month_title").prepend("Associati per mese (" + $('#year-select').val() + ")");
-                            $("body > div.container > div:nth-child(6) > iframe").remove();
-                            getAssociatedPerMonth();
-                        }
-                    });
-                }
-
-            });
-
+            // RICAVI PER ANNO
             $.get("{% url 'gestionale_:get_earnings_per_year' %}", function (data, status) {
                 if (data.categories !== undefined && data.series !== undefined) {
                     draw_earnings_chart(data);
                 }
             });
 
+            // ASSOCIATI PER MESE
+            try {
+                $(years).each(function (index, year) {
+                    $('#year-select').append("<option value=\"" + year + "\">" + year + "</option>");
+                });
+                drawAssociatedPerMonth();
+            } catch (error) {
+            }
+
+            // RICAVI PER ANNO 1° SELECT
             try {
                 $(years).each(function (index, year) {
                     $('#year-select-1').append("<option value=\"" + year + "\">" + year + "</option>");
                 });
-                getEarningsPerYear("1");
+                drawEarningsPerYear("1");
             } catch (error) {
             }
 
+            // RICAVI PER ANNO 2° SELECT
             try {
                 $(years).each(function (index, year) {
                     $('#year-select-2').append("<option value=\"" + year + "\">" + year + "</option>");
                 });
-                getEarningsPerYear("2");
+                drawEarningsPerYear("2");
             } catch (error) {
             }
 
 
+            $('#year-select').change(function () {
+                updateAssociatedPerMonth();
+            });
+
             $('#year-select-1').change(function () {
-                getEarningsPerYear("1")
+                select = $('#year-select-1');
+                updateEarningsPerYear(select, "1");
             });
 
             $('#year-select-2').change(function () {
-                getEarningsPerYear("2");
+                select = $('#year-select-2');
+                updateEarningsPerYear(select, "2");
+
             });
         });
 
-        function getAssociatedPerMonth() {
+        function drawAssociatedPerMonth() {
             if ($('#year-select').val() !== "") {
                 $.get("{% url 'gestionale_:get_associations_per_month' %}", {year: $('#year-select').val()}, function (data, status) {
                     if (data.categories !== undefined && data.series !== undefined) {
                         $("#associated_per_month_title").empty();
                         $("#associated_per_month_title").prepend("Associati per mese (" + $('#year-select').val() + ")");
-                        association_per_month_chart(data);
+                        draw_association_per_month_chart(data);
                     }
                 });
             }
         }
 
-        function getEarningsPerYear(input) {
+        function drawEarningsPerYear(input) {
             select = $('#year-select-' + input);
 
             if (select.val() !== undefined && select.val() !== "") {
                 $.get("{% url 'gestionale_:get_earnings_per_year' %}", {year: select.val()}, function (data, status) {
                     if (data.datasets !== undefined && data.labels !== undefined) {
-                        $("#earnings-yearly-" + input).empty();
-                        if (input === "1") $("body > div.container > div:nth-child(10) > div:nth-child(3) > iframe").remove();
-                        else if (input === "2") $("body > div.container > div:nth-child(10) > div:nth-child(4) > iframe").remove();
-                        //draw_earnings_per_year_chart(data, "earnings-yearly-" + input);
+                        draw_earnings_per_year_chart(data, "earnings-yearly-" + input);
                     }
                 });
             }
         }
 
+        function updateAssociatedPerMonth(data) {
+            if ($('#year-select').val() !== "") {
+                $.get("{% url 'gestionale_:get_associations_per_month' %}", {year: $('#year-select').val()}, function (data, status) {
+                    if (data.categories !== undefined && data.series !== undefined) {
+                        $("#associated_per_month_title").empty();
+                        $("#associated_per_month_title").prepend("Associati per mese (" + $('#year-select').val() + ")");
+                        window.associated_per_month_chart.data.datasets[0].data = data.series[0].data;
+                        window.associated_per_month_chart.data.datasets[1].data = data.series[1].data;
+                        window.associated_per_month_chart.update();
+                    }
+                });
+            }
+        }
+
+        function updateEarningsPerYear(select, id) {
+            if (select.val() !== undefined && select.val() !== "") {
+                $.get("{% url 'gestionale_:get_earnings_per_year' %}", {year: select.val()}, function (data, status) {
+                    if (data.datasets !== undefined && data.labels !== undefined) {
+                        window.earnings_per_year_chart[id - 1].data.datasets[0].data[0] = data.datasets[0].data[0];
+                        window.earnings_per_year_chart[id - 1].data.datasets[0].data[1] = data.datasets[0].data[1];
+                        window.earnings_per_year_chart[id - 1].data.datasets[0].data[2] = data.datasets[0].data[2];
+                        window.earnings_per_year_chart[id - 1].update();
+                    }
+                });
+            }
+        }
     </script>
+
     <br><br>
 
     <div class="row">
@@ -141,20 +159,20 @@
     <div class="row">
         <h2 style="text-align: center;">RICAVI PER ANNO</h2><br>
         <div class="col-sm-6">
-            <div class="col-sm-6" style="margin-bottom: 30px; text-align: center">
+            <div class="col-sm-12" style="margin-bottom: 30px; text-align: center">
                 <label for="year-select-1">Anno: </label>
                 <select class="form-control" id="year-select-1" name="year" required>
                 </select>
             </div>
-            <canvas id="earnings-yearly-1" style="width:99%; margin-right: 1%; height:50vh;"></canvas>
+            <canvas id="earnings-yearly-1" style="width:100%; height:50vh;"></canvas>
         </div>
         <div class="col-sm-6">
-            <div class="col-sm-6" style="margin-bottom: 30px; text-align: center">
+            <div class="col-sm-12" style="margin-bottom: 30px; text-align: center">
                 <label for="year-select-2">Anno: </label>
                 <select class="form-control" id="year-select-2" name="year" required>
                 </select>
             </div>
-            <canvas id="earnings-yearly-2" style="width:99%; margin-left: 1%; height:50vh;"></canvas>
+            <canvas id="earnings-yearly-2" style="width:100%; height:50vh;"></canvas>
         </div>
     </div>
 
