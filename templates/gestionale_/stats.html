@@ -4,6 +4,7 @@
 {% block scripts %}
     <script src="{% static 'associated_yearly_chart.js' %}"></script>
     <script src="{% static 'association_per_month_chart.js' %}"></script>
+    <script src="{% static 'renewals_per_year_chart.js' %}"></script>
     <script src="{% static 'earnings_chart.js' %}"></script>
     <script src="{% static 'earnings_per_year_chart.js' %}"></script>
 {% endblock %}
@@ -27,6 +28,13 @@
             $.get("{% url 'gestionale_:get_earnings_per_year' %}", function (data, status) {
                 if (data.categories !== undefined && data.series !== undefined) {
                     draw_earnings_chart(data);
+                }
+            });
+
+            // RINNOVI PER ANNO
+            $.get("{% url 'gestionale_:get_renewals_per_year' %}", function (data, status) {
+                if (data.categories !== undefined && data.series !== undefined) {
+                    draw_renewals_per_year_chart(data);
                 }
             });
 
@@ -145,6 +153,13 @@
         </div>
 
         <canvas id="associated_per_month" style="width:100%; height:50vh;"></canvas>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <h2 style="text-align: center;">RINNOVI PER ANNO</h2><br>
+        <canvas id="renewals" style="width:100%; height:50vh;"></canvas>
     </div>
 
     <hr>
