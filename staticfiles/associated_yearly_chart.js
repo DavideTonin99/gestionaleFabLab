@@ -1,4 +1,4 @@
-function associated_yearly_chart(data) {
+function draw_associated_yearly_chart(data) {
     var associated_yearly_canvas = document.getElementById('associated_yearly').getContext("2d");
 
     var years = [];

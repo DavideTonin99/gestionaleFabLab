@@ -1,4 +1,4 @@
-function association_per_month_chart(data) {
+function draw_association_per_month_chart(data) {
     var associated_per_month_canvas = document.getElementById('associated_per_month').getContext("2d");
 
     var months = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
