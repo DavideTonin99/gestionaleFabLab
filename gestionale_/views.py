@@ -1,6 +1,7 @@
 import csv
 import re
 from datetime import date
+from decimal import Decimal
 from io import StringIO
 
 from django.contrib.auth.decorators import login_required
@@ -294,6 +295,52 @@ def get_renewals_for_year(request):
 			                                                                                year__year=year - 1), 0)),
 			                 Subscription.objects.filter(year__year=year, type=1))) for year in years]
 		}]})
+
+
+@login_required
+def get_earnings_per_year(request):
+	try:
+		assert request.method == 'GET'
+
+		year = request.GET.get('year')
+		if isinstance(year, str) and re.match('^\d{4}$', year):
+			year = int(year)
+
+			return JsonResponse({
+				'datasets': [{
+					'data': [sum(map(lambda x: x.price, Processing.objects.filter(data__year=year, type=0)),
+					             Decimal('0.00')),
+					         sum(map(lambda x: x.price, Processing.objects.filter(data__year=year, type=1)),
+					             Decimal('0.00')),
+					         sum(map(lambda x: x.price, Processing.objects.filter(data__year=year, type=2)),
+					             Decimal('0.00'))
+					         ]
+				}],
+
+				'labels': ['Laser', 'Stampa 3D', 'Fresa']
+			})
+
+		else:
+			years = range(2014, 2028 + 1)
+
+			return JsonResponse({
+				'categories': list(years),
+				'series': [{
+					'name': 'Laser',
+					'data': [sum(map(lambda x: x.price, Processing.objects.filter(data__year=year, type=0)),
+					             Decimal('0.00')) for year in years]
+				}, {
+					'name': 'Stampa 3D',
+					'data': [sum(map(lambda x: x.price, Processing.objects.filter(data__year=year, type=1)),
+					             Decimal('0.00')) for year in years]
+				}, {
+					'name': 'Fresa',
+					'data': [sum(map(lambda x: x.price, Processing.objects.filter(data__year=year, type=2)),
+					             Decimal('0.00')) for year in years]
+				}]})
+
+	except AssertionError:
+		return HttpResponseBadRequest()
 
 
 def filter_queryset_in_years(queryset, from_, to):
