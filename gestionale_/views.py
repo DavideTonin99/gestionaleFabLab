@@ -302,9 +302,9 @@ def get_earnings_per_year(request):
 			year = int(year)
 
 			return JsonResponse({
-				'datasets': [{
-					'labels': ['Laser', 'Stampa 3D', 'Fresa'],
+				'labels': ['Laser', 'Stampa 3D', 'Fresa'],
 
+				'datasets': [{
 					'data': [sum(map(lambda x: x.price, Processing.objects.filter(data__year=year, type=0)),
 					             Decimal('0.00')),
 					         sum(map(lambda x: x.price, Processing.objects.filter(data__year=year, type=1)),
