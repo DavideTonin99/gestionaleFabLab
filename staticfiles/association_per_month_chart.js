@@ -23,7 +23,7 @@ function association_per_month_chart(data) {
         hoverBorderColor: border_colors[1]
     };
 
-    var associated_per_month_chart = new Chart(associated_per_month_canvas, {
+    window.associated_per_month_chart = new Chart(associated_per_month_canvas, {
             type: 'bar',
             responsive: true,
 

@@ -27,7 +27,7 @@ function associated_yearly_chart(data) {
         hoverBorderColor: border_colors[1]
     };
 
-    var associated_yearly_chart = new Chart(associated_yearly_canvas, {
+    window.associated_yearly_chart = new Chart(associated_yearly_canvas, {
             type: 'bar',
             responsive: true,
 
