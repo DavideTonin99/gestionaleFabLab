@@ -283,13 +283,19 @@ def get_renewals_for_year(request):
 	years = range(2014, 2028 + 1)
 
 	return JsonResponse({
-		'datasets': [{
-			'labels': list(years),
+		'categories': list(years),
+		'series': [{
+			'name': 'Iscritti l\'anno precedente',
 			'data': [sum(map(lambda sub: bool(sub) and bool(get(Subscription.objects.filter(customer=sub.customer,
 			                                                                                year__year=year - 1), 0)),
 			                 Subscription.objects.filter(year__year=year))) for year in years]
-		}]
-	})
+		}, {
+			'name': 'Non iscritti l\'anno precedente',
+			'data': [sum(map(lambda sub: bool(sub) and not bool(get(Subscription.objects.filter(customer=sub.customer,
+			                                                                                    year__year=year - 1),
+			                                                        0)),
+			                 Subscription.objects.filter(year__year=year))) for year in years]
+		}]})
 
 
 @login_required
