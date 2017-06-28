@@ -283,18 +283,13 @@ def get_renewals_for_year(request):
 	years = range(2014, 2028 + 1)
 
 	return JsonResponse({
-		'categories': list(years),
-		'series': [{
-			'name': 'Base',
+		'datasets': [{
+			'labels': list(years),
 			'data': [sum(map(lambda sub: bool(sub) and bool(get(Subscription.objects.filter(customer=sub.customer,
 			                                                                                year__year=year - 1), 0)),
-			                 Subscription.objects.filter(year__year=year, type=0))) for year in years]
-		}, {
-			'name': 'Maker',
-			'data': [sum(map(lambda sub: bool(sub) and bool(get(Subscription.objects.filter(customer=sub.customer,
-			                                                                                year__year=year - 1), 0)),
-			                 Subscription.objects.filter(year__year=year, type=1))) for year in years]
-		}]})
+			                 Subscription.objects.filter(year__year=year))) for year in years]
+		}]
+	})
 
 
 @login_required
@@ -308,6 +303,8 @@ def get_earnings_per_year(request):
 
 			return JsonResponse({
 				'datasets': [{
+					'labels': ['Laser', 'Stampa 3D', 'Fresa'],
+
 					'data': [sum(map(lambda x: x.price, Processing.objects.filter(data__year=year, type=0)),
 					             Decimal('0.00')),
 					         sum(map(lambda x: x.price, Processing.objects.filter(data__year=year, type=1)),
@@ -315,9 +312,7 @@ def get_earnings_per_year(request):
 					         sum(map(lambda x: x.price, Processing.objects.filter(data__year=year, type=2)),
 					             Decimal('0.00'))
 					         ]
-				}],
-
-				'labels': ['Laser', 'Stampa 3D', 'Fresa']
+				}]
 			})
 
 		else:
