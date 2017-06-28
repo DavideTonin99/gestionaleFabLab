@@ -4,51 +4,64 @@
 {% block scripts %}
     <script src="{% static 'associated_yearly_chart.js' %}"></script>
     <script src="{% static 'association_per_month_chart.js' %}"></script>
+    <script src="{% static 'earnings_chart.js' %}"></script>
 {% endblock %}
 {% block content %}
     <script>
-
         var numberWithCommas = function (x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         };
 
-        var colors = ["rgba(244, 173, 66, 1)", "rgba(84, 172, 255, 1)", "rgba(0, 0, 255, 0.8)"];
-        var border_colors = ["rgba(255, 127, 0, 1)", "rgba(0, 131, 255, 1)", "rgba(0, 0, 255, 0.8)"];
+        var colors = ["rgba(244, 173, 66, 1)", "rgba(84, 172, 255, 1)", "rgb(67, 224, 239)", "rgba(239, 67, 67, 0.7)", "rgb(255, 240, 79)"];
+        var border_colors = ["rgba(255, 127, 0, 1)", "rgba(0, 131, 255, 1)", "rgb(67, 190, 239)", "rgba(239, 67, 67, 1)", "rgb(255, 208, 79)"];
 
         $(document).ready(function () {
             years = ["2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024",
-            "2025", "2026", "2027", "2028"];
-
-            try {
-                $(years).each( function (index, year) {
-                    $('#year-select').append("<option value=\"" + year +"\">" + year + "</option>");
-                })
-            } catch(error) {}
+                "2025", "2026", "2027", "2028"];
 
             $.get("{% url 'gestionale_:get_associations_per_year' %}", function (data, status) {
                 if (data.categories !== undefined && data.series !== undefined) {
-                    $("#associated_yearly").parent().prepend('<h2 style="text-align: center;">Associati per anno</h2><br>');
                     associated_yearly_chart(data);
                 }
             });
 
+            try {
+                $(years).each(function (index, year) {
+                    $('#year-select').append("<option value=\"" + year + "\">" + year + "</option>");
+                });
+                getAssociatedPerMonth()
+            } catch (error) {
+            }
+
             $('#year-select').change( function () {
-                if ($(this).val() != "") {
-                    $.get("{% url 'gestionale_:get_associations_per_month' %}", {year: $(this).val()}, function (data, status) {
-                        if (data.categories !== undefined && data.series !== undefined) {
-                            $("#associated_per_month_title").empty();
-                            $("#associated_per_month_title").prepend("Associati per mese (" + $('#year-select').val() + ")");
-                            association_per_month_chart(data);
-                        }
-                    });
+                getAssociatedPerMonth();
+            });
+
+            $.get("{% url 'gestionale_:get_earnings_per_year' %}", function (data, status) {
+                if (data.categories !== undefined && data.series !== undefined) {
+                    earnings_chart(data);
                 }
             });
+
         });
+
+        function getAssociatedPerMonth() {
+            if ($('#year-select').val() !== "") {
+                $.get("{% url 'gestionale_:get_associations_per_month' %}", {year: $('#year-select').val()}, function (data, status) {
+                    if (data.categories !== undefined && data.series !== undefined) {
+                        $("#associated_per_month_title").empty();
+                        $("#associated_per_month_title").prepend("Associati per mese (" + $('#year-select').val() + ")");
+                        association_per_month_chart(data);
+                    }
+                });
+            }
+        }
 
     </script>
     <br><br>
 
     <div class="row">
+        <h2 style="text-align: center;">Associati per anno</h2><br>
         <canvas id="associated_yearly" style="width:100%; height:50vh"></canvas>
     </div>
 
@@ -60,11 +73,18 @@
         <div class="col-sm-6" style="margin-bottom: 30px">
             <label for="year-select">Anno: </label>
             <select class="form-control" id="year-select" name="year" required>
-                <option value=""></option>
             </select>
         </div>
 
         <canvas id="associated_per_month" style="width:100%; height:50vh;"></canvas>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <h2 style="text-align: center;">RICAVI</h2><br>
+        <canvas id="earnings" style="width:100%; height:50vh;"></canvas>
+
     </div>
 
 {% endblock %}

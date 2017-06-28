@@ -1,41 +1,52 @@
-function associated_yearly_chart(data) {
-    var associated_yearly_canvas = document.getElementById('associated_yearly').getContext("2d");
+function earnings_chart(data) {
+    var earnings_canvas = document.getElementById('earnings').getContext("2d");
 
     var years = [];
-    var baseDataset;
-    var makerDataset;
+    var stampaDataset;
+    var laserDataset;
+    var fresaDataset;
 
     $(data.categories).each(function (index, year) {
         years.push(year);
     });
 
-    baseDataset = {
-        label: "Base",
+    laserDataset = {
+        label: "Laser",
         data: data.series[0].data,
-        backgroundColor: colors[0],
-        hoverBackgroundColor: colors[0],
+        backgroundColor: colors[2],
+        hoverBackgroundColor: colors[2],
         hoverBorderWidth: 2,
-        hoverBorderColor: border_colors[0]
+        hoverBorderColor: border_colors[2]
     };
 
-    makerDataset = {
-        label: "Maker",
+    stampaDataset = {
+        label: "Stampa3D",
         data: data.series[1].data,
-        backgroundColor: colors[1],
-        hoverBackgroundColor: colors[1],
+        backgroundColor: colors[3],
+        hoverBackgroundColor: colors[3],
         hoverBorderWidth: 2,
-        hoverBorderColor: border_colors[1]
+        hoverBorderColor: border_colors[3]
     };
 
-    var associated_yearly_chart = new Chart(associated_yearly_canvas, {
+    fresaDataset = {
+        label: "Fresa",
+        data: data.series[2].data,
+        backgroundColor: colors[4],
+        hoverBackgroundColor: colors[4],
+        hoverBorderWidth: 2,
+        hoverBorderColor: border_colors[4]
+    };
+
+    var earnings_chart = new Chart(earnings_canvas, {
             type: 'bar',
             responsive: true,
 
             data: {
                 labels: years,
                 datasets: [
-                    baseDataset,
-                    makerDataset
+                    stampaDataset,
+                    laserDataset,
+                    fresaDataset
                 ]
             },
             options: {
@@ -59,7 +70,6 @@ function associated_yearly_chart(data) {
                         stacked: true,
                         ticks: {
                             min: 0,
-                            stepSize: 1,
                         },
                     }],
                 },

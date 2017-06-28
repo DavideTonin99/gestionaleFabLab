@@ -42,7 +42,7 @@ function association_per_month_chart(data) {
                     mode: 'label',
                     callbacks: {
                         label: function (tooltipItem, data) {
-                            return data.datasets[tooltipItem.datasetIndex].label + ": " + numberWithCommas(tooltipItem.yLabel);
+                            return data.datasets[tooltipItem.datasetIndex].label + ": " + tooltipItem.yLabel;
                         }
                     }
                 },
@@ -54,9 +54,6 @@ function association_per_month_chart(data) {
                     yAxes: [{
                         stacked: true,
                         ticks: {
-                            callback: function (value) {
-                                return numberWithCommas(value);
-                            },
                             min: 0,
                             stepSize: 1,
                         },
