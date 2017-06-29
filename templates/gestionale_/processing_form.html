@@ -6,6 +6,8 @@
 {% block content %}
     <script>
         $(document).ready( function () {
+            $('#id_customer').select2();
+
             $("#id_data").datepicker({
                 dateFormat: "dd/mm/yy"
             });
@@ -20,7 +22,7 @@
             <table class="col-sm-6" style="margin-bottom: 10px">
                 {{ form.as_table }}
             </table>
-            <div class="actions-div col-sm-4">
+            <div class="actions-div col-sm-5">
                 <button type="submit" class="btn btn-success action-button" style="margin-top: 3px">{{ op }}</button>
                 <button class="btn btn-danger action-button" type="reset" onclick="window.location.href='{% url 'gestionale_:create_processing' %}'">Reset</button>
             </div>
