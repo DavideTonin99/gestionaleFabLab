@@ -7,6 +7,7 @@
 {% block content %}
     <script>
         $(document).ready(function () {
+
             {% if search_homonyms %}
                 var csrftoken = $("[name=csrfmiddlewaretoken]").val();
 
@@ -15,7 +16,7 @@
                     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
                 }
                 $.ajaxSetup({
-                    beforeSend: function(xhr, settings) {
+                    beforeSend: function (xhr, settings) {
                         if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                             xhr.setRequestHeader("X-CSRFToken", csrftoken);
                         }
@@ -31,17 +32,20 @@
             });
 
             {% if search_homonyms %}
-                $("#id_name, #id_surname").blur( function() {
+                $("#id_name, #id_surname").blur(function () {
                     if ($("#id_name").val() && $("#id_name").val() !== "" && $("#id_surname").val() && $("#id_surname").val() !== "") {
 
-                        $.post("{% url 'gestionale_:get_homonyms' %}", { name: $("#id_name").val(), surname: $("#id_surname").val()}, function(client, status) {
+                        $.post("{% url 'gestionale_:get_homonyms' %}", {
+                            name: $("#id_name").val(),
+                            surname: $("#id_surname").val()
+                        }, function (client, status) {
                             var result = client.results;
 
                             if (result.length > 0) {
                                 $("#omonimi-body").empty();
                                 $("#omonimi-body").append("<p>Chiudi la finestra per creare un nuovo associato, altrimenti seleziona uno dei seguenti per modificare: </p>")
 
-                                $(result).each ( function(index, element) {
+                                $(result).each(function (index, element) {
                                     $("#omonimi-body").append(element[0] + " <a href='" + element[1] + "'>Modifica</a><br>")
                                 });
 
@@ -56,7 +60,7 @@
 
     <div class="modal fade" id="omonimi-modal" role="dialog">
         <div class="modal-dialog">
-        
+
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -66,43 +70,46 @@
 
                 <div class="modal-body" id="omonimi-body">
                 </div>
-                
+
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
-            
+
             </div>
-          
+
         </div>
     </div>
 
     <div class="row scrollable-table">
         <table id="client-table" class="table-striped table-bordered info-table">
             <thead>
-                <tr>
-                    <th>Cognome</th>
-                    <th>Nome</th>
-                    <th>Tessera</th>
-                    <th>Mail</th>
-                    <th>Cellulare</th>
-                    <th>Iscrizione <script>document.write(new Date().getFullYear())</script></th>
-                </tr>
+            <tr>
+                <th>Cognome</th>
+                <th>Nome</th>
+                <th>Tessera</th>
+                <th>Mail</th>
+                <th>Cellulare</th>
+                <th>Iscrizione
+                    <script>document.write(new Date().getFullYear())</script>
+                </th>
+            </tr>
             </thead>
             {% for customer in customers %}
-                <tr class="tr-selectable" id="customer-{{ customer.0.id }}" onclick="document.location.href = '{% url 'gestionale_:update_customer' customer_id=customer.0.id%}'">
+                <tr class="tr-selectable" id="customer-{{ customer.0.id }}"
+                    onclick="document.location.href = '{% url 'gestionale_:update_customer' customer_id=customer.0.id %}'">
                     <td class="customer-{{ customer.0.id }}">{{ customer.0.surname }}</td>
                     <td class="customer-{{ customer.0.id }}">{{ customer.0.name }}</td>
                     <td class="customer-{{ customer.0.id }}">{{ customer.0.card }}</td>
                     <td class="customer-{{ customer.0.id }}">{{ customer.0.email }}</td>
                     <td class="customer-{{ customer.0.id }}">{{ customer.0.telephone }}</td>
                     <td class="customer-{{ customer.0.id }}">
-                    {% if customer.1.type == 0 %}
-                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                    {% elif customer.1.type == 1 %}
-                        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
-                    {% else %}
-                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                    {% endif %}
+                        {% if customer.1.type == 0 %}
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        {% elif customer.1.type == 1 %}
+                            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                        {% else %}
+                            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
@@ -113,40 +120,43 @@
         <form method="post" id="client-form">
             {% csrf_token %}
             <div class="col-sm-7">
-             <div class="col-sm-12">
-                {{ form.name.label_tag }}
-                {{ form.name.errors }}
-                {{ form.name }}
-            </div>
-            <div class="col-sm-12">
-                {{ form.surname.label_tag }}
-                {{ form.surname.errors }}
-                {{ form.surname }}
-            </div>
-            <div class="col-sm-6">
-                {{ form.born.label_tag }}
-                {{ form.born.errors }}
-                {{ form.born }}
-            </div>
-            <div class="col-sm-6">
-                {{ form.cap.label_tag }}
-                {{ form.cap.errors }}
-                {{ form.cap }}
-            </div>
-            <div class="col-sm-6">
-                {{ form.telephone.label_tag }}
-                {{ form.telephone.errors }}
-                {{ form.telephone }}
-            </div> 
-            <div class="col-sm-6">
-                {{ form.email.label_tag }}
-                {{ form.email.errors }}
-                {{ form.email }}
-            </div>              
+                <div class="col-sm-12">
+                    {{ form.name.label_tag }}
+                    {{ form.name.errors }}
+                    {{ form.name }}
+                </div>
+                <div class="col-sm-12">
+                    {{ form.surname.label_tag }}
+                    {{ form.surname.errors }}
+                    {{ form.surname }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form.born.label_tag }}
+                    {{ form.born.errors }}
+                    {{ form.born }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form.cap.label_tag }}
+                    {{ form.cap.errors }}
+                    {{ form.cap }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form.telephone.label_tag }}
+                    {{ form.telephone.errors }}
+                    {{ form.telephone }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form.email.label_tag }}
+                    {{ form.email.errors }}
+                    {{ form.email }}
+                </div>
             </div>
             <div class="col-sm-5" style="margin-top: 25px; margin-bottom: 10px">
-                <button type="submit" class="btn btn-success col-sm-5" style="margin-left: 10px; margin-right: 10px">{{ op }}</button>
-                <button class="btn btn-danger col-sm-5" type="reset" onclick="window.location.href='{% url 'gestionale_:create_customer' %}'">Reset</button>
+                <button type="submit" class="btn btn-success col-sm-5"
+                        style="margin-left: 10px; margin-right: 10px">{{ op }}</button>
+                <button class="btn btn-danger col-sm-5" type="reset"
+                        onclick="window.location.href='{% url 'gestionale_:create_customer' %}'">Reset
+                </button>
             </div>
             <div class="col-sm-5">
                 <div class="col-sm-5">
@@ -158,26 +168,25 @@
                     {{ form.first_association.label_tag }}
                     {{ form.first_association.errors }}
                     {{ form.first_association }}
-                </div>  
+                </div>
             </div>
 
-            <!--{{ form.as_table }} -->
         </form>
     </div>
 
     {% if show_tables %}
 
-    {% include 'gestionale_/subscriptions_table.html' with id=id subscriptions=subscriptions only %}
+        {% include 'gestionale_/subscriptions_table.html' with id=id subscriptions=subscriptions only %}
 
-    <hr>
+        <hr>
 
-    <h2>EVENTI</h2>
-    {% include 'gestionale_/events_table.html' with events=events show_extended_table=False only %}
+        <h2>EVENTI</h2>
+        {% include 'gestionale_/events_table.html' with events=events show_extended_table=False only %}
 
-    <hr>
-    
-    <h2>LAVORAZIONI</h2>
-    {% include 'gestionale_/processings_table.html' with processings=processings show_extended_table=False only %}
+        <hr>
+
+        <h2>LAVORAZIONI</h2>
+        {% include 'gestionale_/processings_table.html' with processings=processings show_extended_table=False only %}
 
     {% endif %}
 

@@ -99,6 +99,15 @@ table tr {
     margin-top: 30px;
 }
 
+.select2-container--default .select2-results__option[aria-selected=true] {
+    background: lightgreen;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #5897fb;
+    color: white;
+}
+
 /* Tabella iscrizioni */
 #subscriptions-table > tbody > tr > td > a {
     color: black;
