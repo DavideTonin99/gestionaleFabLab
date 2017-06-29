@@ -18,7 +18,7 @@ class CustomerForm(ModelForm):
 class SubscriptionForm(ModelForm):
 	class Meta:
 		model = Subscription
-		exclude = ['year', 'customer']
+		exclude = ['customer']
 
 	def __init__(self, *args, **kwargs):
 		super(SubscriptionForm, self).__init__(*args, **kwargs)
