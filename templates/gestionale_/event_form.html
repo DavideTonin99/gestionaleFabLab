@@ -5,7 +5,9 @@
 
 {% block content %}
     <script>
-        $(document).ready( function () {
+        $(document).ready(function () {
+            $('#id_participants').select2();
+
             $("#id_date").datepicker({
                 dateFormat: "dd/mm/yy"
             });
@@ -17,12 +19,53 @@
     <div class="row">
         <form method="post" id="events-form">
             {% csrf_token %}
+            <style>
+                th > label {
+                    margin-right: 15px;
+                }
+            </style>
             <table class="col-sm-6" style="margin-bottom: 10px;">
+                <!--<div class="col-sm-7">
+                    <div class="col-sm-8">
+                        {{ form.participants.label_tag }}
+                        {{ form.participants.errors }}
+                        {{ form.participants }}
+                    </div>
+                    <div class="col-sm-8">
+                        {{ form.name.label_tag }}
+                        {{ form.name.errors }}
+                        {{ form.name }}
+                    </div>
+                    <div class="col-sm-8">
+                        {{ form.date.label_tag }}
+                        {{ form.date.errors }}
+                        {{ form.date }}
+                    </div>
+                    <div class="col-sm-8">
+                        {{ form.duration.label_tag }}
+                        {{ form.duration.errors }}
+                        {{ form.duration }}
+                    </div>
+                    <div class="col-sm-8">
+                        {{ form.price.label_tag }}
+                        {{ form.price.errors }}
+                        {{ form.price }}
+                    </div>
+                    <div class="col-sm-8">
+                        {{ form.description.label_tag }}
+                        {{ form.description.errors }}
+                        {{ form.description }}
+                    </div>
+                </div>
+                -->
                 {{ form.as_table }}
-            </table>
-            <div class="actions-div col-sm-4">
-                <button type="submit" class="btn btn-success action-button" style="margin-top: 0;">{{ op }}</button>
-                <button class="btn btn-danger action-button" type="reset" onclick="window.location.href='{% url 'gestionale_:create_event' %}'">Reset</button>
+        </table>
+            <div class="col-sm-4">
+                <button type="submit" class="btn btn-success col-sm-5"
+                        style="margin-left: 10px; margin-right: 10px">{{ op }}</button>
+                <button class="btn btn-danger col-sm-5" type="reset"
+                        onclick="window.location.href='{% url 'gestionale_:create_event' %}'">Reset
+                </button>
             </div>
         </form>
     </div>
