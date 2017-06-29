@@ -21,7 +21,7 @@
     <div class="row">
         <form id="renew-form" method="post" class="col-sm-6">
             {% csrf_token %}
-            <h4>Iscrizione anno {{ year }}, <a href="{% url 'gestionale_:update_customer' customer_id=id %}">{{ customer_name }}</a></h4>
+            <h4>Iscrizione anno <!--TODO(Front-End)-->, <a href="{% url 'gestionale_:update_customer' customer_id=id %}">{{ customer_name }}</a></h4>
             <table>
                 {{ form.as_table }}
             </table>
