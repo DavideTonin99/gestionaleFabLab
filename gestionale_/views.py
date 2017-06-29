@@ -108,6 +108,10 @@ class CreateSubscriptionView(LoginRequiredMixin, CreateView):
 
 		return context
 
+	def form_valid(self, form):
+		form.instance.customer = get_object_or_404(Customer.objects.filter(id=self.kwargs.get('customer_id')))
+		return super(CreateSubscriptionView, self).form_valid(form)
+
 
 class UpdateSubscriptionView(LoginRequiredMixin, UpdateView):
 	model = Subscription
