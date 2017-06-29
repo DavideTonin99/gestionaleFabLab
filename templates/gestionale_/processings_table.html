@@ -14,7 +14,7 @@
         <tbody>
         {% for processing in processings %}
             <tr class="tr-selectable" id="processing-{{ processing.id }}" onclick="window.location.href = '{% url 'gestionale_:update_processing' processing_id=processing.id %}'">
-                <td class="processing-{{ processing.id }}">{{ processing.data }}</td>
+                <td class="processing-{{ processing.id }}">{{ processing.date }}</td>
                 {% if show_extended_table %}
                 <td class="processing-{{ processing.id }}">{{ processing.customer }}</td>
                 {% endif %}
