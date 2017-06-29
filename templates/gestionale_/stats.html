@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %} <title>FabLab | Statistiche</title> {% endblock %}
 {% block scripts %}
-    <script src="{% static 'associated_yearly_chart.js' %}"></script>
+    <script src="{% static 'associated_per_year_chart.js' %}"></script>
     <script src="{% static 'association_per_month_chart.js' %}"></script>
     <script src="{% static 'renewals_per_year_chart.js' %}"></script>
     <script src="{% static 'earnings_chart.js' %}"></script>
@@ -158,7 +158,7 @@
     <hr>
 
     <div class="row">
-        <h2 style="text-align: center;">RINNOVI PER ANNO1</h2><br>
+        <h2 style="text-align: center;">RINNOVI PER ANNO</h2><br>
         <canvas id="renewals" style="width:100%; height:50vh;"></canvas>
     </div>
 
