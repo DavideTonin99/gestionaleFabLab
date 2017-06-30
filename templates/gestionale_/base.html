@@ -29,6 +29,12 @@
                     document.getElementById("" + currentPage + "").className = "active";
                 } catch(error){}
 
+                $.datepicker.setDefaults({
+                    dateFormat: "dd/mm/yy",
+                    changeYear: true,
+                    yearRange: "2014:2028"
+                });
+
                 $(".tr-selectable").on ({
                     mouseover: function(event) {
                         var row_id = event.target.className;
