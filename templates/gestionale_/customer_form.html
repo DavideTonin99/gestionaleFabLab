@@ -25,11 +25,10 @@
             {% endif %}
 
             $("#id_born").datepicker({
-                dateFormat: "dd/mm/yy"
+                yearRange: "1920:" + (new Date().getFullYear())
             });
-            $("#id_first_association").datepicker({
-                dateFormat: "dd/mm/yy"
-            });
+
+            $("#id_first_association").datepicker({});
 
             {% if search_homonyms %}
                 $("#id_name, #id_surname").blur(function () {

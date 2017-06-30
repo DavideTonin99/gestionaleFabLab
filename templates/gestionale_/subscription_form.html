@@ -6,11 +6,23 @@
 {% block content %}
 
     <script>
-    $(document).ready( function () {
-        $("#id_year").datepicker({
-                dateFormat: "dd/mm/yy"
-            });
-    })
+        $(document).ready(function () {
+            $("#id_date").datepicker({});
+
+            changeYear("#id_date");
+
+            $('#id_date').change( function () {
+                changeYear(this);
+            })
+        });
+
+        function changeYear(input) {
+            year = $(input).datepicker('getDate').getFullYear();
+
+            $('#renew-form-title').empty();
+            $('#renew-form-title').append('Iscrizione anno ' + year + ', <a href="{% url 'gestionale_:update_customer' customer_id=id %}">{{ customer_name }}</a>')
+        }
+
     </script>
 
     <br>
@@ -21,7 +33,7 @@
     <div class="row">
         <form id="renew-form" method="post" class="col-sm-6">
             {% csrf_token %}
-            <h4>Iscrizione anno <!--TODO(Front-End)-->, <a href="{% url 'gestionale_:update_customer' customer_id=id %}">{{ customer_name }}</a></h4>
+            <h4 id="renew-form-title"></h4>
             <table>
                 {{ form.as_table }}
             </table>
