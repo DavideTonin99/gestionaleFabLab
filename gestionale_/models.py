@@ -21,8 +21,8 @@ class Customer(models.Model):
 
 	name = models.CharField(verbose_name='Nome', max_length=50)
 	surname = models.CharField(verbose_name='Cognome', max_length=50)
-	born = models.DateField(verbose_name='Data di nascita')
-	cap = models.CharField(verbose_name='CAP', validators=[cap_regex], max_length=5)
+	born = models.DateField(verbose_name='Data di nascita', null=True)
+	cap = models.CharField(verbose_name='CAP', validators=[cap_regex], max_length=5, null=True)
 	telephone = models.CharField(verbose_name='Cellulare', default='+39', validators=[phone_regex], max_length=16)
 	email = models.EmailField(null=True, blank=True)
 	card = models.CharField(verbose_name='Tessera', default=CARD_PREFIX, validators=[card_regex], max_length=9,
