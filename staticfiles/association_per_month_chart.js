@@ -55,7 +55,6 @@ function draw_association_per_month_chart(data) {
                         stacked: true,
                         ticks: {
                             min: 0,
-                            stepSize: 1,
                         },
                     }],
                 },

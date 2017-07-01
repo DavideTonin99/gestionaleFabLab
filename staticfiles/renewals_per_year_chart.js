@@ -59,7 +59,6 @@ function draw_renewals_per_year_chart(data) {
                         stacked: true,
                         ticks: {
                             min: 0,
-                            stepSize: 1,
                         },
                     }],
                 },
