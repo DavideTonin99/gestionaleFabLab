@@ -59,7 +59,6 @@ function draw_associated_yearly_chart(data) {
                         stacked: true,
                         ticks: {
                             min: 0,
-                            stepSize: 1,
                         },
                     }],
                 },

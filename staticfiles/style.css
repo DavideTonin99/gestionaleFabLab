@@ -34,9 +34,12 @@ table tr {
 }
 
 .info-table {
-    margin-top: 30px;
     border: 1px solid #7c7c7c;
     width: 100%;
+}
+
+.scrollable-table{
+    margin-top: 30px;
 }
 
 .info-table th {
@@ -68,7 +71,7 @@ table tr {
 
 .scrollable-table {
     overflow: auto;
-    max-height: 400px;
+    max-height: 242px;
 }
 
 #client-table, #processings-table {
