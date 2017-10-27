@@ -22,6 +22,9 @@
         <script>
             // highlights the active page on the navbar
             var url;
+            var row_color;
+            var selected_row_color = "rgb(238, 238, 238)";
+
             $(document).ready(function(){
                 url = (window.location.href).split("/");
                 var currentPage = url[3];
@@ -38,11 +41,14 @@
                 $(".tr-selectable").on ({
                     mouseover: function(event) {
                         var row_id = event.target.className;
-                        $("#" + row_id).css("text-decoration", "underline");
+                        if ($("#" + row_id).css("background-color") != selected_row_color) {
+                            row_color = $("#" + row_id).css("background-color");
+                        }
+                        $("#" + row_id).css("background-color",selected_row_color);
                     },
                     mouseleave: function(event) {
                         var row_id = event.target.className;
-                        $("#" + row_id).css("text-decoration", "none");
+                        $("#" + row_id).css("background-color", row_color);
                     }
                 });
 

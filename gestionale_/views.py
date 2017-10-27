@@ -16,7 +16,7 @@ from .models import Customer, Subscription, Event, Processing, \
 
 YEAR_BOUNDARIES = (2014, 2028)
 CREATE = 'Crea'
-MODIFY = 'Modifica'
+MODIFY = 'Salva modifiche'
 RENEWED = 'Iscritti l\'anno precedente'
 NON_RENEWED = 'Non iscritti l\'anno precedente'
 
