@@ -65,6 +65,9 @@
 
                     try {
                         switch (currentPage) {
+                            case "login":
+                                $('nav').remove();
+                                $('#content').css('margin-top','0px');
                             case "anagrafica":
                                 $('#customer-'+selected_row).css("background-color", "#ffeba3");
                                 break;

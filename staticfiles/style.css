@@ -1,5 +1,10 @@
+html {
+    background: white;
+}
+
 body {
     background-color: #f8f8f8 !important;
+    min-height: 95vh;
 }
 
 .navbar-default {
