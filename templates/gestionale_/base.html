@@ -19,6 +19,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
 
+        <script src="{% static 'jquery-tablesort.min.js' %}"></script>
+
         <script>
             // highlights the active page on the navbar
             var url;
@@ -37,6 +39,10 @@
                     changeYear: true,
                     yearRange: "2014:2028"
                 });
+
+                if ($('.sortable-table').length > 0) {
+                    $('.sortable-table').tablesort();
+                }
 
                 $(".tr-selectable").on ({
                     mouseover: function(event) {
