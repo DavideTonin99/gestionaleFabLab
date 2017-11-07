@@ -1,3 +1,7 @@
+body {
+    background-color: #f8f8f8 !important;
+}
+
 .navbar-default {
     z-index: 1000;
     position: fixed !important;
@@ -21,6 +25,11 @@
 .navbar-nav>li>a {
     line-height: 45px !important;
     vertical-align: middle;
+}
+
+#content {
+    background-color: white;
+    border-bottom: 2px solid #e7e7e7;
 }
 
 .container {
@@ -126,14 +135,11 @@ table tr {
 }
 
 footer {
-    margin-top: 20px;
-    padding: 20px;
-    line-height: 30px;
+    padding: 40px;
     clear: both;
     width: 100%;
     color: #555;
-    background-color: #f8f8f8;
-    border-top: 2px solid #e7e7e7;
+    background: transparent;
 }
 
 @media screen and (max-width: 767px) {
