@@ -102,7 +102,7 @@ th.sorted.descending:after {
 
 .scrollable-table {
     overflow: auto;
-    max-height: 100px;
+    max-height: 242px;
 }
 
 #client-table, #processings-table {
