@@ -15,7 +15,7 @@ from .models import Customer, Subscription, Event, Processing, \
 	CARD_PREFIX, SUBSCRIPTION_TYPE_CHOICES, PROCESSING_TYPE_CHOICES
 
 YEAR_BOUNDARIES = (2014, 2028)
-CREATE = 'Crea'
+CREATE = 'Salva'
 MODIFY = 'Salva modifiche'
 RENEWED = 'Iscritti l\'anno precedente'
 NON_RENEWED = 'Non iscritti l\'anno precedente'
