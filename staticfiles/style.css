@@ -5,6 +5,7 @@ html {
 body {
     background-color: #f8f8f8 !important;
     min-height: 95vh;
+    font-family: 'Open Sans', sans-serif !important;
 }
 
 .navbar-default {
@@ -45,6 +46,18 @@ body {
 table tr {
     height: 40px;
     vertical-align: middle;
+    -webkit-user-select: none;  
+    -moz-user-select: none;    
+    -ms-user-select: none;      
+    user-select: none;
+}
+
+th.sorted.ascending:after {
+    content: " ▼";
+}
+
+th.sorted.descending:after {
+    content: "  ▲";
 }
 
 .info-table {
