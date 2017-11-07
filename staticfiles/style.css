@@ -53,11 +53,15 @@ table tr {
 }
 
 th.sorted.ascending:after {
+    font-size: 0.8em;
     content: " ▼";
+    opacity: 0.7;
 }
 
 th.sorted.descending:after {
+    font-size: 0.8em;
     content: "  ▲";
+    opacity: 0.7;
 }
 
 .info-table {
@@ -98,7 +102,7 @@ th.sorted.descending:after {
 
 .scrollable-table {
     overflow: auto;
-    max-height: 242px;
+    max-height: 100px;
 }
 
 #client-table, #processings-table {
