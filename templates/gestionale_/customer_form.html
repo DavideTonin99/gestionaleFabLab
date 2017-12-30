@@ -7,6 +7,8 @@
 {% block content %}
     <script>
         $(document).ready(function () {
+            /*$('#id_name').select2();
+            $('#id_surname').select2();*/
 
             {% if search_homonyms %}
                 var csrftoken = $("[name=csrfmiddlewaretoken]").val();
@@ -80,7 +82,7 @@
     </div>
 
     <div class="row scrollable-table">
-        <table id="client-table" class="table-striped table-bordered info-table">
+        <table id="client-table" class="table-striped table-bordered info-table sortable-table">
             <thead>
             <tr>
                 <th>Cognome</th>
@@ -118,56 +120,61 @@
     <div class="row">
         <form method="post" id="client-form">
             {% csrf_token %}
-            <div class="col-sm-7">
-                <div class="col-sm-12">
+            <div class="col-sm-12">
+                <div class="col-sm-3">
                     {{ form.name.label_tag }}
                     {{ form.name.errors }}
                     {{ form.name }}
                 </div>
-                <div class="col-sm-12">
+                <div class="col-sm-3">
                     {{ form.surname.label_tag }}
                     {{ form.surname.errors }}
                     {{ form.surname }}
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     {{ form.born.label_tag }}
                     {{ form.born.errors }}
                     {{ form.born }}
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     {{ form.cap.label_tag }}
                     {{ form.cap.errors }}
                     {{ form.cap }}
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     {{ form.telephone.label_tag }}
                     {{ form.telephone.errors }}
                     {{ form.telephone }}
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                     {{ form.email.label_tag }}
                     {{ form.email.errors }}
                     {{ form.email }}
                 </div>
+                <div class="col-sm-3">
+                    {{ form.card.label_tag }}
+                    {{ form.card.errors }}
+                    {{ form.card }}
+                </div>
+                <div class="col-sm-3">
+                    {{ form.first_association.label_tag }}
+                    {{ form.first_association.errors }}
+                    {{ form.first_association }}
+                </div>
+                <!--
+                <div class="col-sm-3">
+                    {{ form.delivered_card.label_tag }}
+                    {{ form.delivered_card.errors }}
+                    {{ form.delivered_card }}
+                </div>
+                -->
             </div>
-            <div class="col-sm-5" style="margin-top: 25px; margin-bottom: 10px">
+            <div class="col-sm-8" style="margin-top: 25px; margin-bottom: 10px">
                 <button type="submit" class="btn btn-success col-sm-5"
                         style="margin-left: 10px; margin-right: 10px">{{ op }}</button>
                 <button class="btn btn-danger col-sm-5" type="reset"
                         onclick="window.location.href='{% url 'gestionale_:create_customer' %}'">Reset
                 </button>
-            </div>
-            <div class="col-sm-5">
-                <div class="col-sm-5">
-                    {{ form.card.label_tag }}
-                    {{ form.card.errors }}
-                    {{ form.card }}
-                </div>
-                <div class="col-sm-7">
-                    {{ form.first_association.label_tag }}
-                    {{ form.first_association.errors }}
-                    {{ form.first_association }}
-                </div>
             </div>
 
         </form>

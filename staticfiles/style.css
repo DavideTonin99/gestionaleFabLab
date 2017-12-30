@@ -1,3 +1,13 @@
+html {
+    background: white;
+}
+
+body {
+    background-color: #f8f8f8 !important;
+    min-height: 95vh;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
 .navbar-default {
     z-index: 1000;
     position: fixed !important;
@@ -23,6 +33,11 @@
     vertical-align: middle;
 }
 
+#content {
+    background-color: white;
+    border-bottom: 2px solid #e7e7e7;
+}
+
 .container {
     margin-top: 70px;
     min-height: 80vh;
@@ -31,6 +46,22 @@
 table tr {
     height: 40px;
     vertical-align: middle;
+    -webkit-user-select: none;  
+    -moz-user-select: none;    
+    -ms-user-select: none;      
+    user-select: none;
+}
+
+th.sorted.ascending:after {
+    font-size: 0.8em;
+    content: " ▼";
+    opacity: 0.7;
+}
+
+th.sorted.descending:after {
+    font-size: 0.8em;
+    content: "  ▲";
+    opacity: 0.7;
 }
 
 .info-table {
@@ -126,14 +157,11 @@ table tr {
 }
 
 footer {
-    margin-top: 20px;
-    padding: 20px;
-    line-height: 30px;
+    padding: 40px;
     clear: both;
     width: 100%;
     color: #555;
-    background-color: #f8f8f8;
-    border-top: 2px solid #e7e7e7;
+    background: transparent;
 }
 
 @media screen and (max-width: 767px) {

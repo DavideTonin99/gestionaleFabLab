@@ -6,8 +6,9 @@
         {% block title %}{% endblock %}
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- style -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
         <link type="text/css" rel="stylesheet" href="{% static 'style.css' %}">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <!-- script -->
@@ -19,9 +20,13 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
 
+        <script src="{% static 'jquery-tablesort.min.js' %}"></script>
         <script>
             // highlights the active page on the navbar
             var url;
+            var row_color;
+            var selected_row_color = "rgb(238, 238, 238)";
+
             $(document).ready(function(){
                 url = (window.location.href).split("/");
                 var currentPage = url[3];
@@ -35,14 +40,21 @@
                     yearRange: "2014:2028"
                 });
 
+                if ($('.sortable-table').length > 0) {
+                    $('.sortable-table').tablesort();
+                }
+
                 $(".tr-selectable").on ({
                     mouseover: function(event) {
                         var row_id = event.target.className;
-                        $("#" + row_id).css("text-decoration", "underline");
+                        if ($("#" + row_id).css("background-color") != selected_row_color) {
+                            row_color = $("#" + row_id).css("background-color");
+                        }
+                        $("#" + row_id).css("background-color",selected_row_color);
                     },
                     mouseleave: function(event) {
                         var row_id = event.target.className;
-                        $("#" + row_id).css("text-decoration", "none");
+                        $("#" + row_id).css("background-color", row_color);
                     }
                 });
 
@@ -53,6 +65,9 @@
 
                     try {
                         switch (currentPage) {
+                            case "login":
+                                $('nav').remove();
+                                $('#content').css('margin-top','0px');
                             case "anagrafica":
                                 $('#customer-'+selected_row).css("background-color", "#ffeba3");
                                 break;
@@ -102,8 +117,10 @@
                 </div>
             </div>
         </nav>
-        <div class="container">
-            {% block content %} {% endblock %}
+        <div id="content">
+            <div class="container">
+                {% block content %} {% endblock %}
+            </div>
         </div>
         <footer>
             Gestionale FabLab
