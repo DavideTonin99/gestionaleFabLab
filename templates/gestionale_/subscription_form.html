@@ -4,25 +4,10 @@
 {% endblock %}
 
 {% block content %}
-
     <script>
         $(document).ready(function () {
-            $("#id_date").datepicker({});
-
-            changeYear("#id_date");
-
-            $('#id_date').change( function () {
-                changeYear(this);
-            })
+            $('#renew-form-title').append('Iscrizione {{ period }}' + ', <a href="{% url 'gestionale_:update_customer' id %}">{{ customer_name }}</a>')
         });
-
-        function changeYear(input) {
-            year = $(input).datepicker('getDate').getFullYear();
-
-            $('#renew-form-title').empty();
-            $('#renew-form-title').append('Iscrizione anno ' + year + ', <a href="{% url 'gestionale_:update_customer' customer_id=id %}">{{ customer_name }}</a>')
-        }
-
     </script>
 
     <br>

@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 
 from .models import Customer, Subscription, Event, Processing
@@ -21,10 +22,25 @@ class SubscriptionForm(ModelForm):
 		exclude = ['customer']
 
 	def __init__(self, *args, **kwargs):
+		extras = kwargs.get('extras')
+
+		if extras:
+			del kwargs['extras']
+
 		super(SubscriptionForm, self).__init__(*args, **kwargs)
+
+		if extras:
+			self.instance.customer = extras['customer']
+			self.instance.start_date = extras['start_date']
+			self.instance.end_date = extras['end_date']
 
 		for field in self.fields.values():
 			field.widget.attrs['class'] = 'form-control'
+
+	def clean(self):
+		if self.instance.start_date.year == self.instance.end_date.year:
+			if self.instance.start_date.year > Subscription.SYS_CHANGE_YEAR:
+				raise ValidationError('Periodo invalido')
 
 
 class EventForm(ModelForm):
