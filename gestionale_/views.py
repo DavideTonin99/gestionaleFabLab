@@ -250,6 +250,68 @@ def get_participants_emails_csv(request, event_id):
 
 
 @login_required
+def get_customers_table_csv(request):
+	output = StringIO()
+	csv.writer(output).writerows((
+		                             customer.surname,
+		                             customer.name,
+		                             '{}{:05d}'.format(Customer.CARD_PREFIX, customer.card),
+		                             customer.email,
+		                             customer.phone,
+		                             'Sì' if customer.card_given else 'No',
+		                             'Sì' if customer.subscription_set.filter(
+			                             start_date__lte=date.today(),
+			                             end_date__gte=date.today()
+		                             ).exists() else 'No'
+	                             ) for customer in Customer.objects.all())
+	content = output.getvalue()
+
+	response = HttpResponse(content, content_type='text/csv')
+	response['Content-Disposition'] = 'inline; filename="customers.csv"'
+	response['Content-Length'] = len(content)
+
+	return response
+
+
+@login_required
+def get_events_table_csv(request):
+	output = StringIO()
+	csv.writer(output).writerows((
+		                             event.date,
+		                             event.duration,
+		                             event.name,
+		                             event.price,
+		                             event.description
+	                             ) for event in Event.objects.all())
+	content = output.getvalue()
+
+	response = HttpResponse(content, content_type='text/csv')
+	response['Content-Disposition'] = 'inline; filename="events.csv"'
+	response['Content-Length'] = len(content)
+
+	return response
+
+
+@login_required
+def get_processings_table_csv(request):
+	output = StringIO()
+	csv.writer(output).writerows((
+		                             processing.date,
+		                             processing.customer,
+		                             Processing.TYPE_CHOICES[processing.type][1],
+		                             processing.price,
+		                             processing.description
+	                             ) for processing in Processing.objects.all())
+	content = output.getvalue()
+
+	response = HttpResponse(content, content_type='text/csv')
+	response['Content-Disposition'] = 'inline; filename="processings.csv"'
+	response['Content-Length'] = len(content)
+
+	return response
+
+
+@login_required
 def get_homonyms(request):
 	try:
 		assert request.method == 'POST'

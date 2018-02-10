@@ -3,7 +3,7 @@ from django.conf.urls import url
 from .views import CreateCustomerView, UpdateCustomerView, CreateSubscriptionView, UpdateSubscriptionView, \
 	CreateEventView, UpdateEventView, CreateProcessingView, UpdateProcessingView, get_participants_emails_csv, \
 	get_homonyms, StatsView, get_associations_per_year, get_associations_per_month, get_renewals_for_year, \
-	get_earnings_per_year
+	get_earnings_per_year, get_customers_table_csv, get_events_table_csv, get_processings_table_csv
 
 app_name = 'gestionale_'
 urlpatterns = [
@@ -18,7 +18,10 @@ urlpatterns = [
 	url(r'^lavorazioni/(?P<pk>[0-9]+)/$', UpdateProcessingView.as_view(), name='update_processing'),
 	url(r'^statistiche/$', StatsView.as_view(), name='stats'),
 	url(r'^ajax/customers/hm/$', get_homonyms, name='homonyms'),
+	url(r'^ajax/customers/table/$', get_customers_table_csv, name='customers_table_csv'),
 	url(r'^ajax/events/pe/(?P<event_id>[0-9]+)/$', get_participants_emails_csv, name='participants_emails_csv'),
+	url(r'^ajax/events/table/$', get_events_table_csv, name='events_table_csv'),
+	url(r'^ajax/processings/table/$', get_processings_table_csv, name='processings_table_csv'),
 	url(r'^ajax/stats/ya/$', get_associations_per_year, name='associations_per_year'),
 	url(r'^ajax/stats/ma/$', get_associations_per_month, name='associations_per_month'),
 	url(r'^ajax/stats/yr/$', get_renewals_for_year, name='renewals_per_year'),
