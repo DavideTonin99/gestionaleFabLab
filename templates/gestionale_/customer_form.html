@@ -173,12 +173,15 @@
                     {{ form.card_given }}
                 </div>
             </div>
-            <div class="col-sm-8" style="margin-top: 25px; margin-bottom: 10px">
-                <button type="submit" class="btn btn-success col-sm-5"
+            <div class="col-sm-12" style="margin-top: 25px; margin-bottom: 10px">
+                <button type="submit" class="btn btn-success col-sm-3"
                         style="margin-left: 10px; margin-right: 10px">{{ op }}</button>
-                <button class="btn btn-danger col-sm-5" type="reset"
+                <button class="btn btn-danger col-sm-3" type="reset"
                         onclick="window.location.href='{% url 'gestionale_:create_customer' %}'">Reset
                 </button>
+				<button class="btn btn-primary col-sm-3" type="button"
+						style="margin-left: 10px;" onclick="window.location.href='{% url 'gestionale_:customers_table_csv' %}'">Scarica CSV
+				</button>
             </div>
 
         </form>
