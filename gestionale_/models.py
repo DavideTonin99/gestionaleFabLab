@@ -74,7 +74,7 @@ class Subscription(Model):
 	created = DateField(auto_now_add=True, editable=False)
 
 	def clean(self):
-		if not all((self.start_date, self.end_date)):
+		if not (self.start_date and self.end_date):
 			raise ValidationError('Periodo invalido')
 
 		if self.end_date < self.start_date:
@@ -82,7 +82,8 @@ class Subscription(Model):
 
 		if Subscription.objects.filter(customer=self.customer).exclude(pk=self.pk).filter(
 				start_date__lte=self.end_date,
-				end_date__gte=self.start_date).exists():
+				end_date__gte=self.start_date
+		).exists():
 			raise ValidationError('Iscrizione per questo periodo già esistente')
 
 	@property
