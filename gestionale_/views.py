@@ -73,14 +73,14 @@ class UpdateCustomerView(LoginRequiredMixin, UpdateView):
 	def get_context_data(self, **kwargs):
 		context = super(UpdateCustomerView, self).get_context_data(**kwargs)
 
+		today = date.today()
+
 		customers = UpdateCustomerView.model.objects.all()
 		for customer in customers:
 			customer.subscribed = customer.subscription_set.filter(
-				start_date__lte=date.today(),
-				end_date__gte=date.today()
+				start_date__lte=today,
+				end_date__gte=today
 			).exists()
-
-		today = date.today()
 
 		context['op'] = MODIFY
 		context['id'] = self.object.id
@@ -332,11 +332,28 @@ def get_homonyms(request):
 @login_required
 def get_associations_per_year(request):
 	return JsonResponse({
-		'categories': tuple(Subscription.YEARS_RANGE),
+		'categories': tuple(str(year) if year <= Subscription.SYS_CHANGE_YEAR else '{}/{}'.format(year, year + 1)
+		                    for year in Subscription.YEARS_RANGE),
 		'series': [{
 			'name': description,
-			'data': [len(Subscription.objects.filter(created__year=year, type=choice))
-			         for year in Subscription.YEARS_RANGE]
+			'data': [len(
+				Subscription.objects.filter(
+					start_date=date(
+						year,
+						*(
+							Subscription.OLD_START_DATE if year <= Subscription.SYS_CHANGE_YEAR
+							else Subscription.NEW_START_DATE
+						)
+					),
+					end_date=date(
+						year if year <= Subscription.SYS_CHANGE_YEAR else year + 1,
+						*(
+							Subscription.OLD_END_DATE if year <= Subscription.SYS_CHANGE_YEAR
+							else Subscription.NEW_END_DATE
+						)
+					),
+					type=choice)
+			) for year in Subscription.YEARS_RANGE]
 		} for choice, description in Subscription.TYPE_CHOICES]})
 
 
