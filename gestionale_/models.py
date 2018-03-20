@@ -51,12 +51,21 @@ class Subscription(Model):
 	TYPE_CHOICES = tuple(enumerate(('Base', 'Maker')))
 	PAYMENT_CHOICES = tuple(enumerate(('Paypal', 'Bonifico', 'Contanti')))
 
-	YEARS_RANGE = range(2014, 2029)
 	SYS_CHANGE_YEAR = 2016
 	OLD_START_DATE = 1, 1
 	OLD_END_DATE = 12, 31
-	NEW_START_DATE = 9, 1
-	NEW_END_DATE = 8, 31
+	NEW_START_DATE = NEW_START_MONTH, _ = 9, 1
+	NEW_END_DATE = NEW_END_MONTH, _ = 8, 31
+
+	YEARS_RANGE = range(2014, 2028 + 1)
+
+	# The lambda is a workaround because the conditional expression in the generator expression uses a different scope
+	# from the class, and SYS_CHANGE_YEAR was not accessible.
+	#
+	# Consider the following line to be:
+	# NESTED_YEARS_RANGE = tuple((year,) if year <= SYS_CHANGE_YEAR else (year, year + 1) for year in YEARS_RANGE)
+	NESTED_YEARS_RANGE = (lambda sys_change_year=SYS_CHANGE_YEAR, years_range=YEARS_RANGE:
+	                      tuple((year,) if year <= sys_change_year else (year, year + 1) for year in years_range))()
 
 	RENEWED = 'Iscritti l\'anno precedente'
 	NON_RENEWED = 'Non iscritti l\'anno precedente'

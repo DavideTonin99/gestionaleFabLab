@@ -236,6 +236,9 @@ class StatsView(LoginRequiredMixin, TemplateView):
 
 @login_required
 def get_participants_emails_csv(request, event_id):
+	if request.method != 'GET':
+		return HttpResponseBadRequest()
+
 	event = get_object_or_404(Event.objects.filter(id=event_id))
 
 	output = StringIO()
@@ -251,6 +254,9 @@ def get_participants_emails_csv(request, event_id):
 
 @login_required
 def get_customers_table_csv(request):
+	if request.method != 'GET':
+		return HttpResponseBadRequest()
+
 	output = StringIO()
 	csv.writer(output).writerows((
 		                             customer.surname,
@@ -275,6 +281,9 @@ def get_customers_table_csv(request):
 
 @login_required
 def get_events_table_csv(request):
+	if request.method != 'GET':
+		return HttpResponseBadRequest()
+
 	output = StringIO()
 	csv.writer(output).writerows((
 		                             event.date,
@@ -294,6 +303,9 @@ def get_events_table_csv(request):
 
 @login_required
 def get_processings_table_csv(request):
+	if request.method != 'GET':
+		return HttpResponseBadRequest()
+
 	output = StringIO()
 	csv.writer(output).writerows((
 		                             processing.date,
@@ -322,39 +334,40 @@ def get_homonyms(request):
 	except AssertionError:
 		return HttpResponseBadRequest()
 
-	else:
-		return JsonResponse({
-			'results': [(str(customer), reverse('gestionale_:update_customer', args=(customer.id,)))
-			            for customer in Customer.objects.filter(name__istartswith=name, surname__istartswith=surname)]
-		})
+	return JsonResponse({
+		'results': [(str(customer), reverse('gestionale_:update_customer', args=(customer.id,)))
+		            for customer in Customer.objects.filter(name__istartswith=name, surname__istartswith=surname)]
+	})
 
 
 @login_required
 def get_associations_per_year(request):
-	return JsonResponse({
-		'categories': tuple(str(year) if year <= Subscription.SYS_CHANGE_YEAR else '{}/{}'.format(year, year + 1)
-		                    for year in Subscription.YEARS_RANGE),
-		'series': [{
-			'name': description,
-			'data': [len(
-				Subscription.objects.filter(
-					start_date=date(
-						year,
-						*(
-							Subscription.OLD_START_DATE if year <= Subscription.SYS_CHANGE_YEAR
-							else Subscription.NEW_START_DATE
-						)
-					),
-					end_date=date(
-						year if year <= Subscription.SYS_CHANGE_YEAR else year + 1,
-						*(
-							Subscription.OLD_END_DATE if year <= Subscription.SYS_CHANGE_YEAR
-							else Subscription.NEW_END_DATE
-						)
-					),
-					type=choice)
-			) for year in Subscription.YEARS_RANGE]
-		} for choice, description in Subscription.TYPE_CHOICES]})
+	if request.method == 'GET':
+		return JsonResponse({
+			'categories': tuple('/'.join(map(str, years)) for years in Subscription.NESTED_YEARS_RANGE),
+			'series': [{
+				'name': description,
+				'data': [len(
+					Subscription.objects.filter(
+						start_date=date(
+							year,
+							*(
+								Subscription.OLD_START_DATE if year <= Subscription.SYS_CHANGE_YEAR
+								else Subscription.NEW_START_DATE
+							)
+						),
+						end_date=date(
+							year if year <= Subscription.SYS_CHANGE_YEAR else year + 1,
+							*(
+								Subscription.OLD_END_DATE if year <= Subscription.SYS_CHANGE_YEAR
+								else Subscription.NEW_END_DATE
+							)
+						),
+						type=choice)
+				) for year in Subscription.YEARS_RANGE]
+			} for choice, description in Subscription.TYPE_CHOICES]})
+	else:
+		return HttpResponseBadRequest()
 
 
 @login_required
@@ -362,38 +375,46 @@ def get_associations_per_month(request):
 	try:
 		assert request.method == 'GET'
 
-		year = int(request.GET.get('year'))
+		years = tuple(map(int, request.GET.get('years').split('/')))
 
-	except (AssertionError, TypeError):
+		assert len(years) == 1 or (len(years) == 2 and years[0] + 1 == years[1])
+
+	except (AssertionError, AttributeError, ValueError):
 		return HttpResponseBadRequest()
 
+	if len(years) == 2:
+		months = range(Subscription.NEW_START_MONTH, 12 + 1), range(1, Subscription.NEW_END_MONTH + 1)
 	else:
-		months = range(1, 12 + 1)
+		months = range(1, 12 + 1),
 
-		return JsonResponse({
-			'categories': tuple(months),
-			'series': [{
-				'name': description,
-				'data': [len(Subscription.objects.filter(created__year=year, created__month=month, type=choice))
-				         for month in months]
-			} for choice, description in Subscription.TYPE_CHOICES]})
+	return JsonResponse({
+		'categories': tuple(month for year_index, year in enumerate(years) for month in months[year_index]),
+		'series': [{
+			'name': description,
+			'data': [len(Subscription.objects.filter(created__year=year, created__month=month, type=choice))
+			         for year_index, year in enumerate(years) for month in months[year_index]]
+		} for choice, description in Subscription.TYPE_CHOICES]
+	})
 
 
 @login_required
 def get_renewals_for_year(request):
-	return JsonResponse({
-		'categories': tuple(Subscription.YEARS_RANGE),
-		'series': [{
-			'name': Subscription.RENEWED,
-			'data': [sum(map(lambda sub: sub and Subscription.objects.filter(customer=sub.customer,
-			                                                                 created__year=year - 1).exists(),
-			                 Subscription.objects.filter(created__year=year))) for year in Subscription.YEARS_RANGE]
-		}, {
-			'name': Subscription.NON_RENEWED,
-			'data': [sum(map(lambda sub: sub and not Subscription.objects.filter(customer=sub.customer,
-			                                                                     created__year=year - 1).exists(),
-			                 Subscription.objects.filter(created__year=year))) for year in Subscription.YEARS_RANGE]
-		}]})
+	if request.method == 'GET':
+		return JsonResponse({
+			'categories': tuple(Subscription.YEARS_RANGE),
+			'series': [{
+				'name': Subscription.RENEWED,
+				'data': [sum(map(lambda sub: sub and Subscription.objects.filter(customer=sub.customer,
+				                                                                 created__year=year - 1).exists(),
+				                 Subscription.objects.filter(created__year=year))) for year in Subscription.YEARS_RANGE]
+			}, {
+				'name': Subscription.NON_RENEWED,
+				'data': [sum(map(lambda sub: sub and not Subscription.objects.filter(customer=sub.customer,
+				                                                                     created__year=year - 1).exists(),
+				                 Subscription.objects.filter(created__year=year))) for year in Subscription.YEARS_RANGE]
+			}]})
+	else:
+		return HttpResponseBadRequest()
 
 
 @login_required
