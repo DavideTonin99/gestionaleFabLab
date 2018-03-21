@@ -51,12 +51,13 @@ class Subscription(Model):
 	TYPE_CHOICES = tuple(enumerate(('Base', 'Maker')))
 	PAYMENT_CHOICES = tuple(enumerate(('Paypal', 'Bonifico', 'Contanti')))
 
-	YEARS_RANGE = range(2014, 2029)
+	YEARS_RANGE = range(2014, 2028 + 1)
+
 	SYS_CHANGE_YEAR = 2016
 	OLD_START_DATE = 1, 1
 	OLD_END_DATE = 12, 31
-	NEW_START_DATE = 9, 1
-	NEW_END_DATE = 8, 31
+	NEW_START_DATE = NEW_START_MONTH, _ = 9, 1
+	NEW_END_DATE = NEW_END_MONTH, _ = 8, 31
 
 	RENEWED = 'Iscritti l\'anno precedente'
 	NON_RENEWED = 'Non iscritti l\'anno precedente'

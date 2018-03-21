@@ -14,8 +14,8 @@
         var border_colors = ["rgba(255, 127, 0, 1)", "rgba(0, 131, 255, 1)", "rgba(239, 67, 67, 1)", "rgb(67, 190, 239)", "rgb(255, 208, 79)"];
 
         $(document).ready(function () {
-            years = ["2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024",
-                "2025", "2026", "2027", "2028"];
+            years = ["2014", "2015", "2016", "2017/2018", "2018/2019", "2019/2020", "2020/2021", "2021/2022", "2022/2023", "2023/2024", "2024/2025",
+                "2025/2026", "2026/2027", "2027/2028", "2028/2029"];
 
             // ASSOCIATI PER ANNO
             $.get("{% url 'gestionale_:associations_per_year' %}", function (data, status) {
@@ -84,7 +84,7 @@
 
         function drawAssociatedPerMonth() {
             if ($('#year-select').val() !== "") {
-                $.get("{% url 'gestionale_:associations_per_month' %}", {year: $('#year-select').val()}, function (data, status) {
+                $.get("{% url 'gestionale_:associations_per_month' %}", {years: $('#year-select').val()}, function (data, status) {
                     if (data.categories !== undefined && data.series !== undefined) {
                         $("#associated_per_month_title").empty();
                         $("#associated_per_month_title").prepend("Associati per mese (" + $('#year-select').val() + ")");
