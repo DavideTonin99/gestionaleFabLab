@@ -344,7 +344,8 @@ def get_homonyms(request):
 def get_associations_per_year(request):
 	if request.method == 'GET':
 		return JsonResponse({
-			'categories': tuple('/'.join(map(str, years)) for years in Subscription.NESTED_YEARS_RANGE),
+			'categories': tuple(str(year) if year <= Subscription.SYS_CHANGE_YEAR else '{}/{}'.format(year, year + 1)
+			                    for year in Subscription.YEARS_RANGE),
 			'series': [{
 				'name': description,
 				'data': [len(
@@ -377,7 +378,8 @@ def get_associations_per_month(request):
 
 		years = tuple(map(int, request.GET.get('years').split('/')))
 
-		assert len(years) == 1 or (len(years) == 2 and years[0] + 1 == years[1])
+		assert (len(years) == 1 and years[0] <= Subscription.SYS_CHANGE_YEAR) or \
+		       (len(years) == 2 and years[0] + 1 == years[1] and Subscription.SYS_CHANGE_YEAR < years[0])
 
 	except (AssertionError, AttributeError, ValueError):
 		return HttpResponseBadRequest()
@@ -419,35 +421,67 @@ def get_renewals_for_year(request):
 
 @login_required
 def get_earnings_per_year(request):
-	if request.method == 'GET':
-		year = None
+	years = None
 
-		try:
-			year = int(request.GET.get('year'))
+	try:
+		assert request.method == 'GET'
 
-		except TypeError:
-			pass
+		years = tuple(map(int, request.GET.get('years').split('/')))
 
-		if year:
-			return JsonResponse({
-				'labels': [description for _, description in Processing.TYPE_CHOICES],
+		assert (len(years) == 1 and years[0] <= Subscription.SYS_CHANGE_YEAR) or\
+		       (len(years) == 2 and years[0] + 1 == years[1] and Subscription.SYS_CHANGE_YEAR < years[0])
 
-				'datasets': [{
-					'data': [sum((p.price for p in Processing.objects.filter(date__year=year, type=choice)),
-					             Decimal('0.00'))
-					         for choice, _ in Processing.TYPE_CHOICES]
-				}]
-			})
+	except (AssertionError, ValueError):
+		return HttpResponseBadRequest()
+	except AttributeError:
+		pass
 
+	if years:
+		if len(years) == 2:
+			months = range(Subscription.NEW_START_MONTH, 12 + 1), range(1, Subscription.NEW_END_MONTH + 1)
 		else:
-			return JsonResponse({
-				'categories': tuple(Subscription.YEARS_RANGE),
-				'series': [{
-					'name': description,
-					'data': [sum((p.price for p in Processing.objects.filter(date__year=year, type=choice)),
-					             Decimal('0.00'))
-					         for year in Subscription.YEARS_RANGE]
-				} for choice, description in Processing.TYPE_CHOICES]})
+			months = range(1, 12 + 1),
+
+		return JsonResponse({
+			'labels': [description for _, description in Processing.TYPE_CHOICES],
+
+			'datasets': [{
+				'data': [sum(
+					(p.price
+					 for index, year in enumerate(years)
+					 for month in months[index]
+					 for p in Processing.objects.filter(date__year=year, date__month=month, type=choice)),
+					Decimal('0.00')
+				) for choice, _ in Processing.TYPE_CHOICES]
+			}]
+		})
 
 	else:
-		return HttpResponseBadRequest()
+		return JsonResponse({
+			'categories': tuple(str(year) if year <= Subscription.SYS_CHANGE_YEAR else '{}/{}'.format(year, year + 1)
+			                    for year in Subscription.YEARS_RANGE),
+			'series': [{
+				'name': description,
+				'data': [
+					sum(
+						(p.price for p in Processing.objects.filter(date__year=years[0], type=choice)),
+						Decimal('0.00')
+					) if len(years) == 1 else (sum(
+						(p.price
+						 for month in range(Subscription.NEW_START_MONTH, 12 + 1)
+						 for p in Processing.objects.filter(date__year=years[0],
+						                                    date__month=month,
+						                                    type=choice)),
+						Decimal('0.00')
+					) + sum(
+						(p.price
+						 for month in range(1, Subscription.NEW_END_MONTH + 1)
+						 for p in Processing.objects.filter(date__year=years[1],
+						                                    date__month=month,
+						                                    type=choice)),
+						Decimal('0.00')
+					)) for years in ((year,) if year <= Subscription.SYS_CHANGE_YEAR else (year, year + 1)
+					                 for year in Subscription.YEARS_RANGE)
+				]
+			} for choice, description in Processing.TYPE_CHOICES]
+		})
