@@ -2,6 +2,7 @@ import csv
 from datetime import date
 from decimal import Decimal
 from io import StringIO
+from itertools import tee
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -402,18 +403,59 @@ def get_associations_per_month(request):
 @login_required
 def get_renewals_for_year(request):
 	if request.method == 'GET':
+		nested_years_range = tuple(
+			(year,) if year <= Subscription.SYS_CHANGE_YEAR else (year, year + 1) for year in Subscription.YEARS_RANGE
+		)
+
+		not_renewed = []
+		renewed = []
+
+		# noinspection PyTypeChecker
+		for prev, year in pairwise(((Subscription.YEARS_RANGE.start - 1,),) +
+		                           nested_years_range +
+		                           ((Subscription.YEARS_RANGE.stop, Subscription.YEARS_RANGE.stop + 1),)):
+			curr_not_renewed = 0
+			curr_renewed = 0
+
+			if len(prev) == 1 and len(year) == 1:
+				for prev_sub in Subscription.objects.filter(start_date=date(year[0], *Subscription.OLD_START_DATE),
+				                                            end_date=date(year[0], *Subscription.OLD_END_DATE)):
+					if Subscription.objects.filter(start_date=date(prev[0], *Subscription.OLD_START_DATE),
+					                               end_date=date(prev[0], *Subscription.OLD_END_DATE),
+					                               customer=prev_sub.customer):
+						curr_renewed += 1
+					else:
+						curr_not_renewed += 1
+			elif len(prev) == 1 and len(year) == 2:
+				for prev_sub in Subscription.objects.filter(start_date=date(year[0], *Subscription.NEW_START_DATE),
+				                                            end_date=date(year[1], *Subscription.NEW_END_DATE)):
+					if Subscription.objects.filter(start_date=date(prev[0], *Subscription.OLD_START_DATE),
+					                               end_date=date(prev[0], *Subscription.OLD_END_DATE),
+					                               customer=prev_sub.customer):
+						curr_renewed += 1
+					else:
+						curr_not_renewed += 1
+			else:
+				for prev_sub in Subscription.objects.filter(start_date=date(year[0], *Subscription.NEW_START_DATE),
+				                                            end_date=date(year[1], *Subscription.NEW_END_DATE)):
+					if Subscription.objects.filter(start_date=date(prev[0], *Subscription.NEW_START_DATE),
+					                               end_date=date(prev[1], *Subscription.NEW_END_DATE),
+					                               customer=prev_sub.customer):
+						curr_renewed += 1
+					else:
+						curr_not_renewed += 1
+
+			not_renewed.append(curr_not_renewed)
+			renewed.append(curr_renewed)
+
 		return JsonResponse({
-			'categories': tuple(Subscription.YEARS_RANGE),
+			'categories': tuple('/'.join(map(str, years)) for years in nested_years_range),
 			'series': [{
 				'name': Subscription.RENEWED,
-				'data': [sum(map(lambda sub: sub and Subscription.objects.filter(customer=sub.customer,
-				                                                                 created__year=year - 1).exists(),
-				                 Subscription.objects.filter(created__year=year))) for year in Subscription.YEARS_RANGE]
+				'data': renewed
 			}, {
 				'name': Subscription.NON_RENEWED,
-				'data': [sum(map(lambda sub: sub and not Subscription.objects.filter(customer=sub.customer,
-				                                                                     created__year=year - 1).exists(),
-				                 Subscription.objects.filter(created__year=year))) for year in Subscription.YEARS_RANGE]
+				'data': not_renewed
 			}]})
 	else:
 		return HttpResponseBadRequest()
@@ -485,3 +527,11 @@ def get_earnings_per_year(request):
 				]
 			} for choice, description in Processing.TYPE_CHOICES]
 		})
+
+
+def pairwise(iterable):
+	a, b = tee(iterable)
+	next(b, None)
+	return zip(a, b)
+
+# TODO Try to use gt/lt instead of for with months
