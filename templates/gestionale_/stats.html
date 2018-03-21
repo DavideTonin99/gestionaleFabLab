@@ -114,6 +114,7 @@
                         $("#associated_per_month_title").prepend("Associati per mese (" + $('#year-select').val() + ")");
                         window.associated_per_month_chart.data.datasets[0].data = data.series[0].data;
                         window.associated_per_month_chart.data.datasets[1].data = data.series[1].data;
+                        window.associated_per_month_chart.data.labels = mapMonths(data.categories);
                         window.associated_per_month_chart.update();
                     }
                 });

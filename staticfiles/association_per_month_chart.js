@@ -1,9 +1,10 @@
 function draw_association_per_month_chart(data) {
     var associated_per_month_canvas = document.getElementById('associated_per_month').getContext("2d");
 
-    var months = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
     var baseDataset;
     var makerDataset;
+
+    var months = mapMonths(data.categories);
 
     baseDataset = {
         label: "Base",
@@ -62,4 +63,16 @@ function draw_association_per_month_chart(data) {
             }
         }
     );
+}
+
+function mapMonths(indexes) {
+    var orderedMonths = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
+
+    var months = [];
+    var i = 0;
+    indexes.forEach(function(index) {
+        months[i++] = orderedMonths[index - 1];
+    });
+
+    return months;
 }
