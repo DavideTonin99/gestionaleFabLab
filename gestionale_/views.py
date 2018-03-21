@@ -3,7 +3,6 @@ from datetime import date
 from decimal import Decimal
 from io import StringIO
 
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
@@ -11,14 +10,10 @@ from django.shortcuts import reverse, get_object_or_404
 from django.views.generic import CreateView, UpdateView, TemplateView
 
 from .forms import CustomerForm, SubscriptionForm, EventForm, ProcessingForm
-from .models import Customer, Subscription, Event, Processing, \
-	CARD_PREFIX, SUBSCRIPTION_TYPE_CHOICES, PROCESSING_TYPE_CHOICES
+from .models import Customer, Subscription, Event, Processing
 
-YEAR_BOUNDARIES = (2014, 2028)
 CREATE = 'Salva'
 MODIFY = 'Salva modifiche'
-RENEWED = 'Iscritti l\'anno precedente'
-NON_RENEWED = 'Non iscritti l\'anno precedente'
 
 
 class CreateCustomerView(LoginRequiredMixin, CreateView):
@@ -30,19 +25,31 @@ class CreateCustomerView(LoginRequiredMixin, CreateView):
 
 	def get_initial(self):
 		initial = super(CreateCustomerView, self).get_initial()
-		customers = Customer.objects.all()
-		initial['card'] = CARD_PREFIX + '{0:05d}'.format(max(map(lambda x: int(x.card[4:]), customers)) + 1
-		                                                 if customers else 0)
+
+		customers = CreateCustomerView.model.objects.all()
+		initial['card'] = str(max(customer.card for customer in customers) + 1 if customers.exists() else 0).zfill(5)
+
 		return initial
 
 	def get_context_data(self, **kwargs):
 		context = super(CreateCustomerView, self).get_context_data(**kwargs)
 
-		customers = self.model.objects.all()
-		context['customers'] = [(customer, get(customer.subscription_set.filter(date__year=date.today().year), 0))
-		                        for customer in customers]
+		customers = CreateCustomerView.model.objects.all()
+		for customer in customers:
+			customer.subscribed = customer.subscription_set.filter(
+				start_date__lte=date.today(),
+				end_date__gte=date.today()
+			).exists()
+
+		today = date.today()
 
 		context['op'] = CREATE
+		context['customers'] = customers
+		context['CARD_PREFIX'] = Customer.CARD_PREFIX
+		context['current_period'] = \
+			'{}/{}'.format(today.year - 1, today.year) if today < date(today.year, *Subscription.NEW_END_DATE) \
+			else '{}/{}'.format(today.year, today.year + 1)
+
 		context['search_homonyms'] = True
 
 		return context
@@ -53,24 +60,43 @@ class UpdateCustomerView(LoginRequiredMixin, UpdateView):
 	form_class = CustomerForm
 
 	def get_success_url(self):
-		return reverse('gestionale_:update_customer', args=(self.kwargs.get('customer_id'),))
+		return reverse('gestionale_:update_customer', args=(self.object.id,))
 
-	def get_object(self, queryset=None):
-		return get_object_or_404(self.model.objects.filter(id=self.kwargs.get('customer_id')))
+	def get_initial(self):
+		initial = super(UpdateCustomerView, self).get_initial()
+
+		initial['cap'] = str(self.object.cap).zfill(5)
+		initial['card'] = str(self.object.card).zfill(5)
+
+		return initial
 
 	def get_context_data(self, **kwargs):
 		context = super(UpdateCustomerView, self).get_context_data(**kwargs)
-		context['customers'] = [(customer, get(customer.subscription_set.filter(date__year=date.today().year), 0))
-		                        for customer in self.model.objects.all()]
+
+		today = date.today()
+
+		customers = UpdateCustomerView.model.objects.all()
+		for customer in customers:
+			customer.subscribed = customer.subscription_set.filter(
+				start_date__lte=today,
+				end_date__gte=today
+			).exists()
+
 		context['op'] = MODIFY
 		context['id'] = self.object.id
-
-		all_subs = self.object.subscription_set.all()
+		context['customers'] = customers
+		context['subscriptions'] = {
+			year: self.object.subscription_set.filter(start_date__year=year).first()
+			for year in Subscription.YEARS_RANGE
+		}
+		context['events'] = self.object.event_set.all()
+		context['processings'] = self.object.processing_set.all()
+		context['CARD_PREFIX'] = Customer.CARD_PREFIX
+		context['current_period'] = \
+			'{}/{}'.format(today.year - 1, today.year) if today < date(today.year, *Subscription.NEW_END_DATE) \
+			else '{}/{}'.format(today.year, today.year + 1)
 
 		context['show_tables'] = True
-		context['subscriptions'] = filter_queryset_in_years(all_subs, YEAR_BOUNDARIES[0], YEAR_BOUNDARIES[1])
-		context['processings'] = self.object.processing_set.all()
-		context['events'] = self.object.event_set.all()
 
 		return context
 
@@ -80,37 +106,42 @@ class CreateSubscriptionView(LoginRequiredMixin, CreateView):
 	form_class = SubscriptionForm
 
 	def get_success_url(self):
-		return reverse('gestionale_:update_subscription', args=(self.object.customer.id, self.object.id))
+		return reverse('gestionale_:update_subscription', args=(self.object.id,))
 
-	def get_initial(self):
-		today = date.today()
-		initial = super(CreateSubscriptionView, self).get_initial()
+	def get_form_kwargs(self):
+		extras = {
+			'customer': get_object_or_404(Customer.objects.filter(id=self.kwargs['customer_id']))
+		}
 
-		try:
-			year = int(self.kwargs.get('year'))
-			assert YEAR_BOUNDARIES[0] <= year <= YEAR_BOUNDARIES[1]
-			initial['date'] = date(year, today.month, today.day).strftime(settings.DATE_INPUT_FORMATS[0])
-		except (ValueError, TypeError, AssertionError):
-			initial['date'] = ''
+		start, end = map(int, self.kwargs['period'].split('/'))
 
-		return initial
+		if start == end:
+			extras['start_date'] = date(start, *Subscription.OLD_START_DATE)
+			extras['end_date'] = date(end, *Subscription.OLD_END_DATE)
+		else:
+			extras['start_date'] = date(start, *Subscription.NEW_START_DATE)
+			extras['end_date'] = date(end, *Subscription.NEW_END_DATE)
+
+		kwargs = super(CreateSubscriptionView, self).get_form_kwargs()
+		kwargs['extras'] = extras
+		return kwargs
 
 	def get_context_data(self, **kwargs):
 		context = super(CreateSubscriptionView, self).get_context_data(**kwargs)
+
+		customer = get_object_or_404(Customer.objects.filter(id=self.kwargs['customer_id']))
+		start, end = self.kwargs['period'].split('/')
+
 		context['op'] = CREATE
-
-		customer = get_object_or_404(Customer.objects.filter(id=self.kwargs.get('customer_id')))
 		context['id'] = customer.id
+		context['subscriptions'] = {
+			year: customer.subscription_set.filter(start_date__year=year).first()
+			for year in Subscription.YEARS_RANGE
+		}
 		context['customer_name'] = str(customer)
-
-		all_subs = customer.subscription_set.all()
-		context['subscriptions'] = filter_queryset_in_years(all_subs, YEAR_BOUNDARIES[0], YEAR_BOUNDARIES[1])
+		context['period'] = start if start == end else self.kwargs['period']
 
 		return context
-
-	def form_valid(self, form):
-		form.instance.customer = get_object_or_404(Customer.objects.filter(id=self.kwargs.get('customer_id')))
-		return super(CreateSubscriptionView, self).form_valid(form)
 
 
 class UpdateSubscriptionView(LoginRequiredMixin, UpdateView):
@@ -118,20 +149,19 @@ class UpdateSubscriptionView(LoginRequiredMixin, UpdateView):
 	form_class = SubscriptionForm
 
 	def get_success_url(self):
-		return reverse('gestionale_:update_subscription', args=(self.object.customer.id, self.object.id))
-
-	def get_object(self, queryset=None):
-		return get_object_or_404(get_object_or_404(Customer.objects.filter(id=self.kwargs.get('customer_id'))).
-		                         subscription_set.filter(id=self.kwargs.get('subscription_id')))
+		return reverse('gestionale_:update_subscription', args=(self.object.id,))
 
 	def get_context_data(self, **kwargs):
 		context = super(UpdateSubscriptionView, self).get_context_data(**kwargs)
+
 		context['op'] = MODIFY
 		context['id'] = self.object.customer.id
+		context['subscriptions'] = {
+			year: self.object.customer.subscription_set.filter(start_date__year=year).first()
+			for year in Subscription.YEARS_RANGE
+		}
 		context['customer_name'] = str(self.object.customer)
-
-		all_subs = self.object.customer.subscription_set.all()
-		context['subscriptions'] = filter_queryset_in_years(all_subs, YEAR_BOUNDARIES[0], YEAR_BOUNDARIES[1])
+		context['period'] = self.object.period
 
 		return context
 
@@ -146,8 +176,8 @@ class CreateEventView(LoginRequiredMixin, CreateView):
 	def get_context_data(self, **kwargs):
 		context = super(CreateEventView, self).get_context_data(**kwargs)
 
-		context['events'] = self.model.objects.all()
 		context['op'] = CREATE
+		context['events'] = CreateEventView.model.objects.all()
 
 		return context
 
@@ -159,14 +189,11 @@ class UpdateEventView(LoginRequiredMixin, UpdateView):
 	def get_success_url(self):
 		return reverse('gestionale_:update_event', args=(self.object.id,))
 
-	def get_object(self, queryset=None):
-		return get_object_or_404(self.model.objects.filter(id=self.kwargs.get('event_id')))
-
 	def get_context_data(self, **kwargs):
 		context = super(UpdateEventView, self).get_context_data(**kwargs)
 
-		context['events'] = self.model.objects.all()
 		context['op'] = MODIFY
+		context['events'] = UpdateEventView.model.objects.all()
 
 		return context
 
@@ -181,8 +208,8 @@ class CreateProcessingView(LoginRequiredMixin, CreateView):
 	def get_context_data(self, **kwargs):
 		context = super(CreateProcessingView, self).get_context_data(**kwargs)
 
-		context['processings'] = self.model.objects.all()
 		context['op'] = CREATE
+		context['processings'] = CreateProcessingView.model.objects.all()
 
 		return context
 
@@ -194,14 +221,11 @@ class UpdateProcessingView(LoginRequiredMixin, UpdateView):
 	def get_success_url(self):
 		return reverse('gestionale_:update_processing', args=(self.object.id,))
 
-	def get_object(self, queryset=None):
-		return get_object_or_404(self.model.objects.filter(id=self.kwargs.get('processing_id')))
-
 	def get_context_data(self, **kwargs):
 		context = super(UpdateProcessingView, self).get_context_data(**kwargs)
 
-		context['processings'] = self.model.objects.all()
 		context['op'] = MODIFY
+		context['processings'] = UpdateProcessingView.model.objects.all()
 
 		return context
 
@@ -212,14 +236,88 @@ class StatsView(LoginRequiredMixin, TemplateView):
 
 @login_required
 def get_participants_emails_csv(request, event_id):
+	if request.method != 'GET':
+		return HttpResponseBadRequest()
+
 	event = get_object_or_404(Event.objects.filter(id=event_id))
 
 	output = StringIO()
-	csv.writer(output).writerows([participant.email] for participant in event.participants.all())
+	csv.writer(output).writerows((participant.email,) for participant in event.participants.all())
 	content = output.getvalue()
 
 	response = HttpResponse(content, content_type='text/csv')
 	response['Content-Disposition'] = 'inline; filename="{}.csv"'.format(event.name or event.id)
+	response['Content-Length'] = len(content)
+
+	return response
+
+
+@login_required
+def get_customers_table_csv(request):
+	if request.method != 'GET':
+		return HttpResponseBadRequest()
+
+	output = StringIO()
+	csv.writer(output).writerows((
+		                             customer.surname,
+		                             customer.name,
+		                             '{}{:05d}'.format(Customer.CARD_PREFIX, customer.card),
+		                             customer.email,
+		                             customer.phone,
+		                             'Sì' if customer.card_given else 'No',
+		                             'Sì' if customer.subscription_set.filter(
+			                             start_date__lte=date.today(),
+			                             end_date__gte=date.today()
+		                             ).exists() else 'No'
+	                             ) for customer in Customer.objects.all())
+	content = output.getvalue()
+
+	response = HttpResponse(content, content_type='text/csv')
+	response['Content-Disposition'] = 'inline; filename="customers.csv"'
+	response['Content-Length'] = len(content)
+
+	return response
+
+
+@login_required
+def get_events_table_csv(request):
+	if request.method != 'GET':
+		return HttpResponseBadRequest()
+
+	output = StringIO()
+	csv.writer(output).writerows((
+		                             event.date,
+		                             event.duration,
+		                             event.name,
+		                             event.price,
+		                             event.description
+	                             ) for event in Event.objects.all())
+	content = output.getvalue()
+
+	response = HttpResponse(content, content_type='text/csv')
+	response['Content-Disposition'] = 'inline; filename="events.csv"'
+	response['Content-Length'] = len(content)
+
+	return response
+
+
+@login_required
+def get_processings_table_csv(request):
+	if request.method != 'GET':
+		return HttpResponseBadRequest()
+
+	output = StringIO()
+	csv.writer(output).writerows((
+		                             processing.date,
+		                             processing.customer,
+		                             Processing.TYPE_CHOICES[processing.type][1],
+		                             processing.price,
+		                             processing.description
+	                             ) for processing in Processing.objects.all())
+	content = output.getvalue()
+
+	response = HttpResponse(content, content_type='text/csv')
+	response['Content-Disposition'] = 'inline; filename="processings.csv"'
 	response['Content-Length'] = len(content)
 
 	return response
@@ -231,26 +329,46 @@ def get_homonyms(request):
 		assert request.method == 'POST'
 
 		name, surname = request.POST.get('name'), request.POST.get('surname')
-		assert bool(name) and bool(surname)
+		assert name and surname
 
-		return JsonResponse({
-			'results': [[str(customer), reverse('gestionale_:update_customer', args=(customer.id,))]
-			            for customer in Customer.objects.filter(name__istartswith=name, surname__istartswith=surname)]
-		})
 	except AssertionError:
 		return HttpResponseBadRequest()
+
+	return JsonResponse({
+		'results': [(str(customer), reverse('gestionale_:update_customer', args=(customer.id,)))
+		            for customer in Customer.objects.filter(name__istartswith=name, surname__istartswith=surname)]
+	})
 
 
 @login_required
 def get_associations_per_year(request):
-	years = range(YEAR_BOUNDARIES[0], YEAR_BOUNDARIES[1] + 1)
-	return JsonResponse({
-		'categories': list(years),
-		'series': [{
-			'name': choice[1],
-			'data': [len(Subscription.objects.filter(date__year=year, type=choice[0]))
-			         for year in years]
-		} for choice in SUBSCRIPTION_TYPE_CHOICES]})
+	if request.method == 'GET':
+		return JsonResponse({
+			'categories': tuple(str(year) if year <= Subscription.SYS_CHANGE_YEAR else '{}/{}'.format(year, year + 1)
+			                    for year in Subscription.YEARS_RANGE),
+			'series': [{
+				'name': description,
+				'data': [len(
+					Subscription.objects.filter(
+						start_date=date(
+							year,
+							*(
+								Subscription.OLD_START_DATE if year <= Subscription.SYS_CHANGE_YEAR
+								else Subscription.NEW_START_DATE
+							)
+						),
+						end_date=date(
+							year if year <= Subscription.SYS_CHANGE_YEAR else year + 1,
+							*(
+								Subscription.OLD_END_DATE if year <= Subscription.SYS_CHANGE_YEAR
+								else Subscription.NEW_END_DATE
+							)
+						),
+						type=choice)
+				) for year in Subscription.YEARS_RANGE]
+			} for choice, description in Subscription.TYPE_CHOICES]})
+	else:
+		return HttpResponseBadRequest()
 
 
 @login_required
@@ -258,87 +376,112 @@ def get_associations_per_month(request):
 	try:
 		assert request.method == 'GET'
 
-		year = request.GET.get('year', '')
-		assert year.isnumeric()
-		year = int(year)
-		assert YEAR_BOUNDARIES[0] <= year <= YEAR_BOUNDARIES[1]
+		years = tuple(map(int, request.GET.get('years').split('/')))
 
-		months = range(1, 12 + 1)
+		assert (len(years) == 1 and years[0] <= Subscription.SYS_CHANGE_YEAR) or \
+		       (len(years) == 2 and years[0] + 1 == years[1] and Subscription.SYS_CHANGE_YEAR < years[0])
 
-		return JsonResponse({
-			'categories': list(months),
-			'series': [{
-				'name': choice[1],
-				'data': [len(Subscription.objects.filter(date__year=year, date__month=month, type=choice[0]))
-				         for month in months]
-			} for choice in SUBSCRIPTION_TYPE_CHOICES]})
-
-	except AssertionError:
+	except (AssertionError, AttributeError, ValueError):
 		return HttpResponseBadRequest()
+
+	if len(years) == 2:
+		months = range(Subscription.NEW_START_MONTH, 12 + 1), range(1, Subscription.NEW_END_MONTH + 1)
+	else:
+		months = range(1, 12 + 1),
+
+	return JsonResponse({
+		'categories': tuple(month for year_index, year in enumerate(years) for month in months[year_index]),
+		'series': [{
+			'name': description,
+			'data': [len(Subscription.objects.filter(created__year=year, created__month=month, type=choice))
+			         for year_index, year in enumerate(years) for month in months[year_index]]
+		} for choice, description in Subscription.TYPE_CHOICES]
+	})
 
 
 @login_required
 def get_renewals_for_year(request):
-	years = range(YEAR_BOUNDARIES[0], YEAR_BOUNDARIES[1] + 1)
-
-	return JsonResponse({
-		'categories': list(years),
-		'series': [{
-			'name': RENEWED,
-			'data': [sum(map(lambda sub: bool(sub) and bool(get(Subscription.objects.filter(customer=sub.customer,
-			                                                                                date__year=year - 1), 0)),
-			                 Subscription.objects.filter(date__year=year))) for year in years]
-		}, {
-			'name': NON_RENEWED,
-			'data': [sum(map(lambda sub: bool(sub) and not bool(get(Subscription.objects.filter(customer=sub.customer,
-			                                                                                    date__year=year - 1),
-			                                                        0)),
-			                 Subscription.objects.filter(date__year=year))) for year in years]
-		}]})
-
-
-@login_required
-def get_earnings_per_year(request):
 	if request.method == 'GET':
-		year = request.GET.get('year', '')
-		try:
-			year = int(year)
-			assert YEAR_BOUNDARIES[0] <= year <= YEAR_BOUNDARIES[1]
-		except (ValueError, AssertionError):
-			year = False
-
-		if year:
-			return JsonResponse({
-				'labels': [choice[1] for choice in PROCESSING_TYPE_CHOICES],
-
-				'datasets': [{
-					'data': [sum(map(lambda x: x.price, Processing.objects.filter(date__year=year,
-					                                                              type=choice[0])),
-					             Decimal('0.00'))
-					         for choice in PROCESSING_TYPE_CHOICES]
-				}]
-			})
-
-		else:
-			years = range(YEAR_BOUNDARIES[0], YEAR_BOUNDARIES[1] + 1)
-
-			return JsonResponse({
-				'categories': list(years),
-				'series': [{
-					'name': choice[1],
-					'data': [sum(map(lambda x: x.price, Processing.objects.filter(date__year=year, type=choice[0])),
-					             Decimal('0.00')) for year in years]
-				} for choice in PROCESSING_TYPE_CHOICES]})
+		return JsonResponse({
+			'categories': tuple(Subscription.YEARS_RANGE),
+			'series': [{
+				'name': Subscription.RENEWED,
+				'data': [sum(map(lambda sub: sub and Subscription.objects.filter(customer=sub.customer,
+				                                                                 created__year=year - 1).exists(),
+				                 Subscription.objects.filter(created__year=year))) for year in Subscription.YEARS_RANGE]
+			}, {
+				'name': Subscription.NON_RENEWED,
+				'data': [sum(map(lambda sub: sub and not Subscription.objects.filter(customer=sub.customer,
+				                                                                     created__year=year - 1).exists(),
+				                 Subscription.objects.filter(created__year=year))) for year in Subscription.YEARS_RANGE]
+			}]})
 	else:
 		return HttpResponseBadRequest()
 
 
-def filter_queryset_in_years(queryset, from_, to):
-	return {year: get(queryset.filter(date__year=year), 0) for year in range(from_, to + 1)}
+@login_required
+def get_earnings_per_year(request):
+	years = None
 
-
-def get(k, i, default=None):
 	try:
-		return k[i]
-	except IndexError:
-		return default
+		assert request.method == 'GET'
+
+		years = tuple(map(int, request.GET.get('years').split('/')))
+
+		assert (len(years) == 1 and years[0] <= Subscription.SYS_CHANGE_YEAR) or\
+		       (len(years) == 2 and years[0] + 1 == years[1] and Subscription.SYS_CHANGE_YEAR < years[0])
+
+	except (AssertionError, ValueError):
+		return HttpResponseBadRequest()
+	except AttributeError:
+		pass
+
+	if years:
+		if len(years) == 2:
+			months = range(Subscription.NEW_START_MONTH, 12 + 1), range(1, Subscription.NEW_END_MONTH + 1)
+		else:
+			months = range(1, 12 + 1),
+
+		return JsonResponse({
+			'labels': [description for _, description in Processing.TYPE_CHOICES],
+
+			'datasets': [{
+				'data': [sum(
+					(p.price
+					 for index, year in enumerate(years)
+					 for month in months[index]
+					 for p in Processing.objects.filter(date__year=year, date__month=month, type=choice)),
+					Decimal('0.00')
+				) for choice, _ in Processing.TYPE_CHOICES]
+			}]
+		})
+
+	else:
+		return JsonResponse({
+			'categories': tuple(str(year) if year <= Subscription.SYS_CHANGE_YEAR else '{}/{}'.format(year, year + 1)
+			                    for year in Subscription.YEARS_RANGE),
+			'series': [{
+				'name': description,
+				'data': [
+					sum(
+						(p.price for p in Processing.objects.filter(date__year=years[0], type=choice)),
+						Decimal('0.00')
+					) if len(years) == 1 else (sum(
+						(p.price
+						 for month in range(Subscription.NEW_START_MONTH, 12 + 1)
+						 for p in Processing.objects.filter(date__year=years[0],
+						                                    date__month=month,
+						                                    type=choice)),
+						Decimal('0.00')
+					) + sum(
+						(p.price
+						 for month in range(1, Subscription.NEW_END_MONTH + 1)
+						 for p in Processing.objects.filter(date__year=years[1],
+						                                    date__month=month,
+						                                    type=choice)),
+						Decimal('0.00')
+					)) for years in ((year,) if year <= Subscription.SYS_CHANGE_YEAR else (year, year + 1)
+					                 for year in Subscription.YEARS_RANGE)
+				]
+			} for choice, description in Processing.TYPE_CHOICES]
+		})

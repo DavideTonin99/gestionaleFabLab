@@ -14,14 +14,14 @@
         </thead>
         <tbody>
         {% for event in events %}
-            <tr class="tr-selectable" id="event-{{ event.id }}" onclick="window.location.href = '{% url 'gestionale_:update_event' event_id=event.id %}'">
+            <tr class="tr-selectable" id="event-{{ event.id }}" onclick="window.location.href = '{% url 'gestionale_:update_event' event.id %}'">
                 <td class="event-{{ event.id }}">{{ event.date }}</td>
                 <td class="event-{{ event.id }}">{{ event.duration }}</td>
                 <td class="event-{{ event.id }}">{{ event.name }}</td>
                 <td class="event-{{ event.id }}">{{ event.price }}&nbsp;&euro;</td>
                 <td class="event-{{ event.id }}">{{ event.description }}</td>
                 {% if show_extended_table %}
-                <td class="event-{{ event.id }}"><a href="{% url 'gestionale_:get_participants_emails_csv' event_id=event.id %}" >Scarica emails partecipanti</a></td>
+                <td class="event-{{ event.id }}"><a href="{% url 'gestionale_:participants_emails_csv' event_id=event.id %}" >Scarica emails partecipanti</a></td>
                 {% endif %}
             </tr>
         {% endfor %}

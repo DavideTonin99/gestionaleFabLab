@@ -20,9 +20,13 @@
             <table class="col-sm-6" style="margin-bottom: 10px">
                 {{ form.as_table }}
             </table>
-            <div class="actions-div col-sm-5">
-                <button type="submit" class="btn btn-success action-button" style="margin-top: 3px">{{ op }}</button>
-                <button class="btn btn-danger action-button" type="reset" onclick="window.location.href='{% url 'gestionale_:create_processing' %}'">Reset</button>
+            <div class="actions-div col-sm-12">
+                <button type="submit" class="btn btn-success action-button col-sm-3" style="margin-left: 10px">{{ op }}</button>
+                <button class="btn btn-danger action-button col-sm-3" type="reset"
+						style="margin-left:10px;" onclick="window.location.href='{% url 'gestionale_:create_processing' %}'">Reset</button>
+				<button class="btn btn-primary col-sm-3" type="button"
+						style="margin-left: 10px;" onclick="window.location.href='{% url 'gestionale_:processings_table_csv' %}'">Scarica CSV
+				</button>
             </div>
         </form>
     </div>

@@ -36,7 +36,7 @@
                 $("#id_name, #id_surname").blur(function () {
                     if ($("#id_name").val() && $("#id_name").val() !== "" && $("#id_surname").val() && $("#id_surname").val() !== "") {
 
-                        $.post("{% url 'gestionale_:get_homonyms' %}", {
+                        $.post("{% url 'gestionale_:homonyms' %}", {
                             name: $("#id_name").val(),
                             surname: $("#id_surname").val()
                         }, function (client, status) {
@@ -90,26 +90,32 @@
                 <th>Tessera</th>
                 <th>Mail</th>
                 <th>Cellulare</th>
-                <th>Iscrizione
-                    <script>document.write(new Date().getFullYear())</script>
-                </th>
+                <th>Consegnata Tessera</th>
+                <th>Iscrizione {{ current_period }}</th>
             </tr>
             </thead>
             {% for customer in customers %}
-                <tr class="tr-selectable" id="customer-{{ customer.0.id }}"
-                    onclick="document.location.href = '{% url 'gestionale_:update_customer' customer_id=customer.0.id %}'">
-                    <td class="customer-{{ customer.0.id }}">{{ customer.0.surname }}</td>
-                    <td class="customer-{{ customer.0.id }}">{{ customer.0.name }}</td>
-                    <td class="customer-{{ customer.0.id }}">{{ customer.0.card }}</td>
-                    <td class="customer-{{ customer.0.id }}">{{ customer.0.email }}</td>
-                    <td class="customer-{{ customer.0.id }}">{{ customer.0.telephone }}</td>
-                    <td class="customer-{{ customer.0.id }}">
-                        {% if customer.1.type == 0 %}
-                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                        {% elif customer.1.type == 1 %}
-                            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                <tr class="tr-selectable" id="customer-{{ customer.id }}"
+                    onclick="document.location.href = '{% url 'gestionale_:update_customer' customer.id %}'">
+                    <td class="customer-{{ customer.id }}">{{ customer.surname }}</td>
+                    <td class="customer-{{ customer.id }}">{{ customer.name }}</td>
+                    <td class="customer-{{ customer.id }}">{{ CARD_PREFIX }}{{ customer.card|stringformat:"05d" }}</td>
+                    <td class="customer-{{ customer.id }}">{{ customer.email }}</td>
+                    <td class="customer-{{ customer.id }}">{{ customer.phone }}</td>
+                    <td class="customer-{{ customer.id }}">
+                        {% if customer.card_given is None %}
+                            SCONOSCIUTO <!--TODO-->
+                        {% elif customer.card_given %}
+                            SI
                         {% else %}
-                            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                            NO
+                        {% endif %}
+                    </td>
+                    <td class="customer-{{ customer.id }}">
+                        {% if customer.subscribed %}
+                            SI <!--TODO-->
+                        {% else %}
+                            NO
                         {% endif %}
                     </td>
                 </tr>
@@ -142,9 +148,9 @@
                     {{ form.cap }}
                 </div>
                 <div class="col-sm-3">
-                    {{ form.telephone.label_tag }}
-                    {{ form.telephone.errors }}
-                    {{ form.telephone }}
+                    {{ form.phone.label_tag }}
+                    {{ form.phone.errors }}
+                    {{ form.phone }}
                 </div>
                 <div class="col-sm-3">
                     {{ form.email.label_tag }}
@@ -154,27 +160,28 @@
                 <div class="col-sm-3">
                     {{ form.card.label_tag }}
                     {{ form.card.errors }}
-                    {{ form.card }}
+                    {{ CARD_PREFIX }}<!-- todo fix-->{{ form.card }}
                 </div>
                 <div class="col-sm-3">
                     {{ form.first_association.label_tag }}
                     {{ form.first_association.errors }}
                     {{ form.first_association }}
                 </div>
-                <!--
                 <div class="col-sm-3">
-                    {{ form.delivered_card.label_tag }}
-                    {{ form.delivered_card.errors }}
-                    {{ form.delivered_card }}
+                    {{ form.card_given.label_tag }}
+                    {{ form.card_given.errors }}
+                    {{ form.card_given }}
                 </div>
-                -->
             </div>
-            <div class="col-sm-8" style="margin-top: 25px; margin-bottom: 10px">
-                <button type="submit" class="btn btn-success col-sm-5"
+            <div class="col-sm-12" style="margin-top: 25px; margin-bottom: 10px">
+                <button type="submit" class="btn btn-success col-sm-3"
                         style="margin-left: 10px; margin-right: 10px">{{ op }}</button>
-                <button class="btn btn-danger col-sm-5" type="reset"
+                <button class="btn btn-danger col-sm-3" type="reset"
                         onclick="window.location.href='{% url 'gestionale_:create_customer' %}'">Reset
                 </button>
+				<button class="btn btn-primary col-sm-3" type="button"
+						style="margin-left: 10px;" onclick="window.location.href='{% url 'gestionale_:customers_table_csv' %}'">Scarica CSV
+				</button>
             </div>
 
         </form>
