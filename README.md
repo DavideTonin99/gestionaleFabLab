@@ -15,8 +15,15 @@ Progetto scritto con Django-framework, html5, css, javascript
 7. Eseguire il comando ``python3 manage.py createsuperuser`` per poter accedere alla pagina di admin di Django e all'applicazione
 8. Eseguire il comando ``python3 manage.py runserver``
 9. Aprire un browser alla pagina ``http://localhost:8000`` o ``http://127.0.0.1:8000``
+
 ---
 
+### AUTORI
+
+- **Davide Tonin** - [DavideTonin99](https://github.com/DavideTonin99)
+- **Ettore Forigo** - [Hexwell](https://github.com/Hexwell)
+
+---
 
 ### RUN THE APP LOCALLY
 1. Install python 3.6
@@ -30,4 +37,8 @@ Progetto scritto con Django-framework, html5, css, javascript
 9. Open a browser on the page ``http://localhost:8000`` or ``http://127.0.0.1:8000``
 
 ---
-Davide Tonin, Ettore Forigo
+
+### AUTHORS
+
+- **Davide Tonin** - [DavideTonin99](https://github.com/DavideTonin99)
+- **Ettore Forigo** - [Hexwell](https://github.com/Hexwell)
